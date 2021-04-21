@@ -14,3 +14,8 @@ class RGBMatrixOptions:
         self.show_refresh_rate = 0
         self.gpio_slowdown = None
         self.disable_hardware_pulsing = False
+
+        self.pixel_size = 16
+    
+    def window_size(self):
+        return (self.cols * self.pixel_size, self.rows * self.pixel_size)

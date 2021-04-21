@@ -1,43 +1,34 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
 import codecs
 import sys
 import os.path as path
 
-# where this file is located
 cwd = path.dirname(__file__)
 
-# get full description from rst file
-longdesc = codecs.open(path.join(cwd, 'description.rst'), 'r', 'ascii').read()
+with open("description.md", "r") as fh:
+    long_description = fh.read()
 
 version = '0.0.0'
-# read version file to get version
-with codecs.open(path.join(cwd, 'matrix_emulator/version.py'), 'r', 'ascii') as f:
+with codecs.open(path.join(cwd, 'RGBMatrixEmulator/version.py'), 'r', 'ascii') as f:
     exec(f.read())
     version = __version__
-# make sure version is not default
-# make sure file reading worked
 assert version != '0.0.0'
 
-# download link based off tagged releases
-download_link = 'https://github.com/zachpanz88/mlbgame/archive/v{}.zip'.format(
-    version)
-
-# setup options
 setup(
-    name='matrix_emulator',
+    name='RGBMatrixEmulator',
     author='Tyler Porter',
     author_email='tyler.b.porter@gmail.com',
     version=version,
     license='MIT',
     description='A PC emulator for Raspberry Pi LED matrices driven by rpi-rgb-led-matrix',
-    long_description=longdesc,
-    url='https://github.com/zachpanz88/mlbgame',
-    download_url=download_link,
+    long_description_content_type='text/markdown',
+    long_description=long_description,
+    url='https://github.com/ty-porter/RGBMatrixEmulator',
     classifiers=[
         'License :: OSI Approved :: MIT License',
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: Other Audience',
@@ -58,8 +49,11 @@ setup(
         'LED'
     ],
     platforms='ANY',
-    packages=['matrix_emulator'],
+    packages=['RGBMatrixEmulator'],
     data_files=[('docs', ['README.md', 'LICENSE', 'description.rst'])],
-    install_requires=['pygame'],
-    extras_require={}
+    install_requires=[
+        'bdfparser<=2.2.0',
+        'bresenham==0.2.1',
+        'pygame<=1.9.6'
+    ]
 )
