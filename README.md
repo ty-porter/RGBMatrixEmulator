@@ -1,5 +1,7 @@
 # `RGBMatrixEmulator`
 
+![pypi Badge](https://img.shields.io/pypi/v/RGBMatrixEmulator)
+
 `RGBMatrixEmulator` is a Python package for emulating RGB LED matrices that are normally driven by the `rpi-rgb-led-matrix` library. Most commonly, these are used with single-board computers such as the Raspberry Pi.
 
 `RGBMatrixEmulator` (currently) supports a subset of the function calls present in the Python bindings for `rpi-rgb-led-matrix`. As such, it's accuracy is not 100% guaranteed.
@@ -38,6 +40,7 @@ Startup of the existing script will be unchanged.
 ![rotating-block](assets/rotating-block.png)
 ![simple-square](assets/simple-square.png)
 ![mlb-led-scoreboard](assets/mlb-led-scoreboard.png)
+![nhl-led-scoreboard](assets/nhl-clock.png))
 
 ## Contributing
 If you want to help develop RGBMatrixEmulator, you must also install the dev dependencies, which can be done by running ``pip install -e .[dev]`` from within the directory.
