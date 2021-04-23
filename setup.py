@@ -50,7 +50,7 @@ setup(
     ],
     platforms='ANY',
     packages=['RGBMatrixEmulator'],
-    data_files=[('docs', ['README.md', 'LICENSE', 'description.rst'])],
+    data_files=[('docs', ['README.md', 'LICENSE', 'description.md'])],
     install_requires=[
         'bdfparser<=2.2.0',
         'bresenham==0.2.1',

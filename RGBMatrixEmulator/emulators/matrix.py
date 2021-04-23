@@ -30,22 +30,28 @@ class RGBMatrix:
 
         return canvas
 
-    def Fill(self, r, g, b):
-        new_opts = copy(self.options)
-        new_opts.brightness = self.brightness
+    def Clear(self):
+        self.__sync_canvas()
+        self.canvas.Clear()
+        self.SwapOnVSync(self.canvas)
 
-        if not self.canvas:
-            self.canvas = Canvas(options = new_opts)
-            
+    def Fill(self, r, g, b):
+        self.__sync_canvas()
         self.canvas.Fill(r, g, b)
         self.SwapOnVSync(self.canvas)
 
     def SetPixel(self, x, y, r, g, b):
-        new_opts = copy(self.options)
-        new_opts.brightness = self.brightness
-
-        if not self.canvas:
-            self.canvas = Canvas(options = new_opts)
-
+        self.__sync_canvas()
         self.canvas.SetPixel(x, y, r, g, b)
         self.SwapOnVSync(self.canvas)
+
+    def SetImage(self, image, offset_x=0, offset_y=0, *other):
+        self.__sync_canvas()
+        self.canvas.SetImage(image, offset_x, offset_y, *other)
+        self.SwapOnVSync(self.canvas)
+ 
+    def __sync_canvas(self):        
+        if not self.canvas:
+            self.canvas = Canvas(options = self.options)
+
+        self.canvas.brightness = self.brightness

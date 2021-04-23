@@ -29,11 +29,8 @@ def DrawLine(canvas, x1, y1, x2, y2, color):
 
 
 def DrawCircle(canvas, x1, y1, r, color):
-    int_points = __coerce_int(x1, y1, x2, y2)
-    line_points = list(bresenham(*int_points))
-
-    for point in line_points:
-        canvas.SetPixel(*point, color.r, color.g, color.b)
+    # This needs to be implemented!
+    pass
 
 def __coerce_int(*values):
     return [int(value) for value in values]

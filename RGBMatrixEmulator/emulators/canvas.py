@@ -40,7 +40,7 @@ class Canvas:
         pygame.draw.rect(self.__surface, pixel.to_tuple(), pixel_rect)
 
     def __adjust_pixel_brightness(self, pixel):
-        alpha = self.options.brightness / 100.0
+        alpha = self.brightness / 100.0
         pixel.adjust_brightness(alpha)
 
     def draw_to_screen(self):
@@ -64,3 +64,17 @@ class Canvas:
             pixel.b = b
         except Exception:
             pass
+
+    def SetImage(self, image, offset_x=0, offset_y=0, *other):
+        pixel_index = 0
+        pixels = [pixel for pixel in image.getdata()]
+
+        self.Clear()
+        for y in range(0, self.height):
+            for x in range(0, self.width):
+                try:
+                    self.SetPixel(x + offset_x, y + offset_y, *pixels[pixel_index])
+                except Exception:
+                    pass
+
+                pixel_index += 1
