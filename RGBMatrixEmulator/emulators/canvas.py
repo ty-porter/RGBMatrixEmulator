@@ -30,7 +30,7 @@ class Canvas:
     def __set_emulator_icon(self):
         emulator_path = os.path.abspath(os.path.dirname(__file__))
         icon_path = os.path.join(emulator_path, '..', 'icon.png')
-        icon = pygame.image.load(icon_path)
+        icon = pygame.image.load(os.path.normpath(icon_path))
 
         pygame.display.set_icon(icon)
 

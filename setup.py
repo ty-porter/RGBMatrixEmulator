@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup
+from setuptools import find_packages, setup
 import codecs
 import sys
 import os.path as path
@@ -49,11 +49,15 @@ setup(
         'LED'
     ],
     platforms='ANY',
-    packages=['RGBMatrixEmulator'],
-    data_files=[('docs', ['README.md', 'LICENSE', 'description.md'])],
+    packages=find_packages(),
+    data_files=[
+        ('docs', ['README.md', 'LICENSE', 'description.md']),
+        ('RGBMatrixEmulator', ['RGBMatrixEmulator/icon.png'])
+    ],
     install_requires=[
         'bdfparser<=2.2.0',
         'pygame<=1.9.6',
         'scikit-image<=0.18.1'
-    ]
+    ],
+    include_package_data=True
 )
