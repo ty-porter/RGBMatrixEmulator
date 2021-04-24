@@ -24,7 +24,15 @@ class Canvas:
         self.__surface = pygame.display.set_mode(self.options.window_size())
         pygame.init()
         
+        self.__set_emulator_icon()
         pygame.display.set_caption('RPI LED Matrix Emulator v{}'.format(version.__version__))
+
+    def __set_emulator_icon(self):
+        emulator_path = os.path.abspath(os.path.dirname(__file__))
+        icon_path = os.path.join(emulator_path, '..', 'icon.png')
+        icon = pygame.image.load(icon_path)
+
+        pygame.display.set_icon(icon)
 
     def __pygame_pixel(self, col, row):
         return pygame.Rect(
@@ -43,6 +51,15 @@ class Canvas:
         alpha = self.brightness / 100.0
         pixel.adjust_brightness(alpha)
 
+    def __pixel_out_of_bounds(self, x, y):
+        if x < 0 or x >= self.width:
+            return True
+        
+        if y < 0 or y >= self.height:
+            return True
+
+        return False
+
     def draw_to_screen(self):
         for row, pixels in enumerate(self.__pixels):
             for col, pixel in enumerate(pixels):
@@ -57,6 +74,9 @@ class Canvas:
         self.__pixels = [[Color(r, g, b) for x in range(0, self.options.cols)] for y in range(0, self.options.rows)]
 
     def SetPixel(self, x, y, r, g, b):
+        if self.__pixel_out_of_bounds(x, y):
+            return
+
         try:
             pixel = self.__pixels[int(y)][int(x)]
             pixel.r = r

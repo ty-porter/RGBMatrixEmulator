@@ -53,7 +53,7 @@ setup(
     data_files=[('docs', ['README.md', 'LICENSE', 'description.md'])],
     install_requires=[
         'bdfparser<=2.2.0',
-        'bresenham==0.2.1',
-        'pygame<=1.9.6'
+        'pygame<=1.9.6',
+        'scikit-image<=0.18.1'
     ]
 )
