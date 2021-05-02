@@ -19,13 +19,21 @@ class Canvas:
         self.__load_emulator_window()
 
     def __load_emulator_window(self):
-        load_text = 'EMULATOR: Loading window {} ({}px per LED) for {}x{} matrix...'
-        print(load_text.format(self.options.window_size(), self.options.pixel_size, self.options.cols,  self.options.rows))
+        load_text = 'EMULATOR: Loading {}'.format(self.__emulator_details_text())
+        print(load_text)
         self.__surface = pygame.display.set_mode(self.options.window_size())
         pygame.init()
         
         self.__set_emulator_icon()
-        pygame.display.set_caption('RPI LED Matrix Emulator v{}'.format(version.__version__))
+        pygame.display.set_caption(self.__emulator_details_text())
+
+    def __emulator_details_text(self):
+        return 'RGB Matrix Emulator v{} -- {}x{} Matrix / {}px per LED ({}) / {}x{} Window'.format(version.__version__,
+                                                                                                   self.options.cols,
+                                                                                                   self.options.rows,
+                                                                                                   self.options.pixel_size,
+                                                                                                   self.options.pixel_style.upper(),
+                                                                                                   *self.options.window_size())
 
     def __set_emulator_icon(self):
         emulator_path = os.path.abspath(os.path.dirname(__file__))
@@ -45,7 +53,13 @@ class Canvas:
     def __draw_pixel(self, pixel, x, y):
         self.__adjust_pixel_brightness(pixel)
         pixel_rect = self.__pygame_pixel(x, y)
-        pygame.draw.rect(self.__surface, pixel.to_tuple(), pixel_rect)
+        if self.options.pixel_style == 'circle':
+            radius = int(pixel_rect.width / 2)
+            center_x = pixel_rect.x + radius
+            center_y = pixel_rect.y + radius
+            pygame.draw.circle(self.__surface, pixel.to_tuple(), (center_x, center_y), radius)
+        else:
+            pygame.draw.rect(self.__surface, pixel.to_tuple(), pixel_rect)
 
     def __adjust_pixel_brightness(self, pixel):
         alpha = self.brightness / 100.0
