@@ -4,8 +4,19 @@ from skimage.draw import circle_perimeter as sk_circle_perimeter
 from RGBMatrixEmulator.graphics.color import Color
 from RGBMatrixEmulator.graphics.font import Font
 
+
 def DrawText(canvas, font, x, y, color, text):
-    text_map = font.bdf_font.draw(text).todata(2)
+    # Early return for empty string prevents bugs in bdfparser library
+    # and makes good sense anyway
+    if len(text) == 0:
+        return
+
+    # Ensure text doesn't get drawn as multiple lines
+    linelimit = len(text) * (font.bdf_font.headers['fbbx'] + 1)
+
+    # TODO: This is VERY slow for large text
+    # See mlb-led-scoreboard offday renderer with headlines
+    text_map = font.bdf_font.draw(text, linelimit).todata(2)
     font_y_offset = -(font.bdf_font.headers['fbby'] + font.bdf_font.headers['fbbyoff'])
 
     for y2, row in enumerate(text_map):

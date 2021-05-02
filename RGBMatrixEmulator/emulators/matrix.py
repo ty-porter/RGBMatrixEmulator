@@ -1,4 +1,6 @@
+import sys
 import pygame
+from pygame.locals import QUIT
 
 from copy import copy
 
@@ -23,8 +25,12 @@ class RGBMatrix:
         return Canvas(options = self.options)
     
     def SwapOnVSync(self, canvas):
-        # We don't have events, but this will keep the emulator from appearing as if it's not responding
-        pygame.event.get()
+        # We don't have events, but this will keep the emulator from appearing as if it's not responding.
+        # This also enables closing the window to kill the emulator
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
 
         canvas.draw_to_screen()
 

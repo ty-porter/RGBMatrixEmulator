@@ -37,11 +37,27 @@ After this, most of the existing command line arguments from the `rpi-rgb-led-ma
 
 Startup of the existing script will be unchanged.
 
+## Customization
+
+The first time you run a script with the emulator enabled, a file called `emulator_config.json` will be created in the script's directory. This enables configurations to be customized on a per-script basis. The default configuration is as follows:
+
+```json
+{
+  "pixel_size": 16,
+  "pixel_style": "square"
+}
+```
+
+Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.
+
+You can also change the `pixel_style` option. By default, the emulator represents LEDs as squares. If you prefer the LEDs to have a more rounded appearance (like they would on an actual matrix), you can change to `pixel_style: "circle"`. 
+
 ## Screenshots
 
 ![rotating-block](assets/rotating-block.gif)
 ![mlb-led-scoreboard](assets/mlb-led-scoreboard.png)
 ![nhl-led-scoreboard](assets/nhl-clock.png)
+![circular-leds](assets/circular-leds.png)
 
 ## Known Issues
 
@@ -71,6 +87,7 @@ Startup of the existing script will be unchanged.
     matrix.SwapOnVsync(canvas) # Force screen refresh
     ```
   </details>
+- Drawing large strings is slow, partly because of the `linelimit` parameter in the BDF font parser this emulator uses to prevent multiline text from being rendered unintentionally.
 
 ## Contributing
 If you want to help develop RGBMatrixEmulator, you must also install the dev dependencies, which can be done by running ``pip install -e .[dev]`` from within the directory.
