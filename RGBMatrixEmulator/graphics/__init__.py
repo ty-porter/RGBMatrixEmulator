@@ -11,11 +11,19 @@ def DrawText(canvas, font, x, y, color, text):
     if len(text) == 0:
         return
 
+    # crop text to increase speed dramatically
+    charwidth = int(font.bdf_font.props["cap_height"])
+    if x < 0:
+        adjustment = abs(x + 3) // charwidth
+        text = text[adjustment:]
+        if adjustment:
+            x += charwidth * adjustment
+    if (charwidth * len(text) + x) > canvas.width:
+        text = text[: (canvas.width + 1 // charwidth) + 1]
+
     # Ensure text doesn't get drawn as multiple lines
     linelimit = len(text) * (font.bdf_font.headers['fbbx'] + 1)
 
-    # TODO: This is VERY slow for large text
-    # See mlb-led-scoreboard offday renderer with headlines
     text_map = font.bdf_font.draw(text, linelimit).todata(2)
     font_y_offset = -(font.bdf_font.headers['fbby'] + font.bdf_font.headers['fbbyoff'])
 
