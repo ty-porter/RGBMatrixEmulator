@@ -11,6 +11,8 @@ def DrawText(canvas, font, x, y, color, text):
     if len(text) == 0:
         return
 
+    text_orig = text
+
     # crop text to increase speed dramatically
     charwidth = int(font.bdf_font.props["cap_height"])
     if x < 0:
@@ -38,7 +40,7 @@ def DrawText(canvas, font, x, y, color, text):
                 except Exception:
                     pass
 
-    return len(text_map[0])
+    return charwidth * len(text_orig)
 
 def DrawLine(canvas, x1, y1, x2, y2, color):
     int_points = __coerce_int(x1, y1, x2, y2)
