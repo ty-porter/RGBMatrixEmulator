@@ -14,7 +14,7 @@ def DrawText(canvas, font, x, y, color, text):
     text_orig = text
 
     # crop text to increase speed dramatically
-    charwidth = int(font.bdf_font.props["cap_height"])
+    charwidth = int(font.bdf_font.headers["fbbx"])
     if x < 0:
         adjustment = abs(x + 3) // charwidth
         text = text[adjustment:]
