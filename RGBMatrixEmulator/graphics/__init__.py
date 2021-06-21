@@ -23,22 +23,23 @@ def DrawText(canvas, font, x, y, color, text):
     if (charwidth * len(text) + x) > canvas.width:
         text = text[: (canvas.width + 1 // charwidth) + 1]
 
-    # Ensure text doesn't get drawn as multiple lines
-    linelimit = len(text) * (font.bdf_font.headers['fbbx'] + 1)
+    if len(text) != 0:
+        # Ensure text doesn't get drawn as multiple lines
+        linelimit = len(text) * (font.bdf_font.headers['fbbx'] + 1)
 
-    text_map = font.bdf_font.draw(text, linelimit).todata(2)
-    font_y_offset = -(font.bdf_font.headers['fbby'] + font.bdf_font.headers['fbbyoff'])
+        text_map = font.bdf_font.draw(text, linelimit).todata(2)
+        font_y_offset = -(font.bdf_font.headers['fbby'] + font.bdf_font.headers['fbbyoff'])
 
-    for y2, row in enumerate(text_map):
-        for x2, value in enumerate(row):
-            if value == 1:
-                try:
-                    if isinstance(color, tuple):
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
-                    else:
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.r, color.g, color.b)
-                except Exception:
-                    pass
+        for y2, row in enumerate(text_map):
+            for x2, value in enumerate(row):
+                if value == 1:
+                    try:
+                        if isinstance(color, tuple):
+                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
+                        else:
+                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.r, color.g, color.b)
+                    except Exception:
+                        pass
 
     return charwidth * len(text_orig)
 
