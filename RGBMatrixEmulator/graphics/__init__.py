@@ -11,26 +11,37 @@ def DrawText(canvas, font, x, y, color, text):
     if len(text) == 0:
         return
 
-    # Ensure text doesn't get drawn as multiple lines
-    linelimit = len(text) * (font.bdf_font.headers['fbbx'] + 1)
+    text_orig = text
 
-    # TODO: This is VERY slow for large text
-    # See mlb-led-scoreboard offday renderer with headlines
-    text_map = font.bdf_font.draw(text, linelimit).todata(2)
-    font_y_offset = -(font.bdf_font.headers['fbby'] + font.bdf_font.headers['fbbyoff'])
+    # crop text to increase speed dramatically
+    charwidth = int(font.bdf_font.headers["fbbx"])
+    if x < 0:
+        adjustment = abs(x + 3) // charwidth
+        text = text[adjustment:]
+        if adjustment:
+            x += charwidth * adjustment
+    if (charwidth * len(text) + x) > canvas.width:
+        text = text[: (canvas.width + 1 // charwidth) + 1]
 
-    for y2, row in enumerate(text_map):
-        for x2, value in enumerate(row):
-            if value == 1:
-                try:
-                    if isinstance(color, tuple):
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
-                    else:
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.r, color.g, color.b)
-                except Exception:
-                    pass
+    if len(text) != 0:
+        # Ensure text doesn't get drawn as multiple lines
+        linelimit = len(text) * (font.bdf_font.headers['fbbx'] + 1)
 
-    return len(text_map[0])
+        text_map = font.bdf_font.draw(text, linelimit).todata(2)
+        font_y_offset = -(font.bdf_font.headers['fbby'] + font.bdf_font.headers['fbbyoff'])
+
+        for y2, row in enumerate(text_map):
+            for x2, value in enumerate(row):
+                if value == 1:
+                    try:
+                        if isinstance(color, tuple):
+                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
+                        else:
+                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.r, color.g, color.b)
+                    except Exception:
+                        pass
+
+    return charwidth * len(text_orig)
 
 def DrawLine(canvas, x1, y1, x2, y2, color):
     int_points = __coerce_int(x1, y1, x2, y2)
