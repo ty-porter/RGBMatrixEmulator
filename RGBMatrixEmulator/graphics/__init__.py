@@ -11,26 +11,43 @@ def DrawText(canvas, font, x, y, color, text):
     if len(text) == 0:
         return
 
-    # Ensure text doesn't get drawn as multiple lines
-    linelimit = len(text) * (font.bdf_font.headers['fbbx'] + 1)
+    # Support multiple spacings based on device width
+    character_widths = [__glyph_device_width(font, letter) for letter in text]
+    first_char_width = character_widths[0]
+    max_char_width = max(character_widths)
+    total_width = sum(character_widths)
+    
+    # Offscreen to the left, adjust by first character width
+    if x < 0:
+        adjustment = abs(x + first_char_width) // first_char_width
+        text = text[adjustment:]
+        if adjustment:
+            x += first_char_width * adjustment
 
-    # TODO: This is VERY slow for large text
-    # See mlb-led-scoreboard offday renderer with headlines
-    text_map = font.bdf_font.draw(text, linelimit).todata(2)
-    font_y_offset = -(font.bdf_font.headers['fbby'] + font.bdf_font.headers['fbbyoff'])
+    # Offscreen to the right, rough adjustment by max width
+    if (total_width + x) > canvas.width:
+        text = text[: ((canvas.width + 1) // max_char_width) + 2]
 
-    for y2, row in enumerate(text_map):
-        for x2, value in enumerate(row):
-            if value == 1:
-                try:
-                    if isinstance(color, tuple):
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
-                    else:
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.r, color.g, color.b)
-                except Exception:
-                    pass
+    # Draw the text!
+    if len(text) != 0:
+        # Ensure text doesn't get drawn as multiple lines
+        linelimit = len(text) * (font.headers['fbbx'] + 1)
 
-    return len(text_map[0])
+        text_map = font.bdf_font.draw(text, linelimit).todata(2)
+        font_y_offset = -(font.headers['fbby'] + font.headers['fbbyoff'])
+
+        for y2, row in enumerate(text_map):
+            for x2, value in enumerate(row):
+                if value == 1:
+                    try:
+                        if isinstance(color, tuple):
+                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
+                        else:
+                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.r, color.g, color.b)
+                    except Exception:
+                        pass
+
+    return total_width
 
 def DrawLine(canvas, x1, y1, x2, y2, color):
     int_points = __coerce_int(x1, y1, x2, y2)
@@ -48,3 +65,6 @@ def DrawCircle(canvas, x, y, r, color):
 
 def __coerce_int(*values):
     return [int(value) for value in values]
+
+def __glyph_device_width(font, glyph):
+    return font.bdf_font.glyph(glyph).meta['dwx0']
