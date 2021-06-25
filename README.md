@@ -92,6 +92,8 @@ You can also change the `pixel_style` option. By default, the emulator represent
 ## Contributing
 If you want to help develop RGBMatrixEmulator, you must also install the dev dependencies, which can be done by running ``pip install -e .[dev]`` from within the directory.
 
+Before submitting a PR, please open an issue to help us track development. All development should be based off of the `dev` branch. This branch is kept up-to-date with `main` after releases. 
+
 ## Contact
 
 Tyler Porter
