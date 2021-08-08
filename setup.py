@@ -28,15 +28,12 @@ setup(
     url='https://github.com/ty-porter/RGBMatrixEmulator',
     classifiers=[
         'License :: OSI Approved :: MIT License',
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: Other Audience',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3',
         'Natural Language :: English',
         'Topic :: Other/Nonlisted Topic',
     ],
@@ -56,7 +53,7 @@ setup(
     ],
     install_requires=[
         'bdfparser<=2.2.0',
-        'pygame<=1.9.6',
+        'pygame<=2.0.1',
         'scikit-image<=0.18.1'
     ],
     include_package_data=True

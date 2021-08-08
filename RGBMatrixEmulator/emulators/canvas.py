@@ -9,11 +9,11 @@ class Canvas:
     def __init__(self, options):
         self.options = options
 
-        self.width = options.cols
-        self.height = options.rows
+        self.width = options.cols * options.chain_length
+        self.height = options.rows * options.parallel
         self.brightness = options.brightness
         
-        self.__pixels = [[Color.BLACK() for x in range(0, self.options.cols)] for y in range(0, self.options.rows)]
+        self.__pixels = [[Color.BLACK() for x in range(0, self.width)] for y in range(0, self.height)]
         self.__surface = None
 
         self.__load_emulator_window()
@@ -28,12 +28,16 @@ class Canvas:
         pygame.display.set_caption(self.__emulator_details_text())
 
     def __emulator_details_text(self):
-        return 'RGB Matrix Emulator v{} -- {}x{} Matrix / {}px per LED ({}) / {}x{} Window'.format(version.__version__,
-                                                                                                   self.options.cols,
-                                                                                                   self.options.rows,
-                                                                                                   self.options.pixel_size,
-                                                                                                   self.options.pixel_style.upper(),
-                                                                                                   *self.options.window_size())
+        details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}x{} Window'
+
+        return details_text.format(version.__version__,
+                                   self.options.cols,
+                                   self.options.rows,
+                                   self.options.chain_length,
+                                   self.options.parallel,
+                                   self.options.pixel_size,
+                                   self.options.pixel_style.upper(),
+                                   *self.options.window_size())
 
     def __set_emulator_icon(self):
         emulator_path = os.path.abspath(os.path.dirname(__file__))
@@ -82,10 +86,10 @@ class Canvas:
         pygame.display.flip()
 
     def Clear(self):
-        self.__pixels = [[Color.BLACK() for x in range(0, self.options.cols)] for y in range(0, self.options.rows)]
+        self.__pixels = [[Color.BLACK() for x in range(0, self.width)] for y in range(0, self.height)]
 
     def Fill(self, r, g, b):
-        self.__pixels = [[Color(r, g, b) for x in range(0, self.options.cols)] for y in range(0, self.options.rows)]
+        self.__pixels = [[Color(r, g, b) for x in range(0, self.width)] for y in range(0, self.height)]
 
     def SetPixel(self, x, y, r, g, b):
         if self.__pixel_out_of_bounds(x, y):
