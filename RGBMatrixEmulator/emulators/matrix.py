@@ -2,8 +2,6 @@ import sys
 import pygame
 from pygame.locals import QUIT
 
-from copy import copy
-
 from RGBMatrixEmulator.emulators.canvas import Canvas
 from RGBMatrixEmulator.graphics.color import Color
 
@@ -12,8 +10,8 @@ class RGBMatrix:
     def __init__(self, options = {}):
         self.options = options
 
-        self.width = options.cols
-        self.height = options.rows
+        self.width = options.cols * options.chain_length
+        self.height = options.rows * options.parallel
         self.brightness = options.brightness
 
         self.canvas = None

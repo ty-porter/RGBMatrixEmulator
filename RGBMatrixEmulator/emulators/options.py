@@ -30,7 +30,7 @@ class RGBMatrixOptions:
         self.pixel_size = emulator_config.pixel_size
 
     def window_size(self):
-        return (self.cols * self.pixel_size, self.rows * self.pixel_size)
+        return (self.cols * self.pixel_size * self.chain_length, self.rows * self.pixel_size * self.parallel)
 
 class RGBMatrixEmulatorConfig:
     __CONFIG_PATH = 'emulator_config.json'
