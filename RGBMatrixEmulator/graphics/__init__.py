@@ -12,7 +12,7 @@ def DrawText(canvas, font, x, y, color, text):
         return
 
     # Support multiple spacings based on device width
-    character_widths = [__glyph_device_width(font, letter) for letter in text]
+    character_widths = [font.CharacterWidth(ord(letter)) for letter in text]
     first_char_width = character_widths[0]
     max_char_width = max(character_widths)
     total_width = sum(character_widths)
@@ -65,6 +65,3 @@ def DrawCircle(canvas, x, y, r, color):
 
 def __coerce_int(*values):
     return [int(value) for value in values]
-
-def __glyph_device_width(font, glyph):
-    return font.bdf_font.glyph(glyph).meta['dwx0']
