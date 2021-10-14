@@ -12,3 +12,8 @@ class Font:
         self.headers = self.bdf_font.headers
         self.props = self.bdf_font.props
 
+    def CharacterWidth(self, char):
+        if self.bdf_font == None:
+            return 0
+
+        return self.bdf_font.glyphbycp(char).meta['dwx0']
