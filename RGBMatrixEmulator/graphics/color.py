@@ -10,6 +10,18 @@ class Color:
         self.g *= alpha
         self.b *= alpha
 
+    @property
+    def red(self):
+        return self.r
+
+    @property
+    def green(self):
+        return self.g
+
+    @property
+    def blue(self):
+        return self.b
+
     def to_tuple(self):
         return (self.r, self.g, self.b)
 
