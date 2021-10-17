@@ -1,29 +1,17 @@
 class Color:
     def __init__(self, r, g, b):
-        self.r = r
-        self.g = g
-        self.b = b
+        self.red = r
+        self.green = g
+        self.blue = b
 
     def adjust_brightness(self, alpha):
         # Super hacky, pygame.draw.rect() doesn't support alpha blending
-        self.r *= alpha
-        self.g *= alpha
-        self.b *= alpha
-
-    @property
-    def red(self):
-        return self.r
-
-    @property
-    def green(self):
-        return self.g
-
-    @property
-    def blue(self):
-        return self.b
+        self.red *= alpha
+        self.green *= alpha
+        self.blue *= alpha
 
     def to_tuple(self):
-        return (self.r, self.g, self.b)
+        return (self.red, self.green, self.blue)
 
     @classmethod
     def BLACK(cls):
