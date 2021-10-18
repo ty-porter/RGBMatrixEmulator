@@ -16,7 +16,7 @@ def DrawText(canvas, font, x, y, color, text):
     first_char_width = character_widths[0]
     max_char_width = max(character_widths)
     total_width = sum(character_widths)
-    
+
     # Offscreen to the left, adjust by first character width
     if x < 0:
         adjustment = abs(x + first_char_width) // first_char_width
@@ -43,7 +43,7 @@ def DrawText(canvas, font, x, y, color, text):
                         if isinstance(color, tuple):
                             canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
                         else:
-                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.r, color.g, color.b)
+                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.red, color.green, color.blue)
                     except Exception:
                         pass
 
@@ -54,14 +54,14 @@ def DrawLine(canvas, x1, y1, x2, y2, color):
     rows, cols = sk_line(*int_points)
 
     for point in zip(rows, cols):
-        canvas.SetPixel(*point, color.r, color.g, color.b)
+        canvas.SetPixel(*point, color.red, color.green, color.blue)
 
 def DrawCircle(canvas, x, y, r, color):
     int_points = __coerce_int(x, y)
     rows, cols = sk_circle_perimeter(*int_points, r)
-    
+
     for point in zip(rows, cols):
-        canvas.SetPixel(*point, color.r, color.g, color.b)
+        canvas.SetPixel(*point, color.red, color.green, color.blue)
 
 def __coerce_int(*values):
     return [int(value) for value in values]
