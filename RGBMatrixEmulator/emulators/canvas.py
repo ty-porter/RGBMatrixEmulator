@@ -12,7 +12,7 @@ class Canvas:
         self.width = options.cols * options.chain_length
         self.height = options.rows * options.parallel
         self.brightness = options.brightness
-        
+
         self.__pixels = [[Color.BLACK() for x in range(0, self.width)] for y in range(0, self.height)]
         self.__surface = None
 
@@ -23,7 +23,7 @@ class Canvas:
         print(load_text)
         self.__surface = pygame.display.set_mode(self.options.window_size())
         pygame.init()
-        
+
         self.__set_emulator_icon()
         pygame.display.set_caption(self.__emulator_details_text())
 
@@ -72,7 +72,7 @@ class Canvas:
     def __pixel_out_of_bounds(self, x, y):
         if x < 0 or x >= self.width:
             return True
-        
+
         if y < 0 or y >= self.height:
             return True
 
@@ -82,7 +82,7 @@ class Canvas:
         for row, pixels in enumerate(self.__pixels):
             for col, pixel in enumerate(pixels):
                 self.__draw_pixel(pixel, col, row)
-        
+
         pygame.display.flip()
 
     def Clear(self):
@@ -97,9 +97,9 @@ class Canvas:
 
         try:
             pixel = self.__pixels[int(y)][int(x)]
-            pixel.r = r
-            pixel.g = g
-            pixel.b = b
+            pixel.red = r
+            pixel.green = g
+            pixel.blue = b
         except Exception:
             pass
 
