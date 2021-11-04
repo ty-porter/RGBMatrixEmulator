@@ -107,9 +107,8 @@ class Canvas:
         pixel_index = 0
         pixels = [pixel for pixel in image.getdata()]
 
-        self.Clear()
-        for y in range(0, self.height):
-            for x in range(0, self.width):
+        for y in range(0, image.height):
+            for x in range(0, image.width):
                 try:
                     self.SetPixel(x + offset_x, y + offset_y, *pixels[pixel_index])
                 except Exception:
