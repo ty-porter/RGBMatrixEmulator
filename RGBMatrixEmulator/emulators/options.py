@@ -27,12 +27,13 @@ class RGBMatrixOptions:
             self.pixel_style = emulator_config.pixel_style
         else:
             print('EMULATOR: Warning! "{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(emulator_config.pixel_style))
-            self.pixel_style = self.default_config['pixel_style']
+            self.pixel_style = emulator_config.default_config().get('pixel_style')
 
         if emulator_config.display_adapter.lower() in DISPLAY_ADAPTER_TYPES:
             self.display_adapter = DISPLAY_ADAPTER_TYPES[emulator_config.display_adapter.lower()]
         else:
-            self.display_adapter = DISPLAY_ADAPTER_TYPES[self.default_config['display_adapter']]
+            print('EMULATOR: Warning! "{}" display adapter option not recognized. Valid adapters are "pygame", "terminal". Defaulting to "terminal"...'.format(emulator_config.display_adapter))
+            self.display_adapter = DISPLAY_ADAPTER_TYPES[emulator_config.default_config().get('display_adapter')]
 
 
         self.pixel_size = emulator_config.pixel_size
@@ -46,9 +47,9 @@ class RGBMatrixEmulatorConfig:
     def __init__(self):
         self.__config = self.__load_config()
 
-        self.pixel_size      = self.__config.get('pixel_size', 16)
-        self.pixel_style     = self.__config.get('pixel_style', 'square')
-        self.display_adapter = self.__config.get('display_adapter', 'pygame')
+        self.pixel_size      = self.__config.get('pixel_size',      16)
+        self.pixel_style     = self.__config.get('pixel_style',     'square')
+        self.display_adapter = self.__config.get('display_adapter', 'terminal')
 
     def __load_config(self):
         if os.path.exists(self.__CONFIG_PATH):
@@ -58,11 +59,11 @@ class RGBMatrixEmulatorConfig:
             return config    
 
         with open(self.__CONFIG_PATH, 'w') as f:
-            json.dump(self.__default_config(), f, indent=4)
+            json.dump(self.default_config(), f, indent=4)
 
-        return self.__default_config()
+        return self.default_config()
 
-    def __default_config(self):
+    def default_config(self):
         return {
             'pixel_size': 16,
             'pixel_style': 'square',

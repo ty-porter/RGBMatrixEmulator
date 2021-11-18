@@ -21,7 +21,7 @@ class Terminal(BaseAdapter):
     def draw_to_screen(self, pixels):
         output = "\033[H\n"                                               # Move the cursor to the home position, add a little border
         for pixel_row in pixels:
-            output += "  "
+            output += "  "                                                # Add a bit of border in case cursor causes line to wrap
             for pixel in pixel_row:
                 self.adjust_pixel_brightness(pixel, to_int = True)
                 output += "\033[38;2;{};{};{}m".format(*pixel.to_tuple()) # Set the cell to the pixel color
