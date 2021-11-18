@@ -15,9 +15,6 @@ class Terminal(BaseAdapter):
         super().__init__(width, height, options)
         self.__symbol = self.SYMBOLS.get(self.options.pixel_style)
 
-    def check_for_quit_event(self):
-        pass
-
     def draw_to_screen(self, pixels):
         output = "\033[H\n"                                               # Move the cursor to the home position, add a little border
         for pixel_row in pixels:

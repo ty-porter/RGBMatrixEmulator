@@ -20,7 +20,7 @@ class BaseAdapter:
         return False
 
     def emulator_details_text(self):
-        details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}x{} Window'
+        details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({})'
 
         return details_text.format(version.__version__,
                                    self.options.cols,
@@ -28,13 +28,13 @@ class BaseAdapter:
                                    self.options.chain_length,
                                    self.options.parallel,
                                    self.options.pixel_size,
-                                   self.options.pixel_style.upper(),
-                                   *self.options.window_size())
+                                   self.options.pixel_style.upper())
+
+    # This method is required for the pygame adapter but nothing else, so just skip it if not defined.
+    def check_for_quit_events(self):
+        pass
 
     # These methods must be implemented by BaseAdapter subclasses
-    def check_for_quit_events(self):
-        raise NotImplementedError
-
     def draw_to_screen(self):
         raise NotImplementedError
 

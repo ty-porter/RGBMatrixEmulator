@@ -12,9 +12,6 @@ class Turtle(BaseAdapter):
         self.__pen = None
         self.__screen = None
 
-    def check_for_quit_event(self):
-        pass
-
     def draw_to_screen(self, pixels):
         self.__pen.clear()
 
