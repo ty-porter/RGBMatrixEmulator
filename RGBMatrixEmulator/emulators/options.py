@@ -1,6 +1,8 @@
 import json
 import os
 
+from RGBMatrixEmulator.display_adapters import DISPLAY_ADAPTER_TYPES
+
 
 class RGBMatrixOptions:
     def __init__(self):
@@ -25,7 +27,13 @@ class RGBMatrixOptions:
             self.pixel_style = emulator_config.pixel_style
         else:
             print('EMULATOR: Warning! "{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(emulator_config.pixel_style))
-            self.pixel_style = 'square'
+            self.pixel_style = self.default_config['pixel_style']
+
+        if emulator_config.display_adapter.lower() in DISPLAY_ADAPTER_TYPES:
+            self.display_adapter = DISPLAY_ADAPTER_TYPES[emulator_config.display_adapter.lower()]
+        else:
+            self.display_adapter = DISPLAY_ADAPTER_TYPES[self.default_config['display_adapter']]
+
 
         self.pixel_size = emulator_config.pixel_size
 
@@ -38,8 +46,9 @@ class RGBMatrixEmulatorConfig:
     def __init__(self):
         self.__config = self.__load_config()
 
-        self.pixel_size = self.__config['pixel_size']
-        self.pixel_style = self.__config['pixel_style']
+        self.pixel_size      = self.__config.get('pixel_size', 16)
+        self.pixel_style     = self.__config.get('pixel_style', 'square')
+        self.display_adapter = self.__config.get('display_adapter', 'pygame')
 
     def __load_config(self):
         if os.path.exists(self.__CONFIG_PATH):
@@ -56,5 +65,6 @@ class RGBMatrixEmulatorConfig:
     def __default_config(self):
         return {
             'pixel_size': 16,
-            'pixel_style': 'square'
+            'pixel_style': 'square',
+            'display_adapter': 'terminal'
         }
