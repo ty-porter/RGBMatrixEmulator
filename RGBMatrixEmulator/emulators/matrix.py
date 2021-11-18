@@ -1,9 +1,4 @@
-import sys
-import pygame
-from pygame.locals import QUIT
-
 from RGBMatrixEmulator.emulators.canvas import Canvas
-from RGBMatrixEmulator.graphics.color import Color
 
 
 class RGBMatrix:
@@ -23,13 +18,7 @@ class RGBMatrix:
         return Canvas(options = self.options)
     
     def SwapOnVSync(self, canvas):
-        # We don't have events, but this will keep the emulator from appearing as if it's not responding.
-        # This also enables closing the window to kill the emulator
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-
+        canvas.check_for_quit_event()
         canvas.draw_to_screen()
 
         return canvas
@@ -58,4 +47,4 @@ class RGBMatrix:
         if not self.canvas:
             self.canvas = Canvas(options = self.options)
 
-        self.canvas.brightness = self.brightness
+        self.canvas.display_adapter.options.brightness = self.brightness
