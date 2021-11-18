@@ -44,13 +44,28 @@ The first time you run a script with the emulator enabled, a file called `emulat
 ```json
 {
   "pixel_size": 16,
-  "pixel_style": "square"
+  "pixel_style": "square",
+  "display_adapter": "pygame"
 }
 ```
 
 Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.
 
-You can also change the `pixel_style` option. By default, the emulator represents LEDs as squares. If you prefer the LEDs to have a more rounded appearance (like they would on an actual matrix), you can change to `pixel_style: "circle"`. 
+You can also change the `pixel_style` option. By default, the emulator represents LEDs as squares. If you prefer the LEDs to have a more rounded appearance (like they would on an actual matrix), you can change to `pixel_style: "circle"`.
+
+### Display Adapters
+
+By default, `RGBMatrixEmulator` uses `pygame` as its display adapter to maintain compatibility with versions less than 0.5.0. However, you can also use other display adapters as well if `pygame` does not suit your needs.
+
+Currently supported display adapters are:
+
+* `pygame`
+* `terminal`
+* `turtle`
+
+You can swap display adapters by changing the `display_adapter` value to one of the above in `emulator_config.json`.
+
+**Note:** Not all display adapters support all emulator features. `pygame` currently offers the best support for advanced capability.
 
 ## Screenshots
 
