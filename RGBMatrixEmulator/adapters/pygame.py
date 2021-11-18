@@ -10,8 +10,7 @@ except Exception:
 import pygame
 
 from pygame.locals import QUIT
-from RGBMatrixEmulator.display_adapters.base import BaseAdapter
-from RGBMatrixEmulator import version
+from RGBMatrixEmulator.adapters.base import BaseAdapter
 
 
 class Pygame(BaseAdapter):
@@ -20,13 +19,12 @@ class Pygame(BaseAdapter):
         self.__surface = None
 
     def load_emulator_window(self):
-        load_text = 'EMULATOR: Loading {}'.format(self.__emulator_details_text())
-        print(load_text)
+        print('EMULATOR: Loading {}'.format(self.emulator_details_text()))
         self.__surface = pygame.display.set_mode(self.options.window_size())
         pygame.init()
 
         self.__set_emulator_icon()
-        pygame.display.set_caption(self.__emulator_details_text())
+        pygame.display.set_caption(self.emulator_details_text())
 
     def draw_to_screen(self, pixels):
         for row, pixel_row in enumerate(pixels):
@@ -42,18 +40,6 @@ class Pygame(BaseAdapter):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
-    def __emulator_details_text(self):
-        details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}x{} Window'
-
-        return details_text.format(version.__version__,
-                                   self.options.cols,
-                                   self.options.rows,
-                                   self.options.chain_length,
-                                   self.options.parallel,
-                                   self.options.pixel_size,
-                                   self.options.pixel_style.upper(),
-                                   *self.options.window_size())
 
     def __set_emulator_icon(self):
         emulator_path = os.path.abspath(os.path.dirname(__file__))

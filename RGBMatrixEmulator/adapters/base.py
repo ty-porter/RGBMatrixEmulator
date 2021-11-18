@@ -1,3 +1,5 @@
+from RGBMatrixEmulator import version
+
 class BaseAdapter:
     def __init__(self, width, height, options):
         self.width   = width
@@ -16,6 +18,18 @@ class BaseAdapter:
             return True
 
         return False
+
+    def emulator_details_text(self):
+        details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}x{} Window'
+
+        return details_text.format(version.__version__,
+                                   self.options.cols,
+                                   self.options.rows,
+                                   self.options.chain_length,
+                                   self.options.parallel,
+                                   self.options.pixel_size,
+                                   self.options.pixel_style.upper(),
+                                   *self.options.window_size())
 
     # These methods must be implemented by BaseAdapter subclasses
     def check_for_quit_events(self):

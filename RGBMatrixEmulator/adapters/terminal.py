@@ -1,7 +1,7 @@
 import os
 import sys
 
-from RGBMatrixEmulator.display_adapters.base import BaseAdapter
+from RGBMatrixEmulator.adapters.base import BaseAdapter
 
 
 class Terminal(BaseAdapter):
@@ -27,7 +27,7 @@ class Terminal(BaseAdapter):
                 output += "\033[38;2;{};{};{}m".format(*pixel.to_tuple()) # Set the cell to the pixel color
                 output += self.__symbol                                   # Draw the pixel
                 output += "\033[37m"                                      # Reset the color
-            
+
             output += " \n"
 
         sys.stdout.write(output)

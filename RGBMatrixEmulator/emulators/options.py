@@ -1,7 +1,7 @@
 import json
 import os
 
-from RGBMatrixEmulator.display_adapters import DISPLAY_ADAPTER_TYPES
+from RGBMatrixEmulator.adapters import ADAPTER_TYPES
 
 
 class RGBMatrixOptions:
@@ -29,11 +29,12 @@ class RGBMatrixOptions:
             print('EMULATOR: Warning! "{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(emulator_config.pixel_style))
             self.pixel_style = emulator_config.default_config().get('pixel_style')
 
-        if emulator_config.display_adapter.lower() in DISPLAY_ADAPTER_TYPES:
-            self.display_adapter = DISPLAY_ADAPTER_TYPES[emulator_config.display_adapter.lower()]
+        if emulator_config.display_adapter.lower() in ADAPTER_TYPES:
+            self.display_adapter = ADAPTER_TYPES[emulator_config.display_adapter.lower()]
         else:
-            print('EMULATOR: Warning! "{}" display adapter option not recognized. Valid adapters are "pygame", "terminal". Defaulting to "terminal"...'.format(emulator_config.display_adapter))
-            self.display_adapter = DISPLAY_ADAPTER_TYPES[emulator_config.default_config().get('display_adapter')]
+            adapter_types = ', '.join('"{}"'.format(key) for key in ADAPTER_TYPES.keys())
+            print('EMULATOR: Warning! "{}" display adapter option not recognized. Valid adapters are {}. Defaulting to "pygame"...'.format(emulator_config.display_adapter, adapter_types))
+            self.display_adapter = ADAPTER_TYPES[emulator_config.default_config().get('display_adapter')]
 
 
         self.pixel_size = emulator_config.pixel_size
@@ -49,7 +50,7 @@ class RGBMatrixEmulatorConfig:
 
         self.pixel_size      = self.__config.get('pixel_size',      16)
         self.pixel_style     = self.__config.get('pixel_style',     'square')
-        self.display_adapter = self.__config.get('display_adapter', 'terminal')
+        self.display_adapter = self.__config.get('display_adapter', 'pygame')
 
     def __load_config(self):
         if os.path.exists(self.__CONFIG_PATH):
@@ -67,5 +68,5 @@ class RGBMatrixEmulatorConfig:
         return {
             'pixel_size': 16,
             'pixel_style': 'square',
-            'display_adapter': 'terminal'
+            'display_adapter': 'pygame'
         }
