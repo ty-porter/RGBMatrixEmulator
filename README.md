@@ -74,6 +74,10 @@ You can swap display adapters by changing the `display_adapter` value to one of 
 ![nhl-led-scoreboard](assets/nhl-clock.png)
 ![circular-leds](assets/circular-leds.png)
 
+## Samples
+
+See [Samples README](samples/README.md) for more information about running example scripts.
+
 ## Known Issues
 
 - Calling draw functions on an instance of `RGBMatrix` is slow (i.e. `matrix.SetPixel`, `matrix.Fill`)
