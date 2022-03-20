@@ -31,7 +31,7 @@ class BaseAdapter:
                                    self.options.pixel_style.upper())
 
     # This method is required for the pygame adapter but nothing else, so just skip it if not defined.
-    def check_for_quit_events(self):
+    def check_for_quit_event(self):
         pass
 
     # These methods must be implemented by BaseAdapter subclasses
