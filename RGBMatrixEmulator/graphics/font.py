@@ -16,6 +16,9 @@ class Font:
         if self.bdf_font == None:
             return 0
 
+        if not self.bdf_font.glyphbycp(char):
+            return self.headers['fbbx']
+
         return self.bdf_font.glyphbycp(char).meta['dwx0']
 
     @property
