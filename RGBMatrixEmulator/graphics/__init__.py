@@ -33,7 +33,7 @@ def DrawText(canvas, font, x, y, color, text):
         # Ensure text doesn't get drawn as multiple lines
         linelimit = len(text) * (font.headers['fbbx'] + 1)
 
-        text_map = font.bdf_font.draw(text, linelimit).todata(2)
+        text_map = font.bdf_font.draw(text, linelimit, missing=font.default_character).todata(2)
         font_y_offset = -(font.headers['fbby'] + font.headers['fbbyoff'])
 
         for y2, row in enumerate(text_map):
