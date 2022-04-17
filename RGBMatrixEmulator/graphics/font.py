@@ -12,6 +12,10 @@ class Font:
         self.headers = self.bdf_font.headers
         self.props = self.bdf_font.props
 
+        # All rpi-rgb-led-matrix fonts have a character at 0xFFFD to represent a missing character
+        # Cache this for use later so we don't have to constantly look it up
+        self.default_character = self.bdf_font.glyphbycp(0xFFFD)
+
     def CharacterWidth(self, char):
         if self.bdf_font == None:
             return 0
