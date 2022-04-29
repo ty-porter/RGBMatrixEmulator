@@ -17,11 +17,9 @@ class Font:
         self.default_character = self.bdf_font.glyphbycp(0xFFFD)
 
     def CharacterWidth(self, char):
-        if self.bdf_font == None:
+        # Missing glyphs return 0 width in rpi-rgb-led-matrix
+        if self.bdf_font == None or not self.bdf_font.glyphbycp(char):
             return 0
-
-        if not self.bdf_font.glyphbycp(char):
-            return self.headers['fbbx']
 
         return self.bdf_font.glyphbycp(char).meta['dwx0']
 
