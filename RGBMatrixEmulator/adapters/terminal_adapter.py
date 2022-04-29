@@ -4,8 +4,9 @@ import sys
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 
 
-class Terminal(BaseAdapter):
+class TerminalAdapter(BaseAdapter):
 
+    SUPPORTS_ALTERNATE_PIXEL_STYLE = True
     SYMBOLS = {
         "circle": " ●",
         "square": "██"

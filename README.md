@@ -61,6 +61,7 @@ Currently supported display adapters are:
 
 * `pygame`
 * `terminal`
+* `tkinter`
 * `turtle`
 
 You can swap display adapters by changing the `display_adapter` value to one of the above in `emulator_config.json`.

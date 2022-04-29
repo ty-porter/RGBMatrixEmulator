@@ -13,7 +13,10 @@ from pygame.locals import QUIT
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 
 
-class Pygame(BaseAdapter):
+class PygameAdapter(BaseAdapter):
+
+    SUPPORTS_ALTERNATE_PIXEL_STYLE = True
+
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
         self.__surface = None
