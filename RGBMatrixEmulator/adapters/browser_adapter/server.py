@@ -15,7 +15,7 @@ class Server:
     def __init__(self, websocket, options):
         self.websocket = websocket
         self.options   = options
-        self.__io_loop  = None
+        self.__io_loop = None
 
         MainHandler.register_options(options, websocket.adapter)
 
@@ -27,10 +27,10 @@ class Server:
             (r"/", MainHandler),
             (r"/assets/(.*)", tornado.web.StaticFileHandler, { 'path': asset_path, 'default_filename': 'client.js' })
         ])
-        self.app.listen(8888)
+        self.app.listen(self.options.browser.port)
 
     def run(self):
-        print("Starting server: http://localhost:" + str(8888) + "/")
+        print("Starting server: http://localhost:" + str(self.options.browser.port) + "/")
         
         self.__io_loop = tornado.ioloop.IOLoop.current()
         thread = threading.Thread(target=self.__io_loop.start)

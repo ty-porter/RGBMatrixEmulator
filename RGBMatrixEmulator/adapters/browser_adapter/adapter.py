@@ -32,5 +32,5 @@ class BrowserAdapter(BaseAdapter):
         image = image.resize(self.options.window_size(), resample=False)
 
         with io.BytesIO() as bytesIO:
-            image.save(bytesIO, "JPEG", quality=70, optimize=True)
+            image.save(bytesIO, "JPEG", quality=self.options.browser.quality, optimize=True)
             self.image = bytesIO.getvalue()

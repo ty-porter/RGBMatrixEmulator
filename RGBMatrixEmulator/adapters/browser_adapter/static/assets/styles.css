@@ -1,0 +1,25 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: monospace;
+}
+
+img#liveImg {
+  border: 1px solid gray;
+}
+
+img#liveImg.no-border {
+  border: none;
+}
+
+.emulatorDetailsTableRow { 
+  display: flex;
+}
+
+.tableContainer {
+  margin-right: 20px;
+}
+
+td {
+  padding-right: 10px;
+}

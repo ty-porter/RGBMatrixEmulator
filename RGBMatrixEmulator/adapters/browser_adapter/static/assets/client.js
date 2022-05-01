@@ -1,18 +1,19 @@
 function init() {
     const WS_ERROR_TIMEOUT = 6 * 1000;
     const WS_MAX_RETRY     = 10;
-    const TARGET_FPS       = 24;
+    const FPS_DEFAULT      = 24;
 
-    let img     = document.getElementById("liveImg");
-    let fpsText = document.getElementById("fps");
+    let img       = document.getElementById("liveImg");
+    let fpsText   = document.getElementById("fps");
+    let fpsTarget = parseInt(document.getElementById("targetFps").value) || FPS_DEFAULT;
 
     let requestStartTime = performance.now();
     let startTime = performance.now();
     let time = 0;
     let requestTime = 0;
-    let timeSmoothing = 0.9;         // larger=more smoothing
-    let requestTimeSmoothing = 0.2; // larger=more smoothing
-    let targetTime = 1000 / TARGET_FPS;
+    let timeSmoothing = 0.9;           // larger=more smoothing
+    let requestTimeSmoothing = 0.2;    // larger=more smoothing
+    let targetTime = 1000 / fpsTarget;
 
     let retryCount = 0;
     let socket = generateSocket();
@@ -94,8 +95,11 @@ function init() {
             time = (time * timeSmoothing) + (currentTime * (1.0 - timeSmoothing));
             startTime = endTime;
             let fps = Math.round(1000 / time);
-            fpsText.textContent = fps;
-    
+
+            if (fpsText) {
+                fpsText.textContent = fps;
+            }
+            
             let currentRequestTime = performance.now() - requestStartTime;
             // smooth with moving average
             requestTime = (requestTime * requestTimeSmoothing) + (currentRequestTime * (1.0 - requestTimeSmoothing));
@@ -107,7 +111,7 @@ function init() {
         return ws;
     }
 
-    console.log(`TARGET FPS: ${TARGET_FPS}`);
+    console.log(`TARGET FPS: ${fpsTarget}`);
 };
 
 init();
