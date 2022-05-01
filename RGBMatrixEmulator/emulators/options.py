@@ -43,9 +43,15 @@ class RGBMatrixOptions:
             print('EMULATOR: Warning! "{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(config_pixel_style))
 
         self.pixel_size = emulator_config.pixel_size
+        self.browser = emulator_config.browser
 
     def window_size(self):
         return (self.cols * self.pixel_size * self.chain_length, self.rows * self.pixel_size * self.parallel)
+
+    def window_size_str(self, pixel_text=""):
+        width, height = self.window_size()
+
+        return f"{width} x {height} {pixel_text}"
 
 class RGBMatrixEmulatorConfig:
 
@@ -55,8 +61,30 @@ class RGBMatrixEmulatorConfig:
     DEFAULT_CONFIG = {
         'pixel_size': 16,
         'pixel_style': 'square',
-        'display_adapter': 'pygame'
+        'display_adapter': 'pygame',
+        'browser': {
+            '_comment': 'For use with the "browser" adapter only.',
+            'port': 8888,
+            'target_fps': 24,
+            'fps_display': False,
+            'quality': 70,
+            'image_border': True,
+            'debug_text': False
+        }
     }
+
+
+    class BrowserConfig:
+        def __init__(self, config):
+            self.__config = config
+
+            self.port         = self.__config.get('port',         8888)
+            self.target_fps   = self.__config.get('target_fps',   24)
+            self.fps_display  = self.__config.get('fps_display',  False)
+            self.quality      = self.__config.get('quality',      70)
+            self.image_border = self.__config.get('image_border', True)
+            self.debug_text   = self.__config.get('debug_text',   False)
+
 
     def __init__(self):
         self.__config = self.__load_config()
@@ -64,6 +92,8 @@ class RGBMatrixEmulatorConfig:
         self.pixel_size      = self.__config.get('pixel_size',      16)
         self.pixel_style     = self.__config.get('pixel_style',     'square')
         self.display_adapter = self.__config.get('display_adapter', 'pygame')
+
+        self.browser = RGBMatrixEmulatorConfig.BrowserConfig(self.__config.get('browser', {}))
 
     def __load_config(self):
         if os.path.exists(self.__CONFIG_PATH):
