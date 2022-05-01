@@ -34,4 +34,3 @@ class BrowserAdapter(BaseAdapter):
         with io.BytesIO() as bytesIO:
             image.save(bytesIO, "JPEG", quality=70, optimize=True)
             self.image = bytesIO.getvalue()
-

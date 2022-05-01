@@ -1,4 +1,6 @@
 import asyncio
+import signal
+import sys
 import threading
 import tornado.web
 import tornado.ioloop
@@ -13,6 +15,7 @@ class Server:
     def __init__(self, websocket, options):
         self.websocket = websocket
         self.options   = options
+        self.__io_loop  = None
 
         MainHandler.register_options(options, websocket.adapter)
 
@@ -29,8 +32,24 @@ class Server:
     def run(self):
         print("Starting server: http://localhost:" + str(8888) + "/")
         
-        thread = threading.Thread(target=tornado.ioloop.IOLoop.current().start)
+        self.__io_loop = tornado.ioloop.IOLoop.current()
+        thread = threading.Thread(target=self.__io_loop.start)
+        self.__initialize_interrupts()
         thread.start()
+
+    def __initialize_interrupts(self):
+        '''
+        Add custom signal handling to ensure webserver thread exits appropriately.
+
+        Not thread-safe, signal handling must happen on the main thread.
+        '''
+        if threading.current_thread() is threading.main_thread():
+            signal.signal(signal.SIGINT , self.__kill)
+            signal.signal(signal.SIGTERM, self.__kill)
+
+    def __kill(self, *_args):
+        self.__io_loop.add_callback(self.__io_loop.stop)
+        sys.exit()
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
