@@ -2,7 +2,6 @@
 
 from setuptools import find_packages, setup
 import codecs
-import sys
 import os.path as path
 
 cwd = path.dirname(__file__)
@@ -49,12 +48,19 @@ setup(
     packages=find_packages(),
     data_files=[
         ('docs', ['README.md', 'LICENSE', 'description.md']),
-        ('RGBMatrixEmulator', ['RGBMatrixEmulator/icon.png'])
+        ('RGBMatrixEmulator', [
+            'RGBMatrixEmulator/icon.png',
+            'RGBMatrixEmulator/adapters/browser_adapter/static/index.html',
+            'RGBMatrixEmulator/adapters/browser_adapter/static/assets/client.js',
+            'RGBMatrixEmulator/adapters/browser_adapter/static/assets/icon.ico',
+            'RGBMatrixEmulator/adapters/browser_adapter/static/assets/styles.css',
+        ])
     ],
     install_requires=[
         'bdfparser<=2.2.0',
         'pygame<=2.0.1',
-        'scikit-image<=0.18.1'
+        'scikit-image<=0.18.1',
+        'tornado>=6.1'
     ],
     include_package_data=True
 )
