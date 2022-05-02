@@ -45,21 +45,45 @@ The first time you run a script with the emulator enabled, a file called `emulat
 {
   "pixel_size": 16,
   "pixel_style": "square",
-  "display_adapter": "pygame"
+  "display_adapter": "pygame",
+  "browser": {
+    "_comment": "For use with the \"browser\" adapter only.",
+    "port": 8888,
+    "target_fps": 24,
+    "fps_display": false,
+    "quality": 70,
+    "image_border": true,
+    "debug_text": false
+  }
 }
 ```
 
+### Configuration Options
+
+```
+pixel_size      (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
+pixel_style     (String):  Style of the emulated LED. Supported pixel styles are "square" and "circle". Some display adapters do not support all options and will revert to a supported style.
+display_adapter (String):  Display adapter for the emulator. See Display Adapters section for details.
+browser         (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
+  port          (Integer): Port for the rendering server to attach to. Example: http://localhost:8888
+  target_fps    (Integer): Target frames per second. Higher values may lead to lower performance.
+  fps_display   (Bool):    Display the FPS.
+  quality       (Intger):  Value from 0 - 100 indicating the quality percentage for the rendered image. Higher values may lead to lower performance.
+  image_border  (Bool):    Display a slight border around the rendered image.
+  debug_text    (Bool):    Display debug text.
+```
 Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.
 
 You can also change the `pixel_style` option. By default, the emulator represents LEDs as squares. If you prefer the LEDs to have a more rounded appearance (like they would on an actual matrix), you can change to `pixel_style: "circle"`.
 
 ### Display Adapters
 
-By default, `RGBMatrixEmulator` uses `pygame` as its display adapter to maintain compatibility with versions less than 0.5.0. However, you can also use other display adapters as well if `pygame` does not suit your needs.
+By default, `RGBMatrixEmulator` uses `pygame` as its display adapter to maintain compatibility with versions lower than 0.5.0. However, you can also use other display adapters as well if `pygame` does not suit your needs.
 
 Currently supported display adapters are:
 
-* `pygame`
+* `browser`
+* `pygame` (default)
 * `terminal`
 * `tkinter`
 * `turtle`
@@ -68,12 +92,17 @@ You can swap display adapters by changing the `display_adapter` value to one of 
 
 **Note:** Not all display adapters support all emulator features. `pygame` currently offers the best support for advanced capability.
 
+### Browser Display Adapter
+
+Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adapters/browser_adapter/README.md) for further information regarding its configuration and usage.
+
 ## Screenshots
 
 ![rotating-block](assets/rotating-block.gif)
 ![mlb-led-scoreboard](assets/mlb-led-scoreboard.png)
 ![nhl-led-scoreboard](assets/nhl-clock.png)
 ![circular-leds](assets/circular-leds.png)
+![browser-adapter](assets/browser-adapter.gif)
 
 ## Samples
 

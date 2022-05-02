@@ -30,12 +30,14 @@ class Server:
         self.app.listen(self.options.browser.port)
 
     def run(self):
-        print("Starting server: http://localhost:" + str(self.options.browser.port) + "/")
+        print("Starting server...")
         
         self.__io_loop = tornado.ioloop.IOLoop.current()
         thread = threading.Thread(target=self.__io_loop.start)
         self.__initialize_interrupts()
         thread.start()
+
+        print("Server started and ready to accept requests on http://localhost:" + str(self.options.browser.port) + "/")
 
     def __initialize_interrupts(self):
         '''

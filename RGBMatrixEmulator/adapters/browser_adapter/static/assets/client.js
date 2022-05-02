@@ -81,13 +81,7 @@ function init() {
             let arrayBuffer = evt.data;
             let blob  = new Blob([new Uint8Array(arrayBuffer)], {type: "image/jpeg"});
             img.src   = window.URL.createObjectURL(blob);
-
-            // Expire the old blobs and store reference to the new one.
-            blobs.forEach((expiredBlob) => {
-                window.URL.revokeObjectURL(expiredBlob.url);
-            });
-            blobs = [];
-            blobs.push(blob);
+            window.URL.revokeObjectURL(blob);
     
             let endTime = performance.now();
             let currentTime = endTime - startTime;
