@@ -1,6 +1,9 @@
 from RGBMatrixEmulator import version
 
 class BaseAdapter:
+
+    SUPPORTS_ALTERNATE_PIXEL_STYLE = False
+
     def __init__(self, width, height, options):
         self.width   = width
         self.height  = height
@@ -20,7 +23,7 @@ class BaseAdapter:
         return False
 
     def emulator_details_text(self):
-        details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({})'
+        details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}'
 
         return details_text.format(version.__version__,
                                    self.options.cols,
@@ -28,15 +31,29 @@ class BaseAdapter:
                                    self.options.chain_length,
                                    self.options.parallel,
                                    self.options.pixel_size,
-                                   self.options.pixel_style.upper())
+                                   self.options.pixel_style.upper(),
+                                   self.__class__.__name__)
 
     # This method is required for the pygame adapter but nothing else, so just skip it if not defined.
     def check_for_quit_event(self):
         pass
 
+    #############################################################
     # These methods must be implemented by BaseAdapter subclasses
-    def draw_to_screen(self):
+    #############################################################
+    def load_emulator_window(self):
+        '''
+        Initialize the external dependency as a graphics display.
+
+        This method is fired when the emulated canvas is initialized.
+        '''
         raise NotImplementedError
 
-    def load_emulator_window(self):
+    def draw_to_screen(self, _pixels):
+        '''
+        Accepts a 2D array of pixels of size height x width.
+
+        Implements drawing each pixel to the screen via the external dependency loaded in load_emulator_window.
+        Before drawing, use adjust_pixel_brightness() on each pixel if your display adapter supports it.
+        '''
         raise NotImplementedError

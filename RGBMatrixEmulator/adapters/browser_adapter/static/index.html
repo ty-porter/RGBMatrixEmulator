@@ -1,0 +1,144 @@
+<html>
+   <head>
+      <title>{{ adapter.emulator_details_text() }}</title>
+      <link rel="shortcut icon" href="assets/icon.ico">
+      <link rel="stylesheet" href="assets/styles.css">
+   </head>
+   <body>
+      <img id="liveImg" class={{ "" if options.browser.image_border else "no-border" }} />
+
+      {% if options.browser.fps_display %}
+         <div id="fpsDisplay">
+            Frames per second: <span id="fps">0</span>
+         </div>
+      {% end %}
+
+      {% if options.browser.debug_text %}
+         <div id="emulatorDetails">
+            <h2>{{ adapter.emulator_details_text() }}</h2>
+            
+            <div class="emulatorDetailsTableRow">
+               <div id="matrixDetails" class="tableContainer">
+                  <h3>Matrix Details:</h3>
+
+                  <table>
+                     <tbody>
+                        <tr>
+                           <td>
+                              Matrix Width:
+                           </td>
+                           <td>
+                              {{ options.cols }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Matrix Height:
+                           </td>
+                           <td>
+                              {{ options.rows }}
+                           </td>
+                        </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Image Size:
+                           </td>
+                           <td>
+                              {{ options.window_size_str(pixel_text="px") }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Chain Length:
+                           </td>
+                           <td>
+                              {{ options.chain_length }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Parallel Chains:
+                           </td>
+                           <td>
+                              {{ options.parallel }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Pixel Size:
+                           </td>
+                           <td>
+                              {{ options.pixel_size }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Pixel Style:
+                           </td>
+                           <td>
+                              {{ options.pixel_size }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Adapter:
+                           </td>
+                           <td>
+                              {{ adapter.__class__.__name__ }}
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+
+               <div id="browserDetails" class="tableContainer">
+                  <h3>Browser Details:</h3>
+
+                  <table>
+                     <tbody>
+                        <tr>
+                           <td>
+                              Port:
+                           </td>
+                           <td>
+                              {{ options.browser.port }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Target FPS:
+                           </td>
+                           <td>
+                              {{ options.browser.target_fps }}
+                           </td>
+                        </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              FPS Display Enabled:
+                           </td>
+                           <td>
+                              {{ options.browser.fps_display }}
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              Image Quality:
+                           </td>
+                           <td>
+                              {{ options.browser.quality }}
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      {% end %}
+
+      <input id="targetFps" type="hidden" value={{ options.browser.target_fps }} />
+
+      <script type="text/javascript" src="assets/client.js"></script>
+   </body>
+</html>

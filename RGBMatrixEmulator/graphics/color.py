@@ -15,7 +15,10 @@ class Color:
             self.blue  = int(self.blue)
 
     def to_tuple(self):
-        return (self.red, self.green, self.blue)
+        return (int(self.red), int(self.green), int(self.blue))
+
+    def to_hex(self):
+        return "#%02x%02x%02x" % self.to_tuple()
 
     @classmethod
     def BLACK(cls):

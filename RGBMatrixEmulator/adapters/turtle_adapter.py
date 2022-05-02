@@ -6,7 +6,7 @@ from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.graphics.color import Color
 
 
-class Turtle(BaseAdapter):
+class TurtleAdapter(BaseAdapter):
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
         self.__pen = None
@@ -18,7 +18,7 @@ class Turtle(BaseAdapter):
         for row, pixel_row in enumerate(pixels):
             self.__move_pen_to_row_start(row)
 
-            for col, pixel in enumerate(pixel_row):
+            for _col, pixel in enumerate(pixel_row):
                 self.adjust_pixel_brightness(pixel, to_int=True)
                 self.__draw_pixel(pixel)
                 self.__move_pen_next_pixel()
@@ -27,7 +27,7 @@ class Turtle(BaseAdapter):
 
     def load_emulator_window(self):
         print('EMULATOR: Loading {}'.format(self.emulator_details_text()))
-        turtle.setup(self.options.pixel_size * self.width, self.options.pixel_size * self.height)
+        turtle.setup(*self.options.window_size())
         turtle.title(self.emulator_details_text())
         self.__pen = turtle.Turtle(visible = False)
         self.__screen = self.__pen.getscreen()
