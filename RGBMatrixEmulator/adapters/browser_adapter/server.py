@@ -33,7 +33,7 @@ class Server:
         print("Starting server...")
         
         self.__io_loop = tornado.ioloop.IOLoop.current()
-        thread = threading.Thread(target=self.__io_loop.start, daemon=True)
+        thread = threading.Thread(target=self.__io_loop.start, name="RGBMEServerThread", daemon=True)
         self.__initialize_interrupts()
         thread.start()
 
