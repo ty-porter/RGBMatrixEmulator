@@ -49,6 +49,7 @@ setup(
     data_files=[
         ('docs', ['README.md', 'LICENSE', 'description.md']),
         ('RGBMatrixEmulator', [
+            'RGBMatrixEmulator/icon.ico',
             'RGBMatrixEmulator/icon.png',
             'RGBMatrixEmulator/adapters/browser_adapter/static/index.html',
             'RGBMatrixEmulator/adapters/browser_adapter/static/assets/client.js',
@@ -58,7 +59,7 @@ setup(
     ],
     install_requires=[
         'bdfparser<=2.2.0',
-        'pygame<=2.0.1',
+        'pygame>=2.0.1,<3',
         'scikit-image<=0.18.1',
         'tornado>=6.1'
     ],
