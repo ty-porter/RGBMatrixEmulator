@@ -46,6 +46,7 @@ The first time you run a script with the emulator enabled, a file called `emulat
   "pixel_size": 16,
   "pixel_style": "square",
   "display_adapter": "pygame",
+  "suppress_font_warnings": false,
   "browser": {
     "_comment": "For use with the \"browser\" adapter only.",
     "port": 8888,
@@ -61,16 +62,17 @@ The first time you run a script with the emulator enabled, a file called `emulat
 ### Configuration Options
 
 ```
-pixel_size      (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
-pixel_style     (String):  Style of the emulated LED. Supported pixel styles are "square" and "circle". Some display adapters do not support all options and will revert to a supported style.
-display_adapter (String):  Display adapter for the emulator. See Display Adapters section for details.
-browser         (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
-  port          (Integer): Port for the rendering server to attach to. Example: http://localhost:8888
-  target_fps    (Integer): Target frames per second. Higher values may lead to lower performance.
-  fps_display   (Bool):    Display the FPS.
-  quality       (Intger):  Value from 0 - 100 indicating the quality percentage for the rendered image. Higher values may lead to lower performance.
-  image_border  (Bool):    Display a slight border around the rendered image.
-  debug_text    (Bool):    Display debug text.
+pixel_size             (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
+pixel_style            (String):  Style of the emulated LED. Supported pixel styles are "square" and "circle". Some display adapters do not support all options and will revert to a supported style.
+display_adapter        (String):  Display adapter for the emulator. See Display Adapters section for details.
+suppress_font_warnings (Boolean): Suppress BDF font parsing errors, such as for missing characters.
+browser                (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
+  port                 (Integer): Port for the rendering server to attach to. Example: http://localhost:8888
+  target_fps           (Integer): Target frames per second. Higher values may lead to lower performance.
+  fps_display          (Bool):    Display the FPS.
+  quality              (Intger):  Value from 0 - 100 indicating the quality percentage for the rendered image. Higher values may lead to lower performance.
+  image_border         (Bool):    Display a slight border around the rendered image.
+  debug_text           (Bool):    Display debug text.
 ```
 Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.
 

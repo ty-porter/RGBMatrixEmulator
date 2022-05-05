@@ -1,5 +1,6 @@
 import json
 import os
+import pprint
 
 from RGBMatrixEmulator.adapters import ADAPTER_TYPES
 
@@ -45,6 +46,11 @@ class RGBMatrixOptions:
         self.pixel_size = emulator_config.pixel_size
         self.browser = emulator_config.browser
 
+        if emulator_config.suppress_font_warnings:
+            import bdfparser
+
+            bdfparser.warnings.simplefilter("ignore")
+
     def window_size(self):
         return (self.cols * self.pixel_size * self.chain_length, self.rows * self.pixel_size * self.parallel)
 
@@ -62,6 +68,7 @@ class RGBMatrixEmulatorConfig:
         'pixel_size': 16,
         'pixel_style': 'square',
         'display_adapter': 'pygame',
+        'suppress_font_warnings': False,
         'browser': {
             '_comment': 'For use with the "browser" adapter only.',
             'port': 8888,
@@ -73,27 +80,11 @@ class RGBMatrixEmulatorConfig:
         }
     }
 
-
-    class BrowserConfig:
-        def __init__(self, config):
-            self.__config = config
-
-            self.port         = self.__config.get('port',         8888)
-            self.target_fps   = self.__config.get('target_fps',   24)
-            self.fps_display  = self.__config.get('fps_display',  False)
-            self.quality      = self.__config.get('quality',      70)
-            self.image_border = self.__config.get('image_border', True)
-            self.debug_text   = self.__config.get('debug_text',   False)
-
-
     def __init__(self):
-        self.__config = self.__load_config()
+        self.config         = self.__load_config()
+        self.default_config = self.DEFAULT_CONFIG
 
-        self.pixel_size      = self.__config.get('pixel_size',      16)
-        self.pixel_style     = self.__config.get('pixel_style',     'square')
-        self.display_adapter = self.__config.get('display_adapter', 'pygame')
-
-        self.browser = RGBMatrixEmulatorConfig.BrowserConfig(self.__config.get('browser', {}))
+        RGBMatrixEmulatorConfig.Utils.set_attributes(self)
 
     def __load_config(self):
         if os.path.exists(self.__CONFIG_PATH):
@@ -106,3 +97,69 @@ class RGBMatrixEmulatorConfig:
             json.dump(self.DEFAULT_CONFIG, f, indent=4)
 
         return self.DEFAULT_CONFIG
+
+    def __str__(self):
+        return RGBMatrixEmulatorConfig.Utils.to_str(self)
+
+
+    class ChildConfig:
+        def __init__(self, config, default_config):
+            self.config         = config
+            self.default_config = default_config
+
+            RGBMatrixEmulatorConfig.Utils.set_attributes(self)
+
+        def __str__(self):
+            return RGBMatrixEmulatorConfig.Utils.to_str(self)
+
+
+    class Utils:
+        def to_str(obj):
+            '''
+            Pretty prints the config object from dict.
+            '''
+            printer = pprint.PrettyPrinter(sort_dicts=False)
+            return "\n".join([obj.__repr__(), printer.pformat(RGBMatrixEmulatorConfig.Utils.to_dict(obj))])
+
+        def to_dict(obj):
+            '''
+            Recursively recreates the config dict from child config objects.
+            '''
+            config = {}
+            for key in obj.__dict__.keys():
+                if key in ['config', 'default_config'] or key[0] == '_':
+                    continue
+
+                value = obj.__dict__.get(key)
+
+                if isinstance(value, RGBMatrixEmulatorConfig.ChildConfig):
+                    value = RGBMatrixEmulatorConfig.Utils.to_dict(value)
+
+                config[key] = value
+
+            return config
+
+        def set_attributes(obj):
+            '''
+            Dynamically set attributes loaded into config and default config variables.
+
+            Numbers, strings, and arrays are stored natively. Nested dicts are parsed into RGBMatrixEmulatorChildConfig objects recursively.
+            '''
+            for key in obj.default_config.keys():
+                if key in obj.config:
+                    value   = obj.config.get(key)
+                    default = obj.default_config.get(key)
+                else:
+                    value   = obj.default_config.get(key)
+                    default = value
+
+                RGBMatrixEmulatorConfig.Utils.set_attribute(obj, key, value, default)
+
+        def set_attribute(obj, key, value, default):
+            '''
+            Store the value as an attribute or delegate to the RGBMatrixEmulatorChildConfig to parse into a new node.
+            '''
+            if isinstance(value, dict):
+                obj.__setattr__(key, RGBMatrixEmulatorConfig.ChildConfig(value, default))
+            else:
+                obj.__setattr__(key, value)
