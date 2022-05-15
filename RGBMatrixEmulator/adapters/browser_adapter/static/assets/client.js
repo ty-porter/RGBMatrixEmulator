@@ -17,7 +17,6 @@ function init() {
 
     let retryCount = 0;
     let socket = generateSocket();
-    let blobs = [];
 
     function requestImage() { 
         requestStartTime = performance.now();
@@ -80,8 +79,9 @@ function init() {
         ws.onmessage = function(evt) {
             let arrayBuffer = evt.data;
             let blob  = new Blob([new Uint8Array(arrayBuffer)], {type: "image/jpeg"});
+            let old_img = img.src.slice()
             img.src   = window.URL.createObjectURL(blob);
-            window.URL.revokeObjectURL(blob);
+            window.URL.revokeObjectURL(old_img);
     
             let endTime = performance.now();
             let currentTime = endTime - startTime;
