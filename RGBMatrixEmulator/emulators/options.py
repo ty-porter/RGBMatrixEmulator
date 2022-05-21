@@ -67,10 +67,10 @@ class RGBMatrixEmulatorConfig:
     DEFAULT_CONFIG = {
         'pixel_size': 16,
         'pixel_style': 'square',
-        'display_adapter': 'pygame',
+        'display_adapter': 'browser',
         'suppress_font_warnings': False,
         'browser': {
-            '_comment': 'For use with the "browser" adapter only.',
+            '_comment': 'For use with the browser adapter only.',
             'port': 8888,
             'target_fps': 24,
             'fps_display': False,
