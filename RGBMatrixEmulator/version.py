@@ -1,5 +1,5 @@
 #!/usr/bin/env python
 
 # package version
-__version__ = '0.6.2'
+__version__ = '0.7.0'
 """Installed version of RGBMatrixEmulator."""

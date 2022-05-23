@@ -60,7 +60,7 @@ setup(
     install_requires=[
         'bdfparser<=2.2.0',
         'pygame>=2.0.1,<3',
-        'scikit-image<=0.18.1',
+        'scikit-image>=0.19.2',
         'tornado>=6.1'
     ],
     include_package_data=True
