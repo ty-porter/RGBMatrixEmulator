@@ -26,6 +26,9 @@ class TurtleAdapter(BaseAdapter):
         self.__screen.update()
 
     def load_emulator_window(self):
+        if self.loaded:
+            return
+
         print('EMULATOR: Loading {}'.format(self.emulator_details_text()))
         turtle.setup(*self.options.window_size())
         turtle.title(self.emulator_details_text())
@@ -35,6 +38,8 @@ class TurtleAdapter(BaseAdapter):
         self.__screen.bgcolor(Color.BLACK().to_tuple())
         turtle.tracer(0, 0)
         turtle.colormode(255)
+
+        self.loaded = True
 
     def __draw_pixel(self, pixel):
         self.__pen.color(*pixel.to_tuple())

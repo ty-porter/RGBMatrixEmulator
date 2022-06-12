@@ -7,7 +7,7 @@ class Canvas:
 
         self.width = options.cols * options.chain_length
         self.height = options.rows * options.parallel
-        self.display_adapter = options.display_adapter(self.width, self.height, options)
+        self.display_adapter = options.display_adapter.get_instance(self.width, self.height, options)
 
         self.__pixels = [[Color.BLACK() for x in range(0, self.width)] for y in range(0, self.height)]
 

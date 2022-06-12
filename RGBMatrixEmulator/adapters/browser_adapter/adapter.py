@@ -17,12 +17,17 @@ class BrowserAdapter(BaseAdapter):
         self.image = None
 
     def load_emulator_window(self):
+        if self.loaded:
+            return
+
         print(self.emulator_details_text())
         websocket = ImageWebSocket
         websocket.register_adapter(self)
 
         self.__server = Server(websocket, self.options)
         self.__server.run()
+
+        self.loaded = True
 
     def draw_to_screen(self, pixels):
         image = Image.new("RGB", self.options.window_size())
