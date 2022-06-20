@@ -12,16 +12,16 @@ class RGBMatrix:
         self.canvas = None
 
     def CreateFrameCanvas(self):
-        if self.canvas:
-            return self.canvas
+        self.canvas = Canvas(options = self.options)
 
-        return Canvas(options = self.options)
+        return self.canvas
     
     def SwapOnVSync(self, canvas):
         canvas.check_for_quit_event()
         canvas.draw_to_screen()
+        self.canvas = canvas
 
-        return canvas
+        return self.canvas
 
     def Clear(self):
         self.__sync_canvas()

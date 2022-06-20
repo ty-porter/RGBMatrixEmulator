@@ -1,13 +1,25 @@
 from RGBMatrixEmulator import version
 
+
 class BaseAdapter:
 
     SUPPORTS_ALTERNATE_PIXEL_STYLE = False
+    INSTANCE = None
 
     def __init__(self, width, height, options):
         self.width   = width
         self.height  = height
         self.options = options
+
+        self.loaded  = False
+
+    @classmethod
+    def get_instance(cls, *args, **kwargs):
+        if cls.INSTANCE is None:
+            instance = cls(*args, **kwargs)
+            cls.INSTANCE = instance
+        
+        return cls.INSTANCE
 
     def adjust_pixel_brightness(self, pixel, to_int = False):
         alpha = self.options.brightness / 100.0
