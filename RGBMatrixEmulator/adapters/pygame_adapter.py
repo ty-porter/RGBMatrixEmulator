@@ -22,12 +22,17 @@ class PygameAdapter(BaseAdapter):
         self.__surface = None
 
     def load_emulator_window(self):
+        if self.loaded:
+            return
+
         print('EMULATOR: Loading {}'.format(self.emulator_details_text()))
         self.__surface = pygame.display.set_mode(self.options.window_size())
         pygame.init()
 
         self.__set_emulator_icon()
         pygame.display.set_caption(self.emulator_details_text())
+
+        self.loaded = True
 
     def draw_to_screen(self, pixels):
         for row, pixel_row in enumerate(pixels):

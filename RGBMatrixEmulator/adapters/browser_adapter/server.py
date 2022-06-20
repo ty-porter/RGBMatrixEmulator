@@ -12,32 +12,46 @@ from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
 class Server:
+
+    instance = None
+
+    # Singleton class for the server.
+    # No more than one webserver can be running at a given time.
+    class __Singleton:
+
+        def __init__(self, websocket, options):
+            self.websocket = websocket
+            self.options   = options
+            self.io_loop   = None
+            self.listening = False
+
+            MainHandler.register_options(options, websocket.adapter)
+
+            script_path  = path.dirname(path.realpath(__file__))
+            asset_path   = path.normpath(script_path + '/static/assets/')
+
+            self.app = tornado.web.Application([
+                (r"/websocket", websocket),
+                (r"/", MainHandler),
+                (r"/assets/(.*)", tornado.web.StaticFileHandler, { 'path': asset_path, 'default_filename': 'client.js' })
+            ])
+
     def __init__(self, websocket, options):
-        self.websocket = websocket
-        self.options   = options
-        self.__io_loop = None
+        if not Server.instance:
+            Server.instance = Server.__Singleton(websocket, options)
 
-        MainHandler.register_options(options, websocket.adapter)
+    def run(self):     
+        if not self.instance.listening:
+            print("Starting server...")
 
-        script_path  = path.dirname(path.realpath(__file__))
-        asset_path   = path.normpath(script_path + '/static/assets/')
+            self.instance.listening = True
+            self.instance.app.listen(self.instance.options.browser.port)
+            self.instance.io_loop = tornado.ioloop.IOLoop.current()
+            thread = threading.Thread(target=self.instance.io_loop.start, name="RGBMEServerThread", daemon=True)
+            self.__initialize_interrupts()
+            thread.start()
 
-        self.app = tornado.web.Application([
-            (r"/websocket", websocket),
-            (r"/", MainHandler),
-            (r"/assets/(.*)", tornado.web.StaticFileHandler, { 'path': asset_path, 'default_filename': 'client.js' })
-        ])
-        self.app.listen(self.options.browser.port)
-
-    def run(self):
-        print("Starting server...")
-        
-        self.__io_loop = tornado.ioloop.IOLoop.current()
-        thread = threading.Thread(target=self.__io_loop.start, name="RGBMEServerThread", daemon=True)
-        self.__initialize_interrupts()
-        thread.start()
-
-        print("Server started and ready to accept requests on http://localhost:" + str(self.options.browser.port) + "/")
+            print("Server started and ready to accept requests on http://localhost:" + str(self.instance.options.browser.port) + "/")
 
     def __initialize_interrupts(self):
         '''
@@ -50,8 +64,9 @@ class Server:
             signal.signal(signal.SIGTERM, self.__kill)
 
     def __kill(self, *_args):
-        self.__io_loop.add_callback(self.__io_loop.stop)
+        self.instance.io_loop.add_callback(self.instance.io_loop.stop)
         sys.exit()
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):

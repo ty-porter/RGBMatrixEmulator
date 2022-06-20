@@ -15,6 +15,9 @@ class TkinterAdapter(BaseAdapter):
         self.__pixels = None
 
     def load_emulator_window(self):
+        if self.loaded:
+            return
+
         print('EMULATOR: Loading {}'.format(self.emulator_details_text()))
         self.__root = tkinter.Tk()
         self.__set_emulator_icon()
@@ -31,6 +34,8 @@ class TkinterAdapter(BaseAdapter):
 
         self.__initialize_bitmap()
         self.__root.update()
+
+        self.loaded = True
 
     def draw_to_screen(self, pixels):
         for row, pixel_row in enumerate(pixels):
