@@ -1,6 +1,6 @@
 # `RGBMatrixEmulator`
 
-![pypi Badge](https://img.shields.io/pypi/v/RGBMatrixEmulator)
+[![pypi Badge](https://img.shields.io/pypi/v/RGBMatrixEmulator)](https://pypi.org/project/RGBMatrixEmulator/)
 
 ![hello-world](assets/hello-world.gif)
 
