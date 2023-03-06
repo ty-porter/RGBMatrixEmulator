@@ -2,6 +2,7 @@ import tkinter
 import os
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.logger import Logger
 
 
 class TkinterAdapter(BaseAdapter):
@@ -18,7 +19,7 @@ class TkinterAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        print('EMULATOR: Loading {}'.format(self.emulator_details_text()))
+        Logger.info('Loading {}'.format(self.emulator_details_text()))
         self.__root = tkinter.Tk()
         self.__set_emulator_icon()
         self.__root.title(self.emulator_details_text())

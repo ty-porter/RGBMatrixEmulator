@@ -47,6 +47,7 @@ The first time you run a script with the emulator enabled, a file called `emulat
   "pixel_style": "square",
   "display_adapter": "pygame",
   "suppress_font_warnings": false,
+  "suppress_adapter_load_errors": false,
   "browser": {
     "_comment": "For use with the browser adapter only.",
     "port": 8888,
@@ -55,7 +56,8 @@ The first time you run a script with the emulator enabled, a file called `emulat
     "quality": 70,
     "image_border": true,
     "debug_text": false
-  }
+  },
+  "log_level": "info"
 }
 ```
 
@@ -92,7 +94,7 @@ Currently supported display adapters are:
 
 You can swap display adapters by changing the `display_adapter` value to one of the above in `emulator_config.json`.
 
-**Note:** Not all display adapters support all emulator features.
+**Note:** Not all display adapters support all emulator features. Some adapters may require additional setup steps to install. For example, on OSX, it may be necessary to install `tkinter` via Homebrew (`brew install python-tk`).
 
 ### Browser Display Adapter
 

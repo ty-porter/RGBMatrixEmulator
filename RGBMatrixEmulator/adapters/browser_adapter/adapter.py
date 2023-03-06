@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.adapters.browser_adapter.server import Server
 from RGBMatrixEmulator.adapters.browser_adapter.web_socket import ImageWebSocket
+from RGBMatrixEmulator.logger import Logger
 
 
 class BrowserAdapter(BaseAdapter):
@@ -20,7 +21,7 @@ class BrowserAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        print(self.emulator_details_text())
+        Logger.info(self.emulator_details_text())
         websocket = ImageWebSocket
         websocket.register_adapter(self)
 

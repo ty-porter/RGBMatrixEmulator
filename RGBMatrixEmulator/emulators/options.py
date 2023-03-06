@@ -3,6 +3,7 @@ import os
 import pprint
 
 from RGBMatrixEmulator.adapters import ADAPTER_TYPES
+from RGBMatrixEmulator.logger import Logger
 
 
 class RGBMatrixOptions:
@@ -28,8 +29,14 @@ class RGBMatrixOptions:
             self.display_adapter = ADAPTER_TYPES[emulator_config.display_adapter.lower()]
         else:
             adapter_types = ', '.join('"{}"'.format(key) for key in ADAPTER_TYPES.keys())
-            print('EMULATOR: Warning! "{}" display adapter option not recognized. Valid adapters are {}. Defaulting to "pygame"...'.format(emulator_config.display_adapter, adapter_types))
-            self.display_adapter = ADAPTER_TYPES[emulator_config.DEFAULT_CONFIG.get('display_adapter')]
+            default_adapter = emulator_config.DEFAULT_CONFIG.get('display_adapter')
+            Logger.warning('"{}" display adapter option not recognized. Valid adapters are {}. Defaulting to "{}"...'.format(
+                    emulator_config.display_adapter,
+                    adapter_types,
+                    default_adapter
+                )
+            )
+            self.display_adapter = ADAPTER_TYPES[default_adapter]
 
         self.pixel_style = emulator_config.DEFAULT_CONFIG.get('pixel_style')
         config_pixel_style = emulator_config.pixel_style.lower()
@@ -39,9 +46,9 @@ class RGBMatrixOptions:
                 if self.display_adapter.SUPPORTS_ALTERNATE_PIXEL_STYLE:
                     self.pixel_style = emulator_config.pixel_style
                 else:
-                    print('EMULATOR: Warning! "{}" pixel style option is not supported by adapter "{}". Defaulting to "square"...'.format(config_pixel_style, emulator_config.display_adapter.lower()))
+                    Logger.warning('"{}" pixel style option is not supported by adapter "{}". Defaulting to "square"...'.format(config_pixel_style, emulator_config.display_adapter.lower()))
         else:
-            print('EMULATOR: Warning! "{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(config_pixel_style))
+            Logger.warning('"{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(config_pixel_style))
 
         self.pixel_size = emulator_config.pixel_size
         self.browser = emulator_config.browser
@@ -69,6 +76,7 @@ class RGBMatrixEmulatorConfig:
         'pixel_style': 'square',
         'display_adapter': 'browser',
         'suppress_font_warnings': False,
+        'suppress_adapter_load_errors': False,
         'browser': {
             '_comment': 'For use with the browser adapter only.',
             'port': 8888,
@@ -77,7 +85,8 @@ class RGBMatrixEmulatorConfig:
             'quality': 70,
             'image_border': True,
             'debug_text': False
-        }
+        },
+        "log_level": "info"
     }
 
     def __init__(self):

@@ -4,6 +4,7 @@ import turtle
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.graphics.color import Color
+from RGBMatrixEmulator.logger import Logger
 
 
 class TurtleAdapter(BaseAdapter):
@@ -29,7 +30,7 @@ class TurtleAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        print('EMULATOR: Loading {}'.format(self.emulator_details_text()))
+        Logger.info('Loading {}'.format(self.emulator_details_text()))
         turtle.setup(*self.options.window_size())
         turtle.title(self.emulator_details_text())
         self.__pen = turtle.Turtle(visible = False)
