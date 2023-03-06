@@ -1,6 +1,4 @@
-import json
-import os
-import pprint
+import json, os, pprint, sys
 
 from RGBMatrixEmulator.adapters import ADAPTER_TYPES
 from RGBMatrixEmulator.logger import Logger
@@ -27,9 +25,15 @@ class RGBMatrixOptions:
 
         if emulator_config.display_adapter.lower() in ADAPTER_TYPES:
             self.display_adapter = ADAPTER_TYPES[emulator_config.display_adapter.lower()]
-        else:
+        elif len(ADAPTER_TYPES.keys()) > 0:
             adapter_types = ', '.join('"{}"'.format(key) for key in ADAPTER_TYPES.keys())
-            default_adapter = emulator_config.DEFAULT_CONFIG.get('display_adapter')
+
+            # Try to set it to the emulator default, but if it failed to load, pick the first one that did.
+            if emulator_config.DEFAULT_CONFIG.get('display_adapter') in ADAPTER_TYPES:
+                default_adapter = emulator_config.DEFAULT_CONFIG.get('display_adapter')
+            else:
+                default_adapter = list(ADAPTER_TYPES.keys())[0]
+
             Logger.warning('"{}" display adapter option not recognized. Valid adapters are {}. Defaulting to "{}"...'.format(
                     emulator_config.display_adapter,
                     adapter_types,
@@ -37,6 +41,10 @@ class RGBMatrixOptions:
                 )
             )
             self.display_adapter = ADAPTER_TYPES[default_adapter]
+        else:
+            Logger.critical("Failed to find a valid display adapter to load! Check that you have installed dependencies required for your configured adapter.")
+
+            sys.exit(1)
 
         self.pixel_style = emulator_config.DEFAULT_CONFIG.get('pixel_style')
         config_pixel_style = emulator_config.pixel_style.lower()
