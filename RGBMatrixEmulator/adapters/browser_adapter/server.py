@@ -8,6 +8,8 @@ import tornado.ioloop
 from os import path
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 
+from RGBMatrixEmulator.logger import Logger
+
 
 asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
@@ -42,7 +44,7 @@ class Server:
 
     def run(self):     
         if not self.instance.listening:
-            print("Starting server...")
+            Logger.info("Starting server...")
 
             self.instance.listening = True
             self.instance.app.listen(self.instance.options.browser.port)
@@ -51,7 +53,7 @@ class Server:
             self.__initialize_interrupts()
             thread.start()
 
-            print("Server started and ready to accept requests on http://localhost:" + str(self.instance.options.browser.port) + "/")
+            Logger.info("Server started and ready to accept requests on http://localhost:" + str(self.instance.options.browser.port) + "/")
 
     def __initialize_interrupts(self):
         '''

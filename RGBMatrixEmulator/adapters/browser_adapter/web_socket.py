@@ -1,5 +1,8 @@
 import tornado.websocket
 
+from RGBMatrixEmulator.logger import Logger
+
+
 class ImageWebSocket(tornado.websocket.WebSocketHandler):
     clients = set()
     adapter = None
@@ -10,11 +13,11 @@ class ImageWebSocket(tornado.websocket.WebSocketHandler):
 
     def open(self):
         ImageWebSocket.clients.add(self)
-        print("WebSocket opened from: " + self.request.remote_ip)
+        Logger.info("WebSocket opened from: " + self.request.remote_ip)
 
     def on_message(self, _message):
         if not ImageWebSocket.adapter.image:
-            print("EMULATOR WARNING: No image received from {}!".format(ImageWebSocket.adapter.__class__.__name__))
+            Logger.warning("No image received from {}!".format(ImageWebSocket.adapter.__class__.__name__))
             return
 
         jpeg_bytes = ImageWebSocket.adapter.image
