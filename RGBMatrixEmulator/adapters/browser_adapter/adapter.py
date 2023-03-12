@@ -45,6 +45,7 @@ class BrowserAdapter(BaseAdapter):
             self.image = bytesIO.getvalue()
 
     def __draw_pixel(self, image: ImageDraw, x, y, pixel):
+        self.adjust_pixel_brightness(pixel)
         pixel_size = self.options.pixel_size
         if self.options.pixel_style == "circle":
             image.ellipse(
