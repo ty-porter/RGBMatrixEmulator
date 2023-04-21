@@ -9,7 +9,7 @@ def DrawText(canvas, font, x, y, color, text):
         return
 
     # Support multiple spacings based on device width
-    character_widths = [font.CharacterWidth(ord(letter)) for letter in text]
+    character_widths = [__actual_width(font, letter) for letter in text]
     first_char_width = character_widths[0]
     max_char_width = max(character_widths)
     total_width = sum(character_widths)
@@ -59,6 +59,18 @@ def DrawCircle(canvas, x, y, r, color):
 
     for point in zip(rows, cols):
         canvas.SetPixel(*point, color.red, color.green, color.blue)
+
+def __actual_width(font, letter):
+    '''
+    Returns the actual width of the letter in the font. If the font doesn't contain a glyph for this letter, it falls back to
+    the width of the default character (?) to prevent division by 0.
+    '''
+    width = font.CharacterWidth(ord(letter))
+    
+    if width > 0:
+        return width
+
+    return font.CharacterWidth(font.default_character.cp())
 
 def __coerce_int(*values):
     return [int(value) for value in values]
