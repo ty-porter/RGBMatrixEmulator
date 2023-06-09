@@ -82,7 +82,7 @@ class RGBMatrixEmulatorConfig:
 
     VALID_PIXEL_STYLES = ['square', 'circle']
     DEFAULT_CONFIG = {
-        'pixel_outline': 2,
+        'pixel_outline': 0,
         'pixel_size': 16,
         'pixel_style': 'square',
         'display_adapter': 'browser',
