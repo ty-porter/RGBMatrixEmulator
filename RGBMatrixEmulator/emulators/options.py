@@ -59,6 +59,7 @@ class RGBMatrixOptions:
             Logger.warning('"{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(config_pixel_style))
 
         self.pixel_size = emulator_config.pixel_size
+        self.pixel_outline = emulator_config.DEFAULT_CONFIG.get('pixel_outline')
         self.pixel_outline = emulator_config.pixel_outline
         self.browser = emulator_config.browser
 
