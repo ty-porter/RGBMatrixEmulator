@@ -59,6 +59,8 @@ class RGBMatrixOptions:
             Logger.warning('"{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(config_pixel_style))
 
         self.pixel_size = emulator_config.pixel_size
+        self.pixel_outline = emulator_config.DEFAULT_CONFIG['pixel_outline']
+        self.pixel_outline = emulator_config.pixel_outline
         self.browser = emulator_config.browser
 
         if emulator_config.suppress_font_warnings:
@@ -80,6 +82,7 @@ class RGBMatrixEmulatorConfig:
 
     VALID_PIXEL_STYLES = ['square', 'circle']
     DEFAULT_CONFIG = {
+        'pixel_outline': 0,
         'pixel_size': 16,
         'pixel_style': 'square',
         'display_adapter': 'browser',
@@ -108,7 +111,7 @@ class RGBMatrixEmulatorConfig:
             with open(self.__CONFIG_PATH) as f:
                 config = json.load(f)
 
-            return config    
+            return config
 
         with open(self.__CONFIG_PATH, 'w') as f:
             json.dump(self.DEFAULT_CONFIG, f, indent=4)

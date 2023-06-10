@@ -60,7 +60,8 @@ setup(
     install_requires=[
         'bdfparser<=2.2.0',
         'pygame>=2.0.1,<3',
-        'tornado>=6.1'
+        'tornado>=6.1',
+        'libsixel-python>=0.5.0',
     ],
     include_package_data=True
 )
