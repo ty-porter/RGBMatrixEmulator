@@ -52,9 +52,6 @@ def encode_sixels(pixels: List[List[Color]], scale=4, outline=1) -> str:
     return encoded
 
 class SixelAdapter(BaseAdapter):
-    def __init__(self, width, height, options):
-        super().__init__(width, height, options)
-
     def draw_to_screen(self, pixels):
         sixel = encode_sixels(pixels,
                               scale=self.options.pixel_size,
