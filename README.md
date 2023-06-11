@@ -43,6 +43,7 @@ The first time you run a script with the emulator enabled, a file called `emulat
 
 ```json
 {
+  "pixel_outline": 0,
   "pixel_size": 16,
   "pixel_style": "square",
   "display_adapter": "pygame",
@@ -64,6 +65,7 @@ The first time you run a script with the emulator enabled, a file called `emulat
 ### Configuration Options
 
 ```
+pixel_outline          (Integer): Size of the black border around each pixel. Only works on some adapters; others will ignore this configuration.
 pixel_size             (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
 pixel_style            (String):  Style of the emulated LED. Supported pixel styles are "square" and "circle". Some display adapters do not support all options and will revert to a supported style.
 display_adapter        (String):  Display adapter for the emulator. See Display Adapters section for details.
@@ -91,6 +93,7 @@ Currently supported display adapters are:
 * `terminal`
 * `tkinter`
 * `turtle`
+* `sixel`
 
 You can swap display adapters by changing the `display_adapter` value to one of the above in `emulator_config.json`.
 
