@@ -4,28 +4,33 @@ from RGBMatrixEmulator.logger import Logger
 
 adapters = [
     {
-        'path': 'RGBMatrixEmulator.adapters.browser_adapter.adapter', 
-        'class': 'BrowserAdapter', 
+        'path': 'RGBMatrixEmulator.adapters.browser_adapter.adapter',
+        'class': 'BrowserAdapter',
         'type': 'browser'
     },
     {
-        'path': 'RGBMatrixEmulator.adapters.pygame_adapter',          
-        'class': 'PygameAdapter',  
+        'path': 'RGBMatrixEmulator.adapters.pygame_adapter',
+        'class': 'PygameAdapter',
         'type': 'pygame'
     },
     {
-        'path': 'RGBMatrixEmulator.adapters.terminal_adapter',        
+        'path': 'RGBMatrixEmulator.adapters.sixel_adapter',
+        'class': 'SixelAdapter',
+        'type': 'sixel'
+    },
+    {
+        'path': 'RGBMatrixEmulator.adapters.terminal_adapter',
         'class': 'TerminalAdapter',
         'type': 'terminal'
     },
     {
-        'path': 'RGBMatrixEmulator.adapters.tkinter_adapter',         
-        'class': 'TkinterAdapter', 
+        'path': 'RGBMatrixEmulator.adapters.tkinter_adapter',
+        'class': 'TkinterAdapter',
         'type': 'tkinter'
     },
     {
-        'path': 'RGBMatrixEmulator.adapters.turtle_adapter',          
-        'class': 'TurtleAdapter',  
+        'path': 'RGBMatrixEmulator.adapters.turtle_adapter',
+        'class': 'TurtleAdapter',
         'type': 'turtle'
     }
 ]
