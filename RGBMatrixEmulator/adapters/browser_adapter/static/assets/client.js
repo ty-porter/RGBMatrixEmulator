@@ -49,7 +49,7 @@ function init() {
             setTimeout(function() {
                 // We generate socket with a timeout to make sure server has time to recover.
                 socket = generateSocket();
-            }, 2000);
+            }, WS_RETRY_DELAY);
         }
 
         ws.onerror = function() {
