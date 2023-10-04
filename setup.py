@@ -62,6 +62,7 @@ setup(
         'pygame>=2.0.1,<3',
         'tornado>=6.1',
         'libsixel-python>=0.5.0',
+        'Pillow>=10.0.1',
     ],
     include_package_data=True
 )
