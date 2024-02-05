@@ -23,13 +23,10 @@ class Canvas:
         if self.display_adapter.pixel_out_of_bounds(x, y):
             return
 
-        try:
-            pixel = self.__pixels[int(y)][int(x)]
-            pixel.red = r
-            pixel.green = g
-            pixel.blue = b
-        except Exception:
-            pass
+        pixel = self.__pixels[int(y)][int(x)]
+        pixel.red = r
+        pixel.green = g
+        pixel.blue = b
 
     def SetImage(self, image, offset_x=0, offset_y=0, *other):
         pixel_index = 0
@@ -37,10 +34,7 @@ class Canvas:
 
         for y in range(0, image.height):
             for x in range(0, image.width):
-                try:
-                    self.SetPixel(x + offset_x, y + offset_y, *pixels[pixel_index])
-                except Exception:
-                    pass
+                self.SetPixel(x + offset_x, y + offset_y, *pixels[pixel_index])
 
                 pixel_index += 1
 
