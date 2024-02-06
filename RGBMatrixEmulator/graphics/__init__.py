@@ -36,13 +36,10 @@ def DrawText(canvas, font, x, y, color, text):
         for y2, row in enumerate(text_map):
             for x2, value in enumerate(row):
                 if value == 1:
-                    try:
-                        if isinstance(color, tuple):
-                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
-                        else:
-                            canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.red, color.green, color.blue)
-                    except Exception:
-                        pass
+                    if isinstance(color, tuple):
+                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
+                    else:
+                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.red, color.green, color.blue)
 
     return total_width
 
