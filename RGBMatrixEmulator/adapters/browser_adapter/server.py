@@ -24,7 +24,6 @@ class Server:
 
         def __init__(self, adapter):
             self.adapter   = adapter
-            self.options   = adapter.options
             self.io_loop   = None
             self.listening = False
 
@@ -51,13 +50,13 @@ class Server:
             Logger.info("Starting server...")
 
             self.instance.listening = True
-            self.instance.app.listen(self.instance.options.browser.port)
+            self.instance.app.listen(self.instance.adapter.options.browser.port)
             self.instance.io_loop = tornado.ioloop.IOLoop.current()
             thread = threading.Thread(target=self.instance.io_loop.start, name="RGBMEServerThread", daemon=True)
             self.__initialize_interrupts()
             thread.start()
 
-            Logger.info("Server started and ready to accept requests on http://localhost:" + str(self.instance.options.browser.port) + "/")
+            Logger.info("Server started and ready to accept requests on http://localhost:" + str(self.instance.adapter.options.browser.port) + "/")
 
     def __initialize_interrupts(self):
         '''

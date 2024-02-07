@@ -39,14 +39,16 @@ Startup of the existing script will be unchanged.
 
 ## Customization
 
-The first time you run a script with the emulator enabled, a file called `emulator_config.json` will be created in the script's directory. This enables configurations to be customized on a per-script basis. The default configuration is as follows:
+The first time you run a script with the emulator enabled, a file called `emulator_config.json` will be created in the script's directory. This enables configurations to be customized on a per-script basis. If you would like to regenerate the default configuration, you can delete the file and a new one will be created the next time the emulator starts.
+
+The default configuration is as follows:
 
 ```json
 {
   "pixel_outline": 0,
   "pixel_size": 16,
   "pixel_style": "square",
-  "display_adapter": "pygame",
+  "display_adapter": "browser",
   "suppress_font_warnings": false,
   "suppress_adapter_load_errors": false,
   "browser": {
@@ -56,7 +58,8 @@ The first time you run a script with the emulator enabled, a file called `emulat
     "fps_display": false,
     "quality": 70,
     "image_border": true,
-    "debug_text": false
+    "debug_text": false,
+    "image_format": "JPEG"
   },
   "log_level": "info"
 }

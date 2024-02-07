@@ -95,7 +95,8 @@ class RGBMatrixEmulatorConfig:
             'fps_display': False,
             'quality': 70,
             'image_border': True,
-            'debug_text': False
+            'debug_text': False,
+            'image_format': 'JPEG'
         },
         "log_level": "info"
     }
@@ -172,6 +173,8 @@ class RGBMatrixEmulatorConfig:
                 else:
                     value   = obj.default_config.get(key)
                     default = value
+
+                    Logger.warning("Emulator config is missing key '{}', falling back to default '{}'. Consider adding this to your emulator config file.".format(key, value))
 
                 RGBMatrixEmulatorConfig.Utils.set_attribute(obj, key, value, default)
 

@@ -24,6 +24,8 @@ Once this is configured, your server is up and running and ready to accept reque
 
 ## Viewing the Emulator
 
+### Via Websocket
+
 By default, the server is configured to `http://localhost:8888/`. Simply navigate to this in the web browser of your choice and you should see streaming images once loaded.
 
 If you've configured a custom port, you can navigate to the correct URL instead: `http://localhost:$PORT_NUMBER/`.
@@ -36,6 +38,39 @@ WebSocket opened from: 127.0.0.1
 ```
 
 This indicates a successful connection has occurred.
+
+### Via Static Image
+
+The emulator also exposes static images in a format you configure. By default, the server is configured to expose this endpoint at `http://localhost:8888/image`.
+
+This can be used to allow applications to poll the webserver for updated images or where a websocket is not applicable.
+
+#### Tydbit Support
+
+Tydbit requires `WebP` images to be exposed over a static HTTP endpoint. You can use the browser adapter's static image endpoint to provide cross-functional compatibility to Tydbit boards.
+
+An example configuration that works for Tydbit matrices is provided:
+
+```json
+{
+  "pixel_outline": 0,
+  "pixel_size": 1,
+  "pixel_style": "square",
+  "display_adapter": "browser",
+  "suppress_font_warnings": false,
+  "suppress_adapter_load_errors": false,
+  "browser": {
+    "port": 8888,
+    "target_fps": 24,
+    "fps_display": false,
+    "quality": 70,
+    "image_border": true,
+    "debug_text": false,
+    "image_format": "WebP"
+  },
+  "log_level": "info"
+}
+```
 
 ## Error Handling
 

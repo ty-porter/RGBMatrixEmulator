@@ -20,8 +20,8 @@ class ImageWebSocketHandler(tornado.websocket.WebSocketHandler):
             Logger.warning("No image received from {}!".format(ImageWebSocketHandler.adapter.__class__.__name__))
             return
 
-        jpeg_bytes = ImageWebSocketHandler.adapter.image
-        self.write_message(jpeg_bytes, binary=True)
+        image_bytes = ImageWebSocketHandler.adapter.image
+        self.write_message(image_bytes, binary=True)
 
     def on_close(self):
         ImageWebSocketHandler.clients.remove(self)
