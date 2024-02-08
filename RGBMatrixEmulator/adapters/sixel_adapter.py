@@ -35,17 +35,15 @@ class SixelAdapter(BaseAdapter):
         iw, ih = w * scale, h * scale
         i = Image.new('RGBA', (iw, ih))
         d = ImageDraw.Draw(i)
-
         for y, row in enumerate(pixels):
             for x, pixel in enumerate(row):
                 rx, ry = x * scale, y * scale
                 ex, ey = rx + (scale - 1), ry + (scale - 1)
-                self.adjust_pixel_brightness(pixel)
-
+                pixel = self.adjust_pixel_brightness(pixel)
                 if self.options.pixel_style == "circle":
-                    d.ellipse([(rx, ry), (ex, ey)], fill=pixel.to_tuple(), outline=outline_color, width=outline)
+                    d.ellipse([(rx, ry), (ex, ey)], fill=pixel, outline=outline_color, width=outline)
                 else:
-                    d.rectangle([(rx, ry), (ex, ey)], fill=pixel.to_tuple(), outline=outline_color, width=outline)
+                    d.rectangle([(rx, ry), (ex, ey)], fill=pixel, outline=outline_color, width=outline)
 
         brightness = ImageEnhance.Brightness(i)
         i = brightness.enhance(1.5)

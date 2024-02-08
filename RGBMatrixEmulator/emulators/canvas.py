@@ -17,16 +17,13 @@ class Canvas:
         self.__pixels = [[Color.BLACK() for x in range(0, self.width)] for y in range(0, self.height)]
 
     def Fill(self, r, g, b):
-        self.__pixels = [[Color(r, g, b) for x in range(0, self.width)] for y in range(0, self.height)]
+        self.__pixels = [[(r, g, b) for x in range(0, self.width)] for y in range(0, self.height)]
 
     def SetPixel(self, x, y, r, g, b):
         if self.display_adapter.pixel_out_of_bounds(x, y):
             return
 
-        pixel = self.__pixels[int(y)][int(x)]
-        pixel.red = r
-        pixel.green = g
-        pixel.blue = b
+        pixel = self.__pixels[int(y)][int(x)] = (r, g, b)
 
     def SetImage(self, image, offset_x=0, offset_y=0, *other):
         pixel_index = 0

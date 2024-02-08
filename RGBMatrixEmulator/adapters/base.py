@@ -1,4 +1,5 @@
 from RGBMatrixEmulator import version
+from RGBMatrixEmulator.graphics import Color
 
 
 class BaseAdapter:
@@ -21,9 +22,9 @@ class BaseAdapter:
         
         return cls.INSTANCE
 
-    def adjust_pixel_brightness(self, pixel, to_int = False):
+    def adjust_pixel_brightness(self, pixel, to_int = True):
         alpha = self.options.brightness / 100.0
-        pixel.adjust_brightness(alpha, to_int = to_int)
+        return Color.adjust_brightness(pixel, alpha, to_int = to_int)
 
     def pixel_out_of_bounds(self, x, y):
         if x < 0 or x >= self.width:

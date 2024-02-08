@@ -1,7 +1,7 @@
 import io
 
 from PIL import Image, ImageDraw
-
+from RGBMatrixEmulator.graphics import Color
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.adapters.browser_adapter.server import Server
 from RGBMatrixEmulator.adapters.browser_adapter.web_socket import ImageWebSocket
@@ -45,17 +45,17 @@ class BrowserAdapter(BaseAdapter):
             self.image = bytesIO.getvalue()
 
     def __draw_pixel(self, image: ImageDraw, x, y, pixel):
-        self.adjust_pixel_brightness(pixel)
+        pixel = self.adjust_pixel_brightness(pixel)
         pixel_size = self.options.pixel_size
         if self.options.pixel_style == "circle":
             image.ellipse(
                 (x, y, x + pixel_size - 1, y + pixel_size - 1),
-                fill=pixel.to_tuple(),
-                outline=pixel.to_tuple(),
+                fill=pixel,
+                outline=pixel,
             )
         else:
             image.rectangle(
                 (x, y, x + pixel_size, y + pixel_size),
-                fill=pixel.to_tuple(),
-                outline=pixel.to_tuple(),
+                fill=pixel,
+                outline=pixel,
             )
