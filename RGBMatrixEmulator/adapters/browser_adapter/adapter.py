@@ -11,9 +11,10 @@ class BrowserAdapter(BaseAdapter):
 
     SUPPORTS_ALTERNATE_PIXEL_STYLE = True
     IMAGE_FORMATS = {
+        'bmp': 'BMP',
         'jpeg': 'JPEG',
-        'webp': 'WebP',
-        'png':  'PNG'
+        'png':  'PNG',
+        'webp': 'WebP'
     }
 
     def __init__(self, width, height, options):
