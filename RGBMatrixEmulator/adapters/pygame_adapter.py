@@ -1,3 +1,4 @@
+import numpy as np
 import os
 import sys
 
@@ -9,8 +10,10 @@ except Exception:
 
 import pygame
 
+from PIL import Image
 from pygame.locals import QUIT
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.graphics import Color
 from RGBMatrixEmulator.logger import Logger
 
 
@@ -36,9 +39,10 @@ class PygameAdapter(BaseAdapter):
         self.loaded = True
 
     def draw_to_screen(self, pixels):
-        for row, pixel_row in enumerate(pixels):
-            for col, pixel in enumerate(pixel_row):
-                self.__draw_pixel(pixel, col, row)
+        image = self._get_masked_image(pixels)
+        pygame_surface = pygame.image.fromstring(image.tobytes(),
+            self.options.window_size(), "RGB")
+        self.__surface.blit(pygame_surface, (0, 0))
 
         pygame.display.flip()
 
@@ -65,13 +69,3 @@ class PygameAdapter(BaseAdapter):
             self.options.pixel_size
         )
 
-    def __draw_pixel(self, pixel, x, y):
-        self.adjust_pixel_brightness(pixel)
-        pixel_rect = self.__pygame_pixel(x, y)
-        if self.options.pixel_style == 'circle':
-            radius = int(pixel_rect.width / 2)
-            center_x = pixel_rect.x + radius
-            center_y = pixel_rect.y + radius
-            pygame.draw.circle(self.__surface, pixel.to_tuple(), (center_x, center_y), radius)
-        else:
-            pygame.draw.rect(self.__surface, pixel.to_tuple(), pixel_rect)
