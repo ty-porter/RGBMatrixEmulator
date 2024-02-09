@@ -1,25 +1,6 @@
-from RGBMatrixEmulator.graphics.color import Color
 import numpy as np
-
-def shift_array(arr, x, y, K):
-    shifted_arr = np.full_like(arr, K)  # Create a new array filled with K
-
-    if x > 0:
-        shifted_arr[:, x:] = arr[:, :-x]
-    elif x < 0:
-        shifted_arr[:, :x] = arr[:, -x:]
-    else:
-        shifted_arr[:, :] = arr[:, :]
-
-    if y > 0:
-        shifted_arr[y:, :] = shifted_arr[:-y, :]
-        shifted_arr[:y, :] = K
-    elif y < 0:
-        shifted_arr[:y, :] = shifted_arr[-y:, :]
-        shifted_arr[y:, :] = K
-
-    return shifted_arr
-
+from PIL import Image
+from RGBMatrixEmulator.graphics.color import Color
 
 class Canvas:
     def __init__(self, options):
@@ -46,10 +27,9 @@ class Canvas:
         pixel = self.__pixels[int(y)][int(x)] = (r, g, b)
 
     def SetImage(self, image, offset_x=0, offset_y=0, *other):
-        pixels = np.asarray(image)
-        if offset_x != 0 or offset_y != 0:
-            pixels = shift_array(pixels, offset_x, offset_y, (0,0,0))
-        self.__pixels = pixels
+        original = Image.fromarray(np.array(self.__pixels, dtype=np.uint8), "RGB")
+        original.paste(image, (offset_x, offset_y))
+        self.__pixels = np.asarray(original)
 
     # These are delegated to the display adapter to handle specific implementation.
     def draw_to_screen(self):
