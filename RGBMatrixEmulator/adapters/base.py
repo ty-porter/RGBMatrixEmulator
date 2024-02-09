@@ -1,5 +1,6 @@
 import numpy as np
-from PIL import Image, ImageDraw
+
+from PIL import Image, ImageDraw, ImageEnhance
 from RGBMatrixEmulator import version
 from RGBMatrixEmulator.graphics import Color
 
@@ -68,6 +69,9 @@ class BaseAdapter:
     def _get_masked_image(self, pixels):
         image = Image.fromarray(np.array(pixels, dtype=np.uint8), "RGB")
         image = image.resize(self.options.window_size(), Image.NEAREST)
+        enhancer = ImageEnhance.Brightness(image)
+        image = enhancer.enhance(self.options.brightness / 100.0)
+
         return Image.composite(image, self.__black, self.__mask)
 
     def emulator_details_text(self):
