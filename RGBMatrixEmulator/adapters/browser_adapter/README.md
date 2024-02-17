@@ -41,6 +41,8 @@ This indicates a successful connection has occurred.
 
 ### Via Static Image
 
+:warning: **This functionality is experimental!** :warning:
+
 The emulator also exposes static images in a format you configure. By default, the server is configured to expose this endpoint at `http://localhost:8888/image`.
 
 This can be used to allow applications to poll the webserver for updated images or where a websocket is not applicable.
