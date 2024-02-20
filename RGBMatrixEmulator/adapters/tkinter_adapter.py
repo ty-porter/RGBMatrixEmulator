@@ -2,6 +2,7 @@ import tkinter
 import os
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.graphics import Color
 from RGBMatrixEmulator.logger import Logger
 
 
@@ -41,10 +42,10 @@ class TkinterAdapter(BaseAdapter):
     def draw_to_screen(self, pixels):
         for row, pixel_row in enumerate(pixels):
             for col, pixel in enumerate(pixel_row):
-                self.adjust_pixel_brightness(pixel)
+                pixel = self.adjust_pixel_brightness(pixel)
                 shape_id = self.__pixels[row][col]
 
-                self.__canvas.itemconfig(shape_id, fill=pixel.to_hex())
+                self.__canvas.itemconfig(shape_id, fill=Color.to_hex(pixel))
 
         self.__canvas.pack()
         self.__root.update()

@@ -1,5 +1,22 @@
-from RGBMatrixEmulator import version
+import numpy as np
 
+from PIL import Image, ImageDraw, ImageEnhance
+from RGBMatrixEmulator import version
+from RGBMatrixEmulator.graphics import Color
+
+def draw_circle_mask(drawer, x, y, pixel_size, color):
+    drawer.ellipse(
+        (x, y, x + pixel_size - 1, y + pixel_size - 1),
+        fill=color,
+        outline=color,
+    )
+
+def draw_square_mask(drawer, x, y, pixel_size, color):
+    drawer.rectangle(
+        (x, y, x + pixel_size, y + pixel_size),
+        fill=color,
+        outline=color,
+        )
 
 class BaseAdapter:
 
@@ -10,8 +27,23 @@ class BaseAdapter:
         self.width   = width
         self.height  = height
         self.options = options
-
+        self.__black = Image.new("RGB", self.options.window_size(), "black")
+        self.__mask = self.__draw_mask()
         self.loaded  = False
+
+    def __draw_mask(self):
+        mask = Image.new("L", self.options.window_size())
+        drawer = ImageDraw.Draw(mask)
+        pixel_size = self.options.pixel_size
+        width, height = self.options.window_size()
+        color = int((self.options.brightness * 255) / 100)
+        draw_mask_shape = (draw_circle_mask
+            if self.options.pixel_style == "circle" else draw_square_mask)
+        for x in range(0, height, pixel_size):
+            for y in range(0, width, pixel_size):
+                draw_mask_shape(drawer, x, y, pixel_size, color)
+
+        return mask
 
     @classmethod
     def get_instance(cls, *args, **kwargs):
@@ -21,9 +53,9 @@ class BaseAdapter:
         
         return cls.INSTANCE
 
-    def adjust_pixel_brightness(self, pixel, to_int = False):
+    def adjust_pixel_brightness(self, pixel, to_int = True):
         alpha = self.options.brightness / 100.0
-        pixel.adjust_brightness(alpha, to_int = to_int)
+        return Color.adjust_brightness(pixel, alpha, to_int = to_int)
 
     def pixel_out_of_bounds(self, x, y):
         if x < 0 or x >= self.width:
@@ -33,6 +65,14 @@ class BaseAdapter:
             return True
 
         return False
+
+    def _get_masked_image(self, pixels):
+        image = Image.fromarray(np.array(pixels, dtype=np.uint8), "RGB")
+        image = image.resize(self.options.window_size(), Image.NEAREST)
+        enhancer = ImageEnhance.Brightness(image)
+        image = enhancer.enhance(self.options.brightness / 100.0)
+
+        return Image.composite(image, self.__black, self.__mask)
 
     def emulator_details_text(self):
         details_text = 'RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}'

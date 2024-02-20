@@ -20,7 +20,7 @@ class TurtleAdapter(BaseAdapter):
             self.__move_pen_to_row_start(row)
 
             for _col, pixel in enumerate(pixel_row):
-                self.adjust_pixel_brightness(pixel, to_int=True)
+                pixel = self.adjust_pixel_brightness(pixel)
                 self.__draw_pixel(pixel)
                 self.__move_pen_next_pixel()
 
@@ -36,14 +36,14 @@ class TurtleAdapter(BaseAdapter):
         self.__pen = turtle.Turtle(visible = False)
         self.__screen = self.__pen.getscreen()
         self.__set_emulator_icon()
-        self.__screen.bgcolor(Color.BLACK().to_tuple())
+        self.__screen.bgcolor(Color.BLACK())
         turtle.tracer(0, 0)
         turtle.colormode(255)
 
         self.loaded = True
 
     def __draw_pixel(self, pixel):
-        self.__pen.color(*pixel.to_tuple())
+        self.__pen.color(*pixel)
         self.__pen.begin_fill()
 
         if self.options.pixel_style == 'circle':
