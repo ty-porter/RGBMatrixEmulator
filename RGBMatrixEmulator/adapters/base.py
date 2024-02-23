@@ -39,8 +39,8 @@ class BaseAdapter:
         color = int((self.options.brightness * 255) / 100)
         draw_mask_shape = (draw_circle_mask
             if self.options.pixel_style == "circle" else draw_square_mask)
-        for x in range(0, height, pixel_size):
-            for y in range(0, width, pixel_size):
+        for y in range(0, height, pixel_size):
+            for x in range(0, width, pixel_size):
                 draw_mask_shape(drawer, x, y, pixel_size, color)
 
         return mask
