@@ -15,7 +15,7 @@ class Color:
 
     @classmethod
     def to_hex(cls, pixel):
-        return "#%02x%02x%02x" % Color.to_tuple(pixel)
+        return "#%02x%02x%02x" % pixel
 
     @classmethod
     def BLACK(cls):
