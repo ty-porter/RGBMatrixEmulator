@@ -76,7 +76,8 @@ class TkinterAdapter(BaseAdapter):
 
     def __set_emulator_icon(self):
         emulator_path = os.path.abspath(os.path.dirname(__file__))
-        raw_icon_path = os.path.join(emulator_path, '..', 'icon.ico')
+        raw_icon_path = os.path.join(emulator_path, '..', 'icon.png')
         icon_path = os.path.normpath(raw_icon_path)
 
-        self.__root.iconbitmap(icon_path)
+        icon = tkinter.PhotoImage(file=icon_path)
+        self.__root.tk.call('wm', 'iconphoto', self.__root._w, icon)
