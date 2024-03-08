@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "RGBMatrixEmulator"
+dynamic = ["version"]
+description = "A PC emulator for Raspberry Pi LED matrices driven by rpi-rgb-led-matrix"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Tyler Porter", email = "tyler.b.porter@gmail.com" },
+]
+keywords = [
+    "LED",
+    "LED matrix",
+    "RPI",
+    "matrix",
+    "raspberry",
+    "raspberry pi",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Other Audience",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Other/Nonlisted Topic",
+]
+dependencies = [
+    "bdfparser<=2.2.0",
+    "libsixel-python>=0.5.0",
+    "numpy>=1.2.0",
+    "Pillow>=10.0.1",
+    "pygame>=2.0.1,<3",
+    "tornado>=6.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/ty-porter/RGBMatrixEmulator"
+
+[tool.hatch.version]
+path = "RGBMatrixEmulator/version.py"
+
+[tool.hatch.build.targets.wheel.shared-data]
+LICENSE = "docs/LICENSE"
+"README.md" = "docs/README.md"
+"description.md" = "docs/description.md"
+"RGBMatrixEmulator/icon.ico" = "RGBMatrixEmulator/icon.ico"
+"RGBMatrixEmulator/icon.png" = "RGBMatrixEmulator/icon.png"
+"RGBMatrixEmulator/adapters/browser_adapter/static/index.html" = "RGBMatrixEmulator/index.html"
+"RGBMatrixEmulator/adapters/browser_adapter/static/assets" = "RGBMatrixEmulator"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/rgbmatrixemulator",
+]
