@@ -21,4 +21,4 @@ jobs:
       - name: Check version.py
         if: github.base_ref == 'main'
         run: |
-          git diff --name-only origin/main | grep -q RGBMatrixEmulator/version.py || (echo "Need to change version for pushes to master!" && exit 1)
+          git diff --name-only origin/main | grep -q RGBMatrixEmulator/version.py || (echo "Need to change version for pushes to main!" && exit 1)
