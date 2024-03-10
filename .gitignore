@@ -1,6 +1,6 @@
 venv/
 __pycache__/
-.pyric
+.pypirc
 *.egg-info/
 dist
 MANIFEST
