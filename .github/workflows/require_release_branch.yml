@@ -1,0 +1,24 @@
+name: Require release branch
+
+on:
+  pull_request:
+
+jobs:
+  check_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch
+        if: github.base_ref == 'main' && github.head_ref != 'dev'
+        run: |
+          echo "ERROR: You can only merge to main from dev. Contributors should point their PRs to the dev branch."
+          exit 1
+          
+      - uses: actions/checkout@v3
+        if: github.base_ref == 'main'
+        with:
+          fetch-depth: 0
+          
+      - name: Check version.py
+        if: github.base_ref == 'main'
+        run: |
+          git diff --name-only origin/main | grep -q RGBMatrixEmulator/version.py || (echo "Need to change version for pushes to main!" && exit 1)
