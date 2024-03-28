@@ -48,14 +48,20 @@ def DrawLine(canvas, x1, y1, x2, y2, color):
     rows, cols = __line(*int_points)
 
     for point in zip(rows, cols):
-        canvas.SetPixel(*point, color.red, color.green, color.blue)
+        if isinstance(color, tuple):
+            canvas.SetPixel(*point, *color)
+        else:
+            canvas.SetPixel(*point, color.red, color.green, color.blue)
 
 def DrawCircle(canvas, x, y, r, color):
     int_points = __coerce_int(x, y)
     rows, cols = __circle_perimeter(*int_points, r)
 
     for point in zip(rows, cols):
-        canvas.SetPixel(*point, color.red, color.green, color.blue)
+        if isinstance(color, tuple):
+            canvas.SetPixel(*point, *color)
+        else:
+            canvas.SetPixel(*point, color.red, color.green, color.blue)
 
 def __actual_width(font, letter):
     '''
