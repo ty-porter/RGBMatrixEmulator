@@ -2,6 +2,10 @@
 
 Samples in this directory have been adapted from [`rpi-rgb-led-matrix` Python samples](https://github.com/hzeller/rpi-rgb-led-matrix/tree/master/bindings/python/samples).
 
+## License
+
+Files in this directory are derivatives of original work and are distributed with original license. See `samples/LICENSE`.
+
 ## Installing Samples
 
 Installation of `RGBMatrixEmulator` from PyPi does not include sample files. After installing the emulator according to the [README](../README.md#installation), you should clone this repository instead:
@@ -47,10 +51,3 @@ Sample images (`sample/images`) and fonts (`sample/fonts`) are included for use 
 | `runtext` | `-t` / `--text` | Scrolls `HELLO WORLD` text unless optional arguments included |
 | `samplebase` | | **DO NOT USE DIRECTLY**. Base class for driver setup, argument parsing, etc. |
 | `simple-square` | | A simple graphics drawing routine |
-
-## Other Projects
-
-Examples of larger projects:
-
-* [mlb-led-scoreboard-emulated](https://github.com/ty-porter/mlb-led-scoreboard-emulated)
-* [nfl-led-scoreboard-emulated](https://github.com/ty-porter/nfl-led-scoreboard-emulated)
