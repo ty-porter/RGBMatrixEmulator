@@ -24,12 +24,12 @@ class Canvas:
         if self.display_adapter.pixel_out_of_bounds(x, y):
             return
 
-        pixel = self.__pixels[int(y)][int(x)] = (r, g, b)
+        self.__pixels[int(y)][int(x)] = (r, g, b)
 
     def SetImage(self, image, offset_x=0, offset_y=0, *other):
         original = Image.fromarray(np.array(self.__pixels, dtype=np.uint8), "RGB")
         original.paste(image, (offset_x, offset_y))
-        self.__pixels = np.asarray(original)
+        self.__pixels = np.copy(original)
 
     # These are delegated to the display adapter to handle specific implementation.
     def draw_to_screen(self):
