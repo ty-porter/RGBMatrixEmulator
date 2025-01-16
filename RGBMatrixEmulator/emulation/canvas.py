@@ -22,10 +22,14 @@ class Canvas:
         self.display_adapter.load_emulator_window()
 
     def Clear(self):
-        self.__pixels = np.full(self.__pdims, self.__create_pixel(Color.BLACK()), dtype=np.uint8)
+        self.__pixels = np.full(
+            self.__pdims, self.__create_pixel(Color.BLACK()), dtype=np.uint8
+        )
 
     def Fill(self, r, g, b):
-        self.__pixels = np.full(self.__pdims, self.__create_pixel((r, g, b)), dtype=np.uint8)
+        self.__pixels = np.full(
+            self.__pdims, self.__create_pixel((r, g, b)), dtype=np.uint8
+        )
 
     def SetPixel(self, x, y, r, g, b):
         if self.display_adapter.pixel_out_of_bounds(x, y):
@@ -50,8 +54,10 @@ class Canvas:
         if not isinstance(value, (int, float)):
             raise ValueError(f"brightness must be a numeric value, received '{value}'")
         elif value < 0 or value > 100:
-            raise ValueError(f"brightness must be a number between 0 and 100, received '{value}'")
-        
+            raise ValueError(
+                f"brightness must be a number between 0 and 100, received '{value}'"
+            )
+
         self.options.brightness = value
 
     def __create_pixel(self, pixel):
