@@ -2,7 +2,7 @@ from RGBMatrixEmulator.emulators.canvas import Canvas
 
 
 class RGBMatrix:
-    def __init__(self, options = {}):
+    def __init__(self, options={}):
         self.options = options
 
         self.width = options.cols * options.chain_length
@@ -12,10 +12,10 @@ class RGBMatrix:
         self.canvas = None
 
     def CreateFrameCanvas(self):
-        self.canvas = Canvas(options = self.options)
+        self.canvas = Canvas(options=self.options)
 
         return self.canvas
-    
+
     def SwapOnVSync(self, canvas):
         canvas.check_for_quit_event()
         canvas.draw_to_screen()
@@ -42,9 +42,9 @@ class RGBMatrix:
         self.__sync_canvas()
         self.canvas.SetImage(image, offset_x, offset_y, *other)
         self.SwapOnVSync(self.canvas)
- 
-    def __sync_canvas(self):        
+
+    def __sync_canvas(self):
         if not self.canvas:
-            self.canvas = Canvas(options = self.options)
+            self.canvas = Canvas(options=self.options)
 
         self.canvas.display_adapter.options.brightness = self.brightness

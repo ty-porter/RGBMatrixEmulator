@@ -7,12 +7,11 @@ from RGBMatrixEmulator.logger import Logger
 
 
 class TkinterAdapter(BaseAdapter):
-
     SUPPORTS_ALTERNATE_PIXEL_STYLE = True
 
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
-        self.__root   = None
+        self.__root = None
         self.__canvas = None
         self.__pixels = None
 
@@ -20,19 +19,21 @@ class TkinterAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        Logger.info('Loading {}'.format(self.emulator_details_text()))
+        Logger.info("Loading {}".format(self.emulator_details_text()))
         self.__root = tkinter.Tk()
         self.__set_emulator_icon()
         self.__root.title(self.emulator_details_text())
 
         window_size = self.options.window_size()
-        self.__root.geometry('{}x{}'.format(*window_size))
-        self.__canvas = tkinter.Canvas(self.__root, 
-                                       width=window_size[0], 
-                                       height=window_size[1], 
-                                       bd=0, 
-                                       highlightthickness=0, 
-                                       bg="black")
+        self.__root.geometry("{}x{}".format(*window_size))
+        self.__canvas = tkinter.Canvas(
+            self.__root,
+            width=window_size[0],
+            height=window_size[1],
+            bd=0,
+            highlightthickness=0,
+            bg="black",
+        )
 
         self.__initialize_bitmap()
         self.__root.update()
@@ -59,7 +60,7 @@ class TkinterAdapter(BaseAdapter):
             for col in range(0, self.width):
                 coords = self.__pixel_dimensions(col, row)
 
-                if self.options.pixel_style == 'circle':
+                if self.options.pixel_style == "circle":
                     id = self.__canvas.create_oval(coords, width=0)
                 else:
                     id = self.__canvas.create_rectangle(coords, width=0)
@@ -71,13 +72,13 @@ class TkinterAdapter(BaseAdapter):
     def __pixel_dimensions(self, col, row):
         size = self.options.pixel_size
         start, stop = (col * size, row * size)
-            
+
         return (start, stop, start + size, stop + size)
 
     def __set_emulator_icon(self):
         emulator_path = os.path.abspath(os.path.dirname(__file__))
-        raw_icon_path = os.path.join(emulator_path, '..', 'icon.png')
+        raw_icon_path = os.path.join(emulator_path, "..", "icon.png")
         icon_path = os.path.normpath(raw_icon_path)
 
         icon = tkinter.PhotoImage(file=icon_path)
-        self.__root.tk.call('wm', 'iconphoto', self.__root._w, icon)
+        self.__root.tk.call("wm", "iconphoto", self.__root._w, icon)
