@@ -1,9 +1,5 @@
 import io
 
-import numpy as np
-
-from PIL import Image, ImageDraw
-from RGBMatrixEmulator.graphics import Color
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.adapters.browser_adapter.server import Server
 from RGBMatrixEmulator.logger import Logger

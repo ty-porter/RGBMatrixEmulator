@@ -20,7 +20,6 @@ class TurtleAdapter(BaseAdapter):
             self.__move_pen_to_row_start(row)
 
             for _col, pixel in enumerate(pixel_row):
-                pixel = self.adjust_pixel_brightness(pixel)
                 self.__draw_pixel(pixel)
                 self.__move_pen_next_pixel()
 

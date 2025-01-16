@@ -6,12 +6,10 @@ class Color:
 
     @classmethod
     def adjust_brightness(cls, pixel, alpha, to_int=False):
-        p = tuple(channel * alpha for channel in pixel)
-
         if to_int:
-            p = tuple(int(channel) for channel in pixel)
+            return tuple(int(channel) for channel in pixel)
 
-        return p
+        return tuple(channel * alpha for channel in pixel)
 
     @classmethod
     def to_hex(cls, pixel):

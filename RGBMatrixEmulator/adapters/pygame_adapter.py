@@ -1,4 +1,3 @@
-import numpy as np
 import os
 import sys
 
@@ -10,10 +9,8 @@ except Exception:
 
 import pygame
 
-from PIL import Image
 from pygame.locals import QUIT
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.graphics import Color
 from RGBMatrixEmulator.logger import Logger
 
 
