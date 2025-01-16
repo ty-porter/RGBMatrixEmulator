@@ -60,11 +60,3 @@ class PygameAdapter(BaseAdapter):
         icon = pygame.image.load(os.path.normpath(icon_path))
 
         pygame.display.set_icon(icon)
-
-    def __pygame_pixel(self, col, row):
-        return pygame.Rect(
-            col * self.options.pixel_size,
-            row * self.options.pixel_size,
-            self.options.pixel_size,
-            self.options.pixel_size,
-        )
