@@ -1,4 +1,4 @@
-from RGBMatrixEmulator.emulators.canvas import Canvas
+from RGBMatrixEmulator.emulation.canvas import Canvas
 
 
 class RGBMatrix:
@@ -49,12 +49,14 @@ class RGBMatrix:
     @property
     def brightness(self):
         return self.options.brightness
-    
+
     @brightness.setter
     def brightness(self, value):
         if not isinstance(value, (int, float)):
             raise ValueError(f"brightness must be a numeric value, received '{value}'")
         elif value < 0 or value > 100:
-            raise ValueError(f"brightness must be a number between 0 and 100, received '{value}'")
-        
+            raise ValueError(
+                f"brightness must be a number between 0 and 100, received '{value}'"
+            )
+
         self.options.brightness = value
