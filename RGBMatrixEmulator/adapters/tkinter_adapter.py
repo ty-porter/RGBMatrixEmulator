@@ -43,7 +43,6 @@ class TkinterAdapter(BaseAdapter):
     def draw_to_screen(self, pixels):
         for row, pixel_row in enumerate(pixels):
             for col, pixel in enumerate(pixel_row):
-                pixel = self.adjust_pixel_brightness(pixel)
                 shape_id = self.__pixels[row][col]
 
                 self.__canvas.itemconfig(shape_id, fill=Color.to_hex(pixel))

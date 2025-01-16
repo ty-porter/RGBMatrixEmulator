@@ -2,7 +2,6 @@ import os
 import sys
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.graphics import Color
 
 
 class TerminalAdapter(BaseAdapter):
@@ -18,7 +17,6 @@ class TerminalAdapter(BaseAdapter):
         for pixel_row in pixels:
             output += "  "  # Add a bit of border in case cursor causes line to wrap
             for pixel in pixel_row:
-                pixel = self.adjust_pixel_brightness(pixel)
                 output += "\033[38;2;{};{};{}m".format(
                     *pixel
                 )  # Set the cell to the pixel color

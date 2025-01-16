@@ -1,8 +1,7 @@
 import numpy as np
 
-from PIL import Image, ImageDraw, ImageEnhance
+from PIL import Image, ImageDraw
 from RGBMatrixEmulator import version
-from RGBMatrixEmulator.graphics import Color
 
 
 def draw_circle_mask(drawer, x, y, pixel_size, color):
@@ -38,7 +37,6 @@ class BaseAdapter:
         drawer = ImageDraw.Draw(mask)
         pixel_size = self.options.pixel_size
         width, height = self.options.window_size()
-        color = int((self.options.brightness * 255) / 100)
         draw_mask_shape = (
             draw_circle_mask
             if self.options.pixel_style == "circle"
@@ -46,7 +44,7 @@ class BaseAdapter:
         )
         for y in range(0, height, pixel_size):
             for x in range(0, width, pixel_size):
-                draw_mask_shape(drawer, x, y, pixel_size, color)
+                draw_mask_shape(drawer, x, y, pixel_size, 255)
 
         return mask
 
@@ -57,10 +55,6 @@ class BaseAdapter:
             cls.INSTANCE = instance
 
         return cls.INSTANCE
-
-    def adjust_pixel_brightness(self, pixel, to_int=True):
-        alpha = self.options.brightness / 100.0
-        return Color.adjust_brightness(pixel, alpha, to_int=to_int)
 
     def pixel_out_of_bounds(self, x, y):
         if x < 0 or x >= self.width:
@@ -74,8 +68,6 @@ class BaseAdapter:
     def _get_masked_image(self, pixels):
         image = Image.fromarray(np.array(pixels, dtype=np.uint8), "RGB")
         image = image.resize(self.options.window_size(), Image.NEAREST)
-        enhancer = ImageEnhance.Brightness(image)
-        image = enhancer.enhance(self.options.brightness / 100.0)
 
         return Image.composite(image, self.__black, self.__mask)
 
@@ -113,6 +105,5 @@ class BaseAdapter:
         Accepts a 2D array of pixels of size height x width.
 
         Implements drawing each pixel to the screen via the external dependency loaded in load_emulator_window.
-        Before drawing, use adjust_pixel_brightness() on each pixel if your display adapter supports it.
         """
         raise NotImplementedError

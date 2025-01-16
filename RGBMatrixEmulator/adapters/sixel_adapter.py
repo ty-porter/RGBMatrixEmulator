@@ -44,7 +44,6 @@ class SixelAdapter(BaseAdapter):
             for x, pixel in enumerate(row):
                 rx, ry = x * scale, y * scale
                 ex, ey = rx + (scale - 1), ry + (scale - 1)
-                pixel = self.adjust_pixel_brightness(pixel)
                 if self.options.pixel_style == "circle":
                     d.ellipse(
                         [(rx, ry), (ex, ey)],

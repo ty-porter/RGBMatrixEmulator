@@ -7,7 +7,6 @@ class RGBMatrix:
 
         self.width = options.cols * options.chain_length
         self.height = options.rows * options.parallel
-        self.brightness = options.brightness
 
         self.canvas = None
 
@@ -47,4 +46,15 @@ class RGBMatrix:
         if not self.canvas:
             self.canvas = Canvas(options=self.options)
 
-        self.canvas.display_adapter.options.brightness = self.brightness
+    @property
+    def brightness(self):
+        return self.options.brightness
+    
+    @brightness.setter
+    def brightness(self, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError(f"brightness must be a numeric value, received '{value}'")
+        elif value < 0 or value > 100:
+            raise ValueError(f"brightness must be a number between 0 and 100, received '{value}'")
+        
+        self.options.brightness = value
