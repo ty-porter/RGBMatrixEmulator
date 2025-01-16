@@ -30,10 +30,10 @@ class TurtleAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        Logger.info('Loading {}'.format(self.emulator_details_text()))
+        Logger.info("Loading {}".format(self.emulator_details_text()))
         turtle.setup(*self.options.window_size())
         turtle.title(self.emulator_details_text())
-        self.__pen = turtle.Turtle(visible = False)
+        self.__pen = turtle.Turtle(visible=False)
         self.__screen = self.__pen.getscreen()
         self.__set_emulator_icon()
         self.__screen.bgcolor(Color.BLACK())
@@ -46,7 +46,7 @@ class TurtleAdapter(BaseAdapter):
         self.__pen.color(*pixel)
         self.__pen.begin_fill()
 
-        if self.options.pixel_style == 'circle':
+        if self.options.pixel_style == "circle":
             self.__draw_circle_pixel()
         else:
             self.__draw_square_pixel()
@@ -83,12 +83,15 @@ class TurtleAdapter(BaseAdapter):
 
     def __reset_pen_position(self):
         self.__pen.penup()
-        self.__pen.goto(self.options.pixel_size / 2 - self.__screen.window_width() / 2, self.__screen.window_height() / 2 - self.options.pixel_size / 2)
+        self.__pen.goto(
+            self.options.pixel_size / 2 - self.__screen.window_width() / 2,
+            self.__screen.window_height() / 2 - self.options.pixel_size / 2,
+        )
         self.__pen.pendown()
 
     def __set_emulator_icon(self):
         emulator_path = os.path.abspath(os.path.dirname(__file__))
-        raw_icon_path = os.path.join(emulator_path, '..', 'icon.png')
+        raw_icon_path = os.path.join(emulator_path, "..", "icon.png")
         icon_path = os.path.normpath(raw_icon_path)
 
         icon_image = tkinter.Image("photo", file=icon_path)

@@ -17,7 +17,11 @@ class ImageWebSocketHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, _message):
         if not ImageWebSocketHandler.adapter.image:
-            Logger.warning("No image received from {}!".format(ImageWebSocketHandler.adapter.__class__.__name__))
+            Logger.warning(
+                "No image received from {}!".format(
+                    ImageWebSocketHandler.adapter.__class__.__name__
+                )
+            )
             return
 
         image_bytes = ImageWebSocketHandler.adapter.image

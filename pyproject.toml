@@ -42,6 +42,9 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/ty-porter/RGBMatrixEmulator"
 
+[tool.black]
+exclude = "samples"
+
 [tool.hatch.version]
 path = "RGBMatrixEmulator/version.py"
 
