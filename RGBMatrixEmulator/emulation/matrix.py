@@ -1,21 +1,20 @@
-from RGBMatrixEmulator.emulators.canvas import Canvas
+from RGBMatrixEmulator.emulation.canvas import Canvas
 
 
 class RGBMatrix:
-    def __init__(self, options = {}):
+    def __init__(self, options={}):
         self.options = options
 
         self.width = options.cols * options.chain_length
         self.height = options.rows * options.parallel
-        self.brightness = options.brightness
 
         self.canvas = None
 
     def CreateFrameCanvas(self):
-        self.canvas = Canvas(options = self.options)
+        self.canvas = Canvas(options=self.options)
 
         return self.canvas
-    
+
     def SwapOnVSync(self, canvas):
         canvas.check_for_quit_event()
         canvas.draw_to_screen()
@@ -42,9 +41,22 @@ class RGBMatrix:
         self.__sync_canvas()
         self.canvas.SetImage(image, offset_x, offset_y, *other)
         self.SwapOnVSync(self.canvas)
- 
-    def __sync_canvas(self):        
-        if not self.canvas:
-            self.canvas = Canvas(options = self.options)
 
-        self.canvas.display_adapter.options.brightness = self.brightness
+    def __sync_canvas(self):
+        if not self.canvas:
+            self.canvas = Canvas(options=self.options)
+
+    @property
+    def brightness(self):
+        return self.options.brightness
+
+    @brightness.setter
+    def brightness(self, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError(f"brightness must be a numeric value, received '{value}'")
+        elif value < 0 or value > 100:
+            raise ValueError(
+                f"brightness must be a number between 0 and 100, received '{value}'"
+            )
+
+        self.options.brightness = value

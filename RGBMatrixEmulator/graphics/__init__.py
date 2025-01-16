@@ -28,10 +28,12 @@ def DrawText(canvas, font, x, y, color, text):
     # Draw the text!
     if len(text) != 0:
         # Ensure text doesn't get drawn as multiple lines
-        linelimit = len(text) * (font.headers['fbbx'] + 1)
+        linelimit = len(text) * (font.headers["fbbx"] + 1)
 
-        text_map = font.bdf_font.draw(text, linelimit, missing=font.default_character).todata(2)
-        font_y_offset = -(font.headers['fbby'] + font.headers['fbbyoff'])
+        text_map = font.bdf_font.draw(
+            text, linelimit, missing=font.default_character
+        ).todata(2)
+        font_y_offset = -(font.headers["fbby"] + font.headers["fbbyoff"])
 
         for y2, row in enumerate(text_map):
             for x2, value in enumerate(row):
@@ -39,9 +41,16 @@ def DrawText(canvas, font, x, y, color, text):
                     if isinstance(color, tuple):
                         canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
                     else:
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, color.red, color.green, color.blue)
+                        canvas.SetPixel(
+                            x + x2,
+                            y + y2 + font_y_offset,
+                            color.red,
+                            color.green,
+                            color.blue,
+                        )
 
     return total_width
+
 
 def DrawLine(canvas, x1, y1, x2, y2, color):
     int_points = __coerce_int(x1, y1, x2, y2)
@@ -53,6 +62,7 @@ def DrawLine(canvas, x1, y1, x2, y2, color):
         else:
             canvas.SetPixel(*point, color.red, color.green, color.blue)
 
+
 def DrawCircle(canvas, x, y, r, color):
     int_points = __coerce_int(x, y)
     rows, cols = __circle_perimeter(*int_points, r)
@@ -63,28 +73,31 @@ def DrawCircle(canvas, x, y, r, color):
         else:
             canvas.SetPixel(*point, color.red, color.green, color.blue)
 
+
 def __actual_width(font, letter):
-    '''
+    """
     Returns the actual width of the letter in the font. If the font doesn't contain a glyph for this letter, it falls back to
     the width of the default character (?) to prevent division by 0.
-    '''
+    """
     width = font.CharacterWidth(ord(letter))
-    
+
     if width > 0:
         return width
 
     return font.CharacterWidth(font.default_character.cp())
 
+
 def __coerce_int(*values):
     return [int(value) for value in values]
 
+
 def __line(x1, y1, x2, y2):
-    '''
+    """
     Line drawing algorithm
 
     Extracted from scikit-image:
     https://github.com/scikit-image/scikit-image/blob/00177e14097237ef20ed3141ed454bc81b308f82/skimage/draw/_draw.pyx#L44
-    '''
+    """
     steep = 0
     r = x1
     c = y1
@@ -127,13 +140,14 @@ def __line(x1, y1, x2, y2):
 
     return (rr, cc)
 
+
 def __circle_perimeter(x, y, radius):
-    '''
+    """
     Bresenham circle algorithm
-    
+
     Extracted from scikit-image
     https://github.com/scikit-image/scikit-image/blob/00177e14097237ef20ed3141ed454bc81b308f82/skimage/draw/_draw.pyx#L248
-    '''
+    """
     rr = list()
     cc = list()
 

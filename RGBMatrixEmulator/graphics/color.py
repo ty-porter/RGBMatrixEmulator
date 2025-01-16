@@ -1,17 +1,15 @@
 class Color:
-    def __init__(self, r = 0, g = 0, b = 0):
-        self.red   = r
+    def __init__(self, r=0, g=0, b=0):
+        self.red = r
         self.green = g
-        self.blue  = b
+        self.blue = b
 
     @classmethod
-    def adjust_brightness(cls, pixel, alpha, to_int = False):
-        p = tuple(channel * alpha for channel in pixel)
-
+    def adjust_brightness(cls, pixel, alpha, to_int=False):
         if to_int:
-            p = tuple(int(channel) for channel in pixel)
+            return tuple(int(channel) for channel in pixel)
 
-        return p
+        return tuple(channel * alpha for channel in pixel)
 
     @classmethod
     def to_hex(cls, pixel):
@@ -32,5 +30,3 @@ class Color:
     @classmethod
     def BLUE(cls):
         return (0, 0, 255)
-
-

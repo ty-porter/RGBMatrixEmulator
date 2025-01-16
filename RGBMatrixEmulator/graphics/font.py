@@ -21,14 +21,16 @@ class Font:
         if self.bdf_font == None or not self.bdf_font.glyphbycp(char):
             return 0
 
-        return self.bdf_font.glyphbycp(char).meta['dwx0']
+        return self.bdf_font.glyphbycp(char).meta["dwx0"]
 
     @property
     def height(self):
-        if self.bdf_font is None: return -1
-        return self.headers['fbby']
+        if self.bdf_font is None:
+            return -1
+        return self.headers["fbby"]
 
     @property
     def baseline(self):
-        if self.bdf_font is None: return 0
-        return self.headers['fbby'] + self.headers['fbbyoff']
+        if self.bdf_font is None:
+            return 0
+        return self.headers["fbby"] + self.headers["fbbyoff"]
