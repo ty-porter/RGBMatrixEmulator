@@ -10,8 +10,8 @@ class Canvas:
         self.width = options.cols * options.chain_length
         self.height = options.rows * options.parallel
 
-        # 3D numpy array -- w, h, 3-tuple RGB
-        self.__pdims = (self.width, self.height, 3)
+        # 3D numpy array -- rows (H), columns (W), 3-tuple RGB
+        self.__pdims = (self.height, self.width, 3)
 
         self.display_adapter = options.display_adapter.get_instance(
             self.width, self.height, options
