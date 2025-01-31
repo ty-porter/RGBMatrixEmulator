@@ -56,15 +56,6 @@ class BaseAdapter:
 
         return cls.INSTANCE
 
-    def pixel_out_of_bounds(self, x, y):
-        if x < 0 or x >= self.width:
-            return True
-
-        if y < 0 or y >= self.height:
-            return True
-
-        return False
-
     def _get_masked_image(self, pixels):
         image = Image.fromarray(np.array(pixels, dtype=np.uint8), "RGB")
         image = image.resize(self.options.window_size(), Image.NEAREST)
