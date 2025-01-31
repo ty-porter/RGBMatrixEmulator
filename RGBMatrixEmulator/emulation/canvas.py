@@ -32,10 +32,10 @@ class Canvas:
         )
 
     def SetPixel(self, x, y, r, g, b):
-        if self.display_adapter.pixel_out_of_bounds(x, y):
+        if self.__pixel_out_of_bounds(x, y):
             return
 
-        self.__pixels[int(y)][int(x)] = (r, g, b) * self.brightness
+        self.__pixels[int(y)][int(x)] = self.__create_pixel((r, g, b))
 
     def SetImage(self, image, offset_x=0, offset_y=0, *other):
         enhancer = ImageEnhance.Brightness(image)
@@ -62,6 +62,15 @@ class Canvas:
 
     def __create_pixel(self, pixel):
         return Color.adjust_brightness(tuple(pixel), self.brightness / 100.0)
+    
+    def __pixel_out_of_bounds(self, x, y):
+        if x < 0 or x >= self.width:
+            return True
+
+        if y < 0 or y >= self.height:
+            return True
+
+        return False
 
     # These are delegated to the display adapter to handle specific implementation.
     def draw_to_screen(self):
