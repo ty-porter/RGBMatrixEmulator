@@ -13,11 +13,7 @@ class RawAdapter(BaseAdapter):
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
 
-        self.frames = {}
-        self.frame = 0
-
-        self.halt_after = RawAdapter.DEFAULT_MAX_FRAME
-        self.halt_fn = lambda: 1+1
+        self._reset()
 
     def draw_to_screen(self, pixels):
         self.frames[self.frame] = pixels
@@ -36,3 +32,10 @@ class RawAdapter(BaseAdapter):
     def _dump_screenshot(self, path):
         image = Image.fromarray(np.array(self.frames[self.frame - 1], dtype="uint8"), "RGB")
         image.save(path)
+
+    def _reset(self):
+        self.frames = {}
+        self.frame = 0
+
+        self.halt_after = RawAdapter.DEFAULT_MAX_FRAME
+        self.halt_fn = lambda: 1+1

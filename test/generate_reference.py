@@ -22,13 +22,14 @@ def mockedExit(code):
 
 sys.exit = mockedExit
 
-def generate_reference(sample, frame, halt_fn):
-    from samples.runtext import RunText
+def generate_reference(file_name, sample_name, frame, halt_fn):
+    module = importlib.import_module(f"samples.{file_name}")
+    Sample = getattr(module, sample_name)
 
     os.chdir("samples")
-    sys.argv = ['python runtext.py']
-    rt = RunText()
-    rt.usleep = lambda _: 1 + 1
+    sys.argv = [f'python {file_name}.py']
+    sample = Sample()
+    sample.usleep = lambda _: 1 + 1
 
     def mockedSetAttr(inst, name, value):
         if name == "matrix":
@@ -40,12 +41,31 @@ def generate_reference(sample, frame, halt_fn):
         else:
             super(inst.__class__, inst).__setattr__(name, value)
 
-    RunText.__setattr__ = mockedSetAttr
+    Sample.__setattr__ = mockedSetAttr
 
     try:
-        rt.process()
+        sample.process()
     except SampleExecutionHalted:
-        refpath = os.path.join(__file__, "..", "reference", rt.__class__.__name__ + ".png")
-        rt.matrix.canvas.display_adapter._dump_screenshot(refpath)
+        refpath = os.path.join(__file__, "..", "reference", f"{sample_name}.png")
+        sample.matrix.canvas.display_adapter._dump_screenshot(refpath)
+    finally:
+        sample.matrix.canvas.display_adapter._reset()
+        os.chdir("..")
 
-generate_reference(1, 264, simulateKeyboardInterrupt)
+generate_reference("canvas-brightness", "CanvasBrightness", 256, simulateKeyboardInterrupt)
+generate_reference("graphics", "GraphicsTest", 140, simulateKeyboardInterrupt)
+generate_reference("grayscale-block", "GrayscaleBlock", 256, simulateKeyboardInterrupt)
+generate_reference("image-brightness", "ImageBrightness", 256, simulateKeyboardInterrupt)
+generate_reference("image-scroller", "ImageScroller", 50, simulateKeyboardInterrupt)
+generate_reference("pulsing-brightness", "GrayscaleBlock", 256, simulateKeyboardInterrupt)
+generate_reference("pulsing-colors", "PulsingColors", 256, simulateKeyboardInterrupt)
+generate_reference("rotating-block-generator", "RotatingBlockGenerator", 256, simulateKeyboardInterrupt)
+generate_reference("runtext", "RunText", 264, simulateKeyboardInterrupt)
+generate_reference("simple-square", "SimpleSquare", 256, simulateKeyboardInterrupt)
+generate_reference("singleton", "MultCanvas", 256, simulateKeyboardInterrupt)
+
+# Not a class
+# generate_reference("image-draw", "ImageDraw", 264, simulateKeyboardInterrupt)
+
+# Needs an extra arg
+# generate_reference("image-viewer", "ImageViewer", 264, simulateKeyboardInterrupt)
