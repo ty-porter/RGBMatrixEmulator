@@ -1,4 +1,4 @@
-import sys, os, time, importlib, traceback
+import sys, os, time, importlib, traceback, io, contextlib
 
 from collections import namedtuple
 
@@ -62,17 +62,14 @@ for reference in _REFERENCES:
     REFERENCES.append(sample)
 
 def generate_reference(reference, refsize):
-    run_sample(reference, refsize, dump_screenshot=True)
+    run_sample(reference, refsize, screenshot_path=os.path.join(__file__, "..", "reference"))
 
 def generate_references(reference):
     for refsize in REFERENCE_SIZES:
         generate_reference(reference, refsize)
 
-def run_sample(sample_class, size, dump_screenshot=False):
+def run_sample(sample_class, size, screenshot_path=None):
     sys.argv = [f'{sample_class.file_name}.py', f"--led-cols={size[0]}", f'--led-rows={size[1]}']
-
-    if dump_screenshot:
-        print(f"generating a reference for {sample_class.name} ({sample_class.file_name}, {sys.argv})")
 
     os.chdir(os.path.join(__file__, '..', '..', "samples"))
 
@@ -100,8 +97,8 @@ def run_sample(sample_class, size, dump_screenshot=False):
     except SampleExecutionHalted:
         adapter = sample.matrix.canvas.display_adapter
 
-        if dump_screenshot:
-            refdir = os.path.join(__file__, "..", "reference", sample_class.file_name)
+        if screenshot_path:
+            refdir = os.path.join(screenshot_path, sample_class.file_name)
 
             if not os.path.exists(refdir):
                 os.mkdir(refdir)
@@ -110,10 +107,7 @@ def run_sample(sample_class, size, dump_screenshot=False):
             adapter._dump_screenshot(refpath)
 
         return adapter._last_frame()
-    except Exception:
-        if dump_screenshot:
-            print(f"An error occurred generating a reference for {sample_class.name} ({sample_class.file_name}, {sys.argv})")
-        
+    except Exception:       
         traceback.print_exc()
     finally:
         sample.matrix.canvas.display_adapter._reset()
@@ -124,10 +118,13 @@ def reference_to_nparray(sample, size):
     if not os.path.exists(refpath):
         return None
 
-    image = Image.open(refpath)
+    image = Image.open(refpath).convert("RGB")
 
     return np.array(image, dtype="uint8")
 
 if __name__ == "__main__":
     for reference in REFERENCES:
-        generate_references(reference)
+        print(f"Generating references for {reference.file_name}...")
+        # Suppress "Press CTRL-C to stop sample" messages
+        with io.StringIO() as buf, contextlib.redirect_stdout(buf):
+            generate_references(reference)

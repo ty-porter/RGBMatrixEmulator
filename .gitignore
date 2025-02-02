@@ -6,3 +6,4 @@ dist
 MANIFEST
 tmp
 emulator_config.json
+test/result/*
