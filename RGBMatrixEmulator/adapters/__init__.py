@@ -33,6 +33,11 @@ adapters = [
         "class": "TurtleAdapter",
         "type": "turtle",
     },
+    {
+        "path": "RGBMatrixEmulator.adapters.raw_adapter",
+        "class": "RawAdapter",
+        "type": "raw",
+    },
 ]
 
 ADAPTER_TYPES = {}
