@@ -1,4 +1,4 @@
-import importlib, json
+import importlib, json, os
 
 from RGBMatrixEmulator.logger import Logger
 
@@ -60,7 +60,7 @@ for adapter in adapters:
 
         ADAPTER_TYPES[adapter_name] = adapter
     except Exception as ex:
-        if suppress_adapter_load_errors:
+        if suppress_adapter_load_errors or os.environ["RGBME_SUPPRESS_ADAPTER_LOAD_ERRORS"]:
             continue
 
         Logger.exception(

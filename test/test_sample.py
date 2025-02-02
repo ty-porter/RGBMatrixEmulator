@@ -1,43 +1,35 @@
-from unittest import TestCase, mock
-import sys, os
-from RGBMatrixEmulator import RGBMatrixOptions
+from unittest import TestCase
 
-breakpoint()
-from samples import samplebase
+import io, contextlib
+
+from reference import REFERENCES, REFERENCE_SIZES, run_sample, reference_to_nparray
+
+from parameterized import parameterized
 
 class TestSampleRunMatchesReference(TestCase):
 
-    def setUp(self):
-        os.chdir("samples")
-        sys.argv = ['python runtext.py']
-        sys.modules["samplebase"] = samplebase
+    TESTS = []
 
-        self.options = RGBMatrixOptions()
-        self.options.display_adapter  = "raw"
+    for reference in REFERENCES:
+        for refsize in REFERENCE_SIZES:
+            TESTS.append((reference, refsize))
 
-    def tearDown(self):
-        os.chdir("..")
-        sys.path.pop()
+    @parameterized.expand(TESTS)
+    def test_sample(self, sample, size):
+        expected = reference_to_nparray(sample, size)
 
-    def test_sample(self):
-        from samples.runtext import RunText
+        if expected is None:
+            return
 
-        def _halt():
-            raise KeyboardInterrupt
+        # Suppress "Press CTRL-C to stop sample" messages
+        with io.StringIO() as buf, contextlib.redirect_stdout(buf):
+            actual = run_sample(sample, size)
 
-        rt = RunText()
-        rt.usleep = lambda _: 1 + 1
+        if (expected != actual).all():
 
-        def mockedSetAttr(inst, name, value):
-            if name == "matrix":
-                inst.__dict__[name] = value
+            self.assertTrue(
+                False,
+                f"Actual results do not match reference screenshot. See test/result/{sample.file_name}/w{sample.width}h{sample.height}.png to compare"
+            )
 
-                inst.matrix.CreateFrameCanvas()
-                inst.matrix.canvas.display_adapter.halt_after = 5
-                inst.matrix.canvas.display_adapter.halt_fn = _halt
-            else:
-                super(inst.__class__, inst).__setattr__(name, value)
-
-        RunText.__setattr__ = mockedSetAttr
-
-        rt.process()
+        self.assertTrue(True)

@@ -29,8 +29,11 @@ class RawAdapter(BaseAdapter):
         pass
 
     def _dump_screenshot(self, path):
-        image = Image.fromarray(np.array(self.frames[self.frame - 1], dtype="uint8"), "RGB")
+        image = Image.fromarray(np.array(self._last_frame(), dtype="uint8"), "RGB")
         image.save(path)
+
+    def _last_frame(self):
+        return self.frames[self.frame - 1]
 
     def _reset(self):
         self.frames = {}
