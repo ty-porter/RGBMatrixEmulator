@@ -1,5 +1,4 @@
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.graphics import Color
 
 from PIL import Image
 
