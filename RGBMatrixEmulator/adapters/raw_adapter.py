@@ -7,7 +7,7 @@ import numpy as np
 
 class RawAdapter(BaseAdapter):
     MAX_FRAMES_STORED = 128
-    DEFAULT_MAX_FRAME = -1 # Never halts
+    DEFAULT_MAX_FRAME = -1  # Never halts
 
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
@@ -21,7 +21,7 @@ class RawAdapter(BaseAdapter):
             del self.frames[self.frame - RawAdapter.MAX_FRAMES_STORED]
 
         self.frame += 1
-        
+
         if self.halt_after > 0 and self.frame >= self.halt_after:
             self.halt_fn()
 
@@ -40,4 +40,4 @@ class RawAdapter(BaseAdapter):
         self.frame = 0
 
         self.halt_after = RawAdapter.DEFAULT_MAX_FRAME
-        self.halt_fn = lambda: 1+1
+        self.halt_fn = lambda: 1 + 1

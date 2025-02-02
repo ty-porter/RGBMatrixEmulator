@@ -10,23 +10,21 @@ os.environ["RGBME_SUPPRESS_ADAPTER_LOAD_ERRORS"] = "true"
 sys.path.append(os.path.join(__file__, "..", ".."))
 
 import samples
+
 sys.modules["samplebase"] = samples.samplebase
 
 time.sleep = lambda _: 1 + 1
 
+
 class SampleExecutionHalted(Exception):
     pass
+
 
 def send_kb_interrupt(*_args):
     raise SampleExecutionHalted
 
-REFERENCE_SIZES = [
-    (128, 32),
-    (128, 64),
-    (64, 32),
-    (64, 64),
-    (32, 32)
-]
+
+REFERENCE_SIZES = [(128, 32), (128, 64), (64, 32), (64, 64), (32, 32)]
 
 Reference = namedtuple("Reference", ("file_name", "name", "frame", "halt_fn"))
 
@@ -38,14 +36,14 @@ _REFERENCES = [
     Reference("image-scroller", "ImageScroller", 50, send_kb_interrupt),
     Reference("pulsing-brightness", "GrayscaleBlock", 256, send_kb_interrupt),
     Reference("pulsing-colors", "PulsingColors", 256, send_kb_interrupt),
-    Reference("rotating-block-generator", "RotatingBlockGenerator", 256, send_kb_interrupt),
+    Reference(
+        "rotating-block-generator", "RotatingBlockGenerator", 256, send_kb_interrupt
+    ),
     Reference("runtext", "RunText", 264, send_kb_interrupt),
     Reference("simple-square", "SimpleSquare", 256, send_kb_interrupt),
     Reference("singleton", "MultCanvas", 256, send_kb_interrupt),
-
     # Not a class
     # Reference("image-draw", "ImageDraw", 256, send_kb_interrupt)
-
     # Needs an extra arg
     # Reference("image-viewer", "ImageViewer", 256, send_kb_interrupt)
 ]
@@ -61,17 +59,26 @@ for reference in _REFERENCES:
     sample.halt_fn = reference.halt_fn
     REFERENCES.append(sample)
 
+
 def generate_reference(reference, refsize):
-    run_sample(reference, refsize, screenshot_path=os.path.join(__file__, "..", "reference"))
+    run_sample(
+        reference, refsize, screenshot_path=os.path.join(__file__, "..", "reference")
+    )
+
 
 def generate_references(reference):
     for refsize in REFERENCE_SIZES:
         generate_reference(reference, refsize)
 
-def run_sample(sample_class, size, screenshot_path=None):
-    sys.argv = [f'{sample_class.file_name}.py', f"--led-cols={size[0]}", f'--led-rows={size[1]}']
 
-    os.chdir(os.path.join(__file__, '..', '..', "samples"))
+def run_sample(sample_class, size, screenshot_path=None):
+    sys.argv = [
+        f"{sample_class.file_name}.py",
+        f"--led-cols={size[0]}",
+        f"--led-rows={size[1]}",
+    ]
+
+    os.chdir(os.path.join(__file__, "..", "..", "samples"))
 
     sample = sample_class()
     sample.usleep = lambda _: 1 + 1
@@ -107,13 +114,16 @@ def run_sample(sample_class, size, screenshot_path=None):
             adapter._dump_screenshot(refpath)
 
         return adapter._last_frame()
-    except Exception:       
+    except Exception:
         traceback.print_exc()
     finally:
         sample.matrix.canvas.display_adapter._reset()
 
+
 def reference_to_nparray(sample, size):
-    refpath = os.path.join(__file__, "..", "reference", sample.file_name, f"w{size[0]}h{size[1]}.png")
+    refpath = os.path.join(
+        __file__, "..", "reference", sample.file_name, f"w{size[0]}h{size[1]}.png"
+    )
 
     if not os.path.exists(refpath):
         return None
@@ -121,6 +131,7 @@ def reference_to_nparray(sample, size):
     image = Image.open(refpath).convert("RGB")
 
     return np.array(image, dtype="uint8")
+
 
 if __name__ == "__main__":
     for reference in REFERENCES:
