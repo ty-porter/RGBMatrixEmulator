@@ -168,7 +168,7 @@ hatch shell dev
 (rgbmatrixemulator) cd samples
 (rgbmatrixemulator) python runtext.py
 ```
-
+---
 > [!NOTE]
 > hatch has an issue dealing with keyboard interrupts (such as CTRL + C), which is heavily used to stop emulated scripts.
 > 
@@ -178,6 +178,7 @@ hatch shell dev
 > ```sh
 > pip install -e .[dev]
 > ```
+---
 
 #### Running Tests
 
