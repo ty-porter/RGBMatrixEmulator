@@ -94,7 +94,7 @@ class RGBMatrixOptions:
 
 
 class RGBMatrixEmulatorConfig:
-    __CONFIG_PATH = "emulator_config.json"
+    CONFIG_PATH = "emulator_config.json"
 
     VALID_PIXEL_STYLES = ["square", "circle"]
     DEFAULT_CONFIG = {
@@ -124,13 +124,13 @@ class RGBMatrixEmulatorConfig:
         RGBMatrixEmulatorConfig.Utils.set_attributes(self)
 
     def __load_config(self):
-        if os.path.exists(self.__CONFIG_PATH):
-            with open(self.__CONFIG_PATH) as f:
+        if os.path.exists(self.CONFIG_PATH):
+            with open(self.CONFIG_PATH) as f:
                 config = json.load(f)
 
             return config
 
-        with open(self.__CONFIG_PATH, "w") as f:
+        with open(self.CONFIG_PATH, "w") as f:
             json.dump(self.DEFAULT_CONFIG, f, indent=4)
 
         return self.DEFAULT_CONFIG
