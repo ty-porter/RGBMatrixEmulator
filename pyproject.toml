@@ -71,3 +71,4 @@ dependencies = [
 [tool.hatch.envs.test.scripts]
 run = "python -m unittest discover -s test"
 lint = "black ."
+lint_check = "black . --check"
