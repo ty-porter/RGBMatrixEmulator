@@ -51,6 +51,7 @@ class TestSampleRunMatchesReference(TestCase):
         expected = reference_to_nparray(sample, size)
 
         if expected is None:
+            print(f"\n{sample.file_name} {size} has no reference image. Skipping...")
             return
 
         # Suppress "Press CTRL-C to stop sample" messages
