@@ -78,6 +78,7 @@ def run_sample(sample_class, size, screenshot_path=None):
         f"--led-rows={size[1]}",
     ]
 
+    cwd = os.getcwd()
     os.chdir(os.path.join(__file__, "..", "..", "samples"))
 
     sample = sample_class()
@@ -118,6 +119,7 @@ def run_sample(sample_class, size, screenshot_path=None):
         traceback.print_exc()
     finally:
         sample.matrix.canvas.display_adapter._reset()
+        os.chdir(cwd)
 
 
 def reference_to_nparray(sample, size):
