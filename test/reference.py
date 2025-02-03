@@ -7,7 +7,7 @@ import numpy as np
 
 os.environ["RGBME_SUPPRESS_ADAPTER_LOAD_ERRORS"] = "true"
 
-sys.path.append(os.path.join(__file__, "..", ".."))
+sys.path.append(os.path.abspath(os.path.join(__file__, "..", "..")))
 
 import samples
 
@@ -79,7 +79,7 @@ def run_sample(sample_class, size, screenshot_path=None):
     ]
 
     cwd = os.getcwd()
-    os.chdir(os.path.join(__file__, "..", "..", "samples"))
+    os.chdir(os.path.abspath(os.path.join(__file__, "..", "..", "samples")))
 
     sample = sample_class()
     sample.usleep = lambda _: 1 + 1
@@ -126,6 +126,7 @@ def reference_to_nparray(sample, size):
     refpath = os.path.join(
         __file__, "..", "reference", sample.file_name, f"w{size[0]}h{size[1]}.png"
     )
+    refpath = os.path.abspath(refpath)
 
     if not os.path.exists(refpath):
         return None

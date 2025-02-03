@@ -13,7 +13,7 @@ from parameterized import parameterized
 from RGBMatrixEmulator.emulation.options import RGBMatrixEmulatorConfig
 
 # Tests will be run from the samples directory
-CONFIG_PATH = os.path.join("samples", RGBMatrixEmulatorConfig.CONFIG_PATH)
+CONFIG_PATH = os.path.join(os.path.join("samples", RGBMatrixEmulatorConfig.CONFIG_PATH))
 BACKUP_PATH = CONFIG_PATH + ".bak"
 
 
@@ -61,11 +61,13 @@ class TestSampleRunMatchesReference(TestCase):
         if not np.array_equal(expected, actual):
             image = Image.fromarray(np.array(actual, dtype="uint8"), "RGB")
             image.save(
-                os.path.join(
-                    __file__,
-                    "..",
-                    "result",
-                    f"{sample.file_name}-w{size[0]}h{size[1]}.png",
+                os.path.abspath(
+                    os.path.join(
+                        __file__,
+                        "..",
+                        "result",
+                        f"{sample.file_name}-w{size[0]}h{size[1]}.png",
+                    )
                 )
             )
 
