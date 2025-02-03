@@ -4,9 +4,9 @@
 
 ![hello-world](assets/hello-world.gif)
 
-`RGBMatrixEmulator` is a Python package for emulating RGB LED matrices that are normally driven by the `rpi-rgb-led-matrix` library. Most commonly, these are used with single-board computers such as the Raspberry Pi.
+`RGBMatrixEmulator` is a Python package for emulating RGB LED matrices that are normally driven by the [rpi-rgb-led-matrix library](https://github.com/hzeller/rpi-rgb-led-matrix). Most commonly, these are used with single-board computers such as the Raspberry Pi.
 
-`RGBMatrixEmulator` (currently) supports a subset of the function calls present in the Python bindings for `rpi-rgb-led-matrix`. As such, it's accuracy is not 100% guaranteed.
+`RGBMatrixEmulator` (currently) supports a subset of the function calls present in the [Python bindings for rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix/tree/master/bindings/python). As such, it's accuracy is not 100% guaranteed.
 
 ## Installation
 
@@ -149,9 +149,48 @@ See [Samples README](samples/README.md) for more information about running examp
 - Drawing large strings is slow, partly because of the `linelimit` parameter in the BDF font parser this emulator uses to prevent multiline text from being rendered unintentionally.
 
 ## Contributing
-If you want to help develop RGBMatrixEmulator, you must also install the dev dependencies, which can be done by running ``pip install -e .[dev]`` from within the directory.
 
-Before submitting a PR, please open an issue to help us track development. All development should be based off of the `dev` branch. This branch is kept up-to-date with `main` after releases. 
+### Pull Requests
+
+Before submitting a PR, please open an issue to help us track development. All development should be based off of the `dev` branch. This branch is kept up-to-date with `main` after releases.
+
+Pull requests that fail builds will not be merged.
+
+### Installing Locally
+
+RGBME uses `hatch` to manage dependencies. To enter a hatch shell:
+
+```sh
+hatch shell dev
+
+# Example:
+#   To run a sample script:
+(rgbmatrixemulator) cd samples
+(rgbmatrixemulator) python runtext.py
+```
+---
+> [!NOTE]
+> hatch has an issue dealing with keyboard interrupts (such as CTRL + C), which is heavily used to stop emulated scripts.
+> 
+> See https://github.com/pypa/hatch/issues/1633 and https://github.com/pypa/hatch/issues/1647
+> 
+> Until this is resolved, you may want to install RGBME directly instead:
+> ```sh
+> pip install -e .[dev]
+> ```
+---
+
+#### Running Tests
+
+```sh
+hatch run test:run
+```
+
+#### Lint
+
+```sh
+hatch run test:lint
+```
 
 ## Contact
 

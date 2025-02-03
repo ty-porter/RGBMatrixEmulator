@@ -62,7 +62,7 @@ class Canvas:
 
     def __create_pixel(self, pixel):
         return Color.adjust_brightness(tuple(pixel), self.brightness / 100.0)
-    
+
     def __pixel_out_of_bounds(self, x, y):
         if x < 0 or x >= self.width:
             return True
