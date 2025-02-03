@@ -16,6 +16,7 @@ from RGBMatrixEmulator.emulation.options import RGBMatrixEmulatorConfig
 CONFIG_PATH = os.path.join("samples", RGBMatrixEmulatorConfig.CONFIG_PATH)
 BACKUP_PATH = CONFIG_PATH + ".bak"
 
+
 class TestSampleRunMatchesReference(TestCase):
 
     TESTS = []
@@ -27,7 +28,10 @@ class TestSampleRunMatchesReference(TestCase):
             )
 
     def setUp(self):
-        self.emulator_config = RGBMatrixEmulatorConfig.DEFAULT_CONFIG | { "suppress_adapter_load_errors": True, "display_adapter": "raw" }
+        self.emulator_config = RGBMatrixEmulatorConfig.DEFAULT_CONFIG | {
+            "suppress_adapter_load_errors": True,
+            "display_adapter": "raw",
+        }
 
         if os.path.exists(CONFIG_PATH):
             shutil.move(CONFIG_PATH, BACKUP_PATH)
