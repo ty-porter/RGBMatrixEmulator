@@ -71,6 +71,18 @@ class RGBMatrixOptions:
                 )
             )
 
+        self.pixel_bleed = emulator_config.pixel_bleed
+        if self.pixel_bleed != "auto" and not (
+            isinstance(self.pixel_bleed, int) and self.pixel_bleed >= 0
+        ):
+            Logger.warning(
+                '"{}" pixel bleed option not recognized. Valid options are "auto" and integers >= 0. Defaulting to "auto"...'.format(
+                    self.pixel_bleed
+                )
+            )
+
+            self.pixel_bleed = emulator_config.DEFAULT_CONFIG.get("pixel_bleed")
+
         self.pixel_size = emulator_config.pixel_size
         self.pixel_outline = emulator_config.DEFAULT_CONFIG["pixel_outline"]
         self.pixel_outline = emulator_config.pixel_outline
@@ -96,11 +108,12 @@ class RGBMatrixOptions:
 class RGBMatrixEmulatorConfig:
     CONFIG_PATH = "emulator_config.json"
 
-    VALID_PIXEL_STYLES = ["square", "circle"]
+    VALID_PIXEL_STYLES = ["square", "circle", "real"]
     DEFAULT_CONFIG = {
         "pixel_outline": 0,
         "pixel_size": 16,
         "pixel_style": "square",
+        "pixel_bleed": "auto",
         "display_adapter": "browser",
         "suppress_font_warnings": False,
         "suppress_adapter_load_errors": False,

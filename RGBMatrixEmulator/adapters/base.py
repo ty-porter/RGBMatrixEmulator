@@ -4,25 +4,16 @@ from PIL import Image, ImageDraw
 from RGBMatrixEmulator import version
 
 
-def draw_circle_mask(drawer, x, y, pixel_size, color):
-    drawer.ellipse(
-        (x, y, x + pixel_size - 1, y + pixel_size - 1),
-        fill=color,
-        outline=color,
-    )
-
-
-def draw_square_mask(drawer, x, y, pixel_size, color):
-    drawer.rectangle(
-        (x, y, x + pixel_size, y + pixel_size),
-        fill=color,
-        outline=color,
-    )
-
-
 class BaseAdapter:
     SUPPORTS_ALTERNATE_PIXEL_STYLE = False
     INSTANCE = None
+
+    DEFAULT_MASK_FN = "__draw_square_mask"
+    MASK_FNS = {
+        "circle": "_draw_circle_mask",
+        "square": "_draw_square_mask",
+        "real": "_draw_real_mask",
+    }
 
     def __init__(self, width, height, options):
         self.width = width
@@ -32,22 +23,6 @@ class BaseAdapter:
         self.__mask = self.__draw_mask()
         self.loaded = False
 
-    def __draw_mask(self):
-        mask = Image.new("L", self.options.window_size())
-        drawer = ImageDraw.Draw(mask)
-        pixel_size = self.options.pixel_size
-        width, height = self.options.window_size()
-        draw_mask_shape = (
-            draw_circle_mask
-            if self.options.pixel_style == "circle"
-            else draw_square_mask
-        )
-        for y in range(0, height, pixel_size):
-            for x in range(0, width, pixel_size):
-                draw_mask_shape(drawer, x, y, pixel_size, 255)
-
-        return mask
-
     @classmethod
     def get_instance(cls, *args, **kwargs):
         if cls.INSTANCE is None:
@@ -55,12 +30,6 @@ class BaseAdapter:
             cls.INSTANCE = instance
 
         return cls.INSTANCE
-
-    def _get_masked_image(self, pixels):
-        image = Image.fromarray(np.array(pixels, dtype=np.uint8), "RGB")
-        image = image.resize(self.options.window_size(), Image.NEAREST)
-
-        return Image.composite(image, self.__black, self.__mask)
 
     def emulator_details_text(self):
         details_text = "RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}"
@@ -98,3 +67,83 @@ class BaseAdapter:
         Implements drawing each pixel to the screen via the external dependency loaded in load_emulator_window.
         """
         raise NotImplementedError
+
+    #############################################################
+    # These methods implement pixel masks (styles)
+    #############################################################
+    def _get_masked_image(self, pixels):
+        image = Image.fromarray(np.array(pixels, dtype=np.uint8), "RGB")
+        image = image.resize(self.options.window_size(), Image.NEAREST)
+
+        return Image.composite(image, self.__black, self.__mask)
+
+    def __mask_fn(self, kind):
+        return getattr(self, self.MASK_FNS.get(kind, self.DEFAULT_MASK_FN))
+
+    def __draw_mask(self):
+        mask = Image.new("LA", self.options.window_size())
+
+        drawer = self.__mask_fn(self.options.pixel_style)
+        drawer(mask)
+
+        return mask
+
+    def _draw_circle_mask(self, mask):
+        pixel_size = self.options.pixel_size
+        width, height = self.options.window_size()
+
+        drawer = ImageDraw.Draw(mask)
+
+        for y in range(0, height, pixel_size):
+            for x in range(0, width, pixel_size):
+                drawer.ellipse(
+                    (x, y, x + pixel_size - 1, y + pixel_size - 1),
+                    fill=255,
+                    outline=255,
+                )
+
+    def _draw_square_mask(self, mask):
+        pixel_size = self.options.pixel_size
+        width, height = self.options.window_size()
+
+        drawer = ImageDraw.Draw(mask)
+
+        for y in range(0, height, pixel_size):
+            for x in range(0, width, pixel_size):
+                drawer.rectangle(
+                    (x, y, x + pixel_size, y + pixel_size),
+                    fill=255,
+                    outline=255,
+                )
+
+    def _draw_real_mask(self, mask):
+        pixel_size = self.options.pixel_size
+        width, height = self.options.window_size()
+        pixel_bleed = (
+            pixel_size // 5 * 2
+            if self.options.pixel_bleed == "auto"
+            else self.options.pixel_bleed
+        )
+        mask_size = pixel_size + pixel_bleed
+
+        # Calculate our own radial gradient to use in the mask. Image.radial_gradient() is not good enough.
+        x = np.linspace(-1, 1, mask_size)[None, :] * 255
+        y = np.linspace(-1, 1, mask_size)[:, None] * 255
+
+        alpha = np.sqrt(x**2 + y**2)
+        alpha = 255 - np.clip(0, 255, alpha)
+
+        # Composite a square pixel with the radial gradient alpha channel.
+        pixel = Image.new(
+            mode="L",
+            size=(mask_size, mask_size),
+            color=255,
+        )
+        pixel.putalpha(Image.fromarray(alpha.astype(np.uint8)))
+
+        # Paste the pixel into the mask at each point.
+        for y in range(0, height, pixel_size):
+            for x in range(0, width, pixel_size):
+                mask.paste(
+                    pixel, (x - (pixel_bleed // 2), y - (pixel_bleed // 2)), pixel
+                )
