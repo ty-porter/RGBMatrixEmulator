@@ -1,12 +1,17 @@
 import io
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.adapters import PixelStyle
 from RGBMatrixEmulator.adapters.browser_adapter.server import Server
 from RGBMatrixEmulator.logger import Logger
 
 
 class BrowserAdapter(BaseAdapter):
-    SUPPORTS_ALTERNATE_PIXEL_STYLE = True
+    SUPPORTED_PIXEL_STYLES = [
+        PixelStyle.SQUARE,
+        PixelStyle.CIRCLE,
+        PixelStyle.FAST_REAL,
+    ]
     IMAGE_FORMATS = {"bmp": "BMP", "jpeg": "JPEG", "png": "PNG", "webp": "WebP"}
 
     def __init__(self, width, height, options):

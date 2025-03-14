@@ -8,11 +8,12 @@ from PIL import Image, ImageDraw, ImageEnhance
 from typing import List
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.adapters import PixelStyle
 from RGBMatrixEmulator.graphics.color import Color
 
 
 class SixelAdapter(BaseAdapter):
-    SUPPORTS_ALTERNATE_PIXEL_STYLE = True
+    SUPPORTED_PIXEL_STYLES = [PixelStyle.SQUARE, PixelStyle.CIRCLE]
 
     def draw_to_screen(self, pixels):
         sixel = self.__encode_sixels(

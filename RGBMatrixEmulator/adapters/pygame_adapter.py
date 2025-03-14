@@ -11,11 +11,16 @@ import pygame
 
 from pygame.locals import QUIT
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.adapters import PixelStyle
 from RGBMatrixEmulator.logger import Logger
 
 
 class PygameAdapter(BaseAdapter):
-    SUPPORTS_ALTERNATE_PIXEL_STYLE = True
+    SUPPORTED_PIXEL_STYLES = [
+        PixelStyle.SQUARE,
+        PixelStyle.CIRCLE,
+        PixelStyle.FAST_REAL,
+    ]
 
     def __init__(self, width, height, options):
         super().__init__(width, height, options)

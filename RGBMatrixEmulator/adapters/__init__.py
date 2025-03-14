@@ -1,6 +1,28 @@
 import importlib, json, os
 
+from enum import Enum, auto
+
 from RGBMatrixEmulator.logger import Logger
+
+
+class PixelStyle(Enum):
+    SQUARE = auto()
+    CIRCLE = auto()
+    FAST_REAL = auto()
+
+    DEFAULT = SQUARE
+
+    @property
+    def config_name(self):
+        return self.name.lower()
+
+    @classmethod
+    def fetch(cls, key, default=SQUARE):
+        try:
+            return cls[key]
+        except KeyError:
+            return default
+
 
 adapters = [
     {

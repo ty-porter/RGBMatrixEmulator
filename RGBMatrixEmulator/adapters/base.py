@@ -2,18 +2,23 @@ import numpy as np
 
 from PIL import Image, ImageDraw
 from RGBMatrixEmulator import version
+from RGBMatrixEmulator.logger import Logger
+from RGBMatrixEmulator.adapters import PixelStyle
 
 
 class BaseAdapter:
-    SUPPORTS_ALTERNATE_PIXEL_STYLE = False
+    SUPPORTED_PIXEL_STYLES = [PixelStyle.DEFAULT]
     INSTANCE = None
 
-    DEFAULT_MASK_FN = "__draw_square_mask"
+    DEFAULT_MASK_FN = "_draw_square_mask"
     MASK_FNS = {
-        "circle": "_draw_circle_mask",
-        "square": "_draw_square_mask",
-        "real": "_draw_real_mask",
+        PixelStyle.SQUARE: "_draw_square_mask",
+        PixelStyle.CIRCLE: "_draw_circle_mask",
+        PixelStyle.FAST_REAL: "_draw_fast_real_mask",
     }
+
+    # Ratio of pixel bleed to pixel size
+    PIXEL_BLEED_AUTO_RATIO = 6  # 1:6 pixel_bleed:pixel_size
 
     def __init__(self, width, height, options):
         self.width = width
@@ -41,7 +46,7 @@ class BaseAdapter:
             self.options.chain_length,
             self.options.parallel,
             self.options.pixel_size,
-            self.options.pixel_style.upper(),
+            self.options.pixel_style.name,
             self.__class__.__name__,
         )
 
@@ -77,14 +82,19 @@ class BaseAdapter:
 
         return Image.composite(image, self.__black, self.__mask)
 
-    def __mask_fn(self, kind):
-        return getattr(self, self.MASK_FNS.get(kind, self.DEFAULT_MASK_FN))
+    def __mask_fn(self, pixel_style):
+        if pixel_style not in self.MASK_FNS:
+            Logger.warning(
+                f"Pixel style '{pixel_style.config_name}' mask function not found, defaulting to {self.DEFAULT_MASK_FN}..."
+            )
+
+        return getattr(self, self.MASK_FNS.get(pixel_style, self.DEFAULT_MASK_FN))
 
     def __draw_mask(self):
-        mask = Image.new("LA", self.options.window_size())
+        mask = Image.new("L", self.options.window_size())
 
-        drawer = self.__mask_fn(self.options.pixel_style)
-        drawer(mask)
+        draw_fn = self.__mask_fn(self.options.pixel_style)
+        draw_fn(mask)
 
         return mask
 
@@ -116,11 +126,11 @@ class BaseAdapter:
                     outline=255,
                 )
 
-    def _draw_real_mask(self, mask):
+    def _draw_fast_real_mask(self, mask):
         pixel_size = self.options.pixel_size
         width, height = self.options.window_size()
         pixel_bleed = (
-            pixel_size // 5 * 2
+            pixel_size // self.PIXEL_BLEED_AUTO_RATIO
             if self.options.pixel_bleed == "auto"
             else self.options.pixel_bleed
         )
