@@ -1,6 +1,6 @@
 import json, os, pprint, sys
 
-from RGBMatrixEmulator.adapters import ADAPTER_TYPES
+from RGBMatrixEmulator.adapters import ADAPTER_TYPES, PixelStyle
 from RGBMatrixEmulator.logger import Logger
 
 
@@ -51,25 +51,48 @@ class RGBMatrixOptions:
 
             sys.exit(1)
 
-        self.pixel_style = emulator_config.DEFAULT_CONFIG.get("pixel_style")
-        config_pixel_style = emulator_config.pixel_style.lower()
+        requested_style = emulator_config.pixel_style.upper()
+        self.pixel_style = PixelStyle.fetch(requested_style)
 
-        if config_pixel_style in emulator_config.VALID_PIXEL_STYLES:
-            if config_pixel_style != self.pixel_style:
-                if self.display_adapter.SUPPORTS_ALTERNATE_PIXEL_STYLE:
-                    self.pixel_style = emulator_config.pixel_style
-                else:
-                    Logger.warning(
-                        '"{}" pixel style option is not supported by adapter "{}". Defaulting to "square"...'.format(
-                            config_pixel_style, emulator_config.display_adapter.lower()
-                        )
+        if self.pixel_style.name == requested_style:
+            if self.pixel_style not in self.display_adapter.SUPPORTED_PIXEL_STYLES:
+                self.pixel_style = PixelStyle.DEFAULT
+                Logger.warning(
+                    """
+"{}" pixel style option is not supported by adapter "{}". 
+Supported pixel styles for this adapter are {}
+                                                              
+Defaulting to "{}"...
+""".format(
+                        emulator_config.pixel_style.lower(),
+                        emulator_config.display_adapter.lower(),
+                        ", ".join(
+                            f'"{style.config_name}"'
+                            for style in self.display_adapter.SUPPORTED_PIXEL_STYLES
+                        ),
+                        PixelStyle.DEFAULT.config_name,
                     )
+                )
         else:
             Logger.warning(
-                '"{}" pixel style option not recognized. Valid options are "square", "circle". Defaulting to "square"...'.format(
-                    config_pixel_style
+                '"{}" pixel style option not recognized. Valid options are {}. Defaulting to "{}"...'.format(
+                    emulator_config.pixel_style.lower(),
+                    ", ".join(f'"{style.config_name}"' for style in list(PixelStyle)),
+                    PixelStyle.DEFAULT.config_name,
                 )
             )
+
+        self.pixel_glow = emulator_config.pixel_glow
+        if self.pixel_glow != "auto" and not (
+            isinstance(self.pixel_glow, int) and self.pixel_glow >= 0
+        ):
+            Logger.warning(
+                '"{}" pixel bleed option not recognized. Valid options are "auto" and integers >= 0. Defaulting to "auto"...'.format(
+                    self.pixel_glow
+                )
+            )
+
+            self.pixel_glow = emulator_config.DEFAULT_CONFIG.get("pixel_glow")
 
         self.pixel_size = emulator_config.pixel_size
         self.pixel_outline = emulator_config.DEFAULT_CONFIG["pixel_outline"]
@@ -96,11 +119,11 @@ class RGBMatrixOptions:
 class RGBMatrixEmulatorConfig:
     CONFIG_PATH = "emulator_config.json"
 
-    VALID_PIXEL_STYLES = ["square", "circle"]
     DEFAULT_CONFIG = {
         "pixel_outline": 0,
         "pixel_size": 16,
         "pixel_style": "square",
+        "pixel_glow": "auto",
         "display_adapter": "browser",
         "suppress_font_warnings": False,
         "suppress_adapter_load_errors": False,

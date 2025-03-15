@@ -2,11 +2,12 @@ import os
 import sys
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.adapters import PixelStyle
 
 
 class TerminalAdapter(BaseAdapter):
-    SUPPORTS_ALTERNATE_PIXEL_STYLE = True
-    SYMBOLS = {"circle": " ●", "square": "██"}
+    SUPPORTED_PIXEL_STYLES = [PixelStyle.SQUARE, PixelStyle.CIRCLE]
+    SYMBOLS = {PixelStyle.SQUARE: "██", PixelStyle.CIRCLE: " ●"}
 
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
