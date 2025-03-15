@@ -48,6 +48,7 @@ The default configuration is as follows:
   "pixel_outline": 0,
   "pixel_size": 16,
   "pixel_style": "square",
+  "pixel_glow": "auto",
   "display_adapter": "browser",
   "suppress_font_warnings": false,
   "suppress_adapter_load_errors": false,
@@ -70,7 +71,8 @@ The default configuration is as follows:
 ```
 pixel_outline          (Integer): Size of the black border around each pixel. Only works on some adapters; others will ignore this configuration.
 pixel_size             (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
-pixel_style            (String):  Style of the emulated LED. Supported pixel styles are "square" and "circle". Some display adapters do not support all options and will revert to a supported style.
+pixel_style            (String):  Style of the emulated LED. Supported pixel styles are "square", "circle", and "real". Some display adapters do not support all options and will revert to a supported style.
+pixel_glow             (Integer): Amount of glow to add to pixels. Currently only supported by "real" pixel style. Defaults to "auto", otherwise must be an integer >= 0.
 display_adapter        (String):  Display adapter for the emulator. See Display Adapters section for details.
 suppress_font_warnings (Boolean): Suppress BDF font parsing errors, such as for missing characters.
 browser                (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
@@ -83,7 +85,7 @@ browser                (Dict):    Additional configuration options for the "brow
 ```
 Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.
 
-You can also change the `pixel_style` option. By default, the emulator represents LEDs as squares. If you prefer the LEDs to have a more rounded appearance (like they would on an actual matrix), you can change to `pixel_style: "circle"`.
+You can also change the `pixel_style` option. By default, the emulator represents LEDs as squares. If you prefer the LEDs to have a more rounded appearance, you can change to `circle`. For simulating a real panel with LED "glow", the `real` style can be used.
 
 ### Display Adapters
 
@@ -113,6 +115,7 @@ Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adap
 ![nhl-led-scoreboard](assets/nhl-clock.png)
 ![circular-leds](assets/circular-leds.png)
 ![browser-adapter](assets/browser-adapter.gif)
+![mlb-led-scoreboard-final](assets/mlb-led-scoreboard-final.png)
 
 ## Samples
 

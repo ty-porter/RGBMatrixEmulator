@@ -19,7 +19,7 @@ class PygameAdapter(BaseAdapter):
     SUPPORTED_PIXEL_STYLES = [
         PixelStyle.SQUARE,
         PixelStyle.CIRCLE,
-        PixelStyle.FAST_REAL,
+        PixelStyle.REAL,
     ]
 
     def __init__(self, width, height, options):

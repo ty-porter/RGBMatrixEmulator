@@ -8,7 +8,7 @@ from RGBMatrixEmulator.logger import Logger
 class PixelStyle(Enum):
     SQUARE = auto()
     CIRCLE = auto()
-    FAST_REAL = auto()
+    REAL = auto()
 
     DEFAULT = SQUARE
 
@@ -17,11 +17,11 @@ class PixelStyle(Enum):
         return self.name.lower()
 
     @classmethod
-    def fetch(cls, key, default=SQUARE):
+    def fetch(cls, key, default=None):
         try:
             return cls[key]
         except KeyError:
-            return default
+            return default or cls.DEFAULT
 
 
 adapters = [

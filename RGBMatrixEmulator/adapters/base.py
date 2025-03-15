@@ -14,11 +14,11 @@ class BaseAdapter:
     MASK_FNS = {
         PixelStyle.SQUARE: "_draw_square_mask",
         PixelStyle.CIRCLE: "_draw_circle_mask",
-        PixelStyle.FAST_REAL: "_draw_fast_real_mask",
+        PixelStyle.REAL: "_draw_real_mask",
     }
 
     # Ratio of pixel bleed to pixel size
-    PIXEL_BLEED_AUTO_RATIO = 6  # 1:6 pixel_bleed:pixel_size
+    PIXEL_GLOW_AUTO_RATIO = 6  # 1:6 pixel_glow:pixel_size
 
     def __init__(self, width, height, options):
         self.width = width
@@ -126,15 +126,15 @@ class BaseAdapter:
                     outline=255,
                 )
 
-    def _draw_fast_real_mask(self, mask):
+    def _draw_real_mask(self, mask):
         pixel_size = self.options.pixel_size
         width, height = self.options.window_size()
-        pixel_bleed = (
-            pixel_size // self.PIXEL_BLEED_AUTO_RATIO
-            if self.options.pixel_bleed == "auto"
-            else self.options.pixel_bleed
+        pixel_glow = (
+            pixel_size // self.PIXEL_GLOW_AUTO_RATIO
+            if self.options.pixel_glow == "auto"
+            else self.options.pixel_glow
         )
-        mask_size = pixel_size + pixel_bleed
+        mask_size = pixel_size + pixel_glow
 
         # Calculate our own radial gradient to use in the mask. Image.radial_gradient() is not good enough.
         x = np.linspace(-1, 1, mask_size)[None, :] * 255
@@ -154,6 +154,4 @@ class BaseAdapter:
         # Paste the pixel into the mask at each point.
         for y in range(0, height, pixel_size):
             for x in range(0, width, pixel_size):
-                mask.paste(
-                    pixel, (x - (pixel_bleed // 2), y - (pixel_bleed // 2)), pixel
-                )
+                mask.paste(pixel, (x - (pixel_glow // 2), y - (pixel_glow // 2)), pixel)

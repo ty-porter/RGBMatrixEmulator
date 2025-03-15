@@ -10,7 +10,7 @@ class BrowserAdapter(BaseAdapter):
     SUPPORTED_PIXEL_STYLES = [
         PixelStyle.SQUARE,
         PixelStyle.CIRCLE,
-        PixelStyle.FAST_REAL,
+        PixelStyle.REAL,
     ]
     IMAGE_FORMATS = {"bmp": "BMP", "jpeg": "JPEG", "png": "PNG", "webp": "WebP"}
 
