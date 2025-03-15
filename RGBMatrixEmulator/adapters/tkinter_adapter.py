@@ -2,12 +2,13 @@ import tkinter
 import os
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
+from RGBMatrixEmulator.adapters import PixelStyle
 from RGBMatrixEmulator.graphics import Color
 from RGBMatrixEmulator.logger import Logger
 
 
 class TkinterAdapter(BaseAdapter):
-    SUPPORTS_ALTERNATE_PIXEL_STYLE = True
+    SUPPORTED_PIXEL_STYLES = [PixelStyle.SQUARE, PixelStyle.CIRCLE]
 
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
@@ -45,7 +46,7 @@ class TkinterAdapter(BaseAdapter):
             for col, pixel in enumerate(pixel_row):
                 shape_id = self.__pixels[row][col]
 
-                self.__canvas.itemconfig(shape_id, fill=Color.to_hex(pixel))
+                self.__canvas.itemconfig(shape_id, fill=Color.to_hex(tuple(pixel)))
 
         self.__canvas.pack()
         self.__root.update()
