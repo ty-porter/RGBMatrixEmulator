@@ -99,6 +99,7 @@ Currently supported display adapters are:
 * `tkinter`
 * `turtle`
 * `sixel`
+* `raw`
 
 You can swap display adapters by changing the `display_adapter` value to one of the above in `emulator_config.json`.
 
@@ -107,6 +108,12 @@ You can swap display adapters by changing the `display_adapter` value to one of 
 ### Browser Display Adapter
 
 Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adapters/browser_adapter/README.md) for further information regarding its configuration and usage.
+
+### Raw Display Adapter
+
+If you prefer fine-grained control over the raw pixel data, such as to build integration testing or build your own UI on top of it, you can use the `raw` display adapter.
+
+Please see the [README for the `raw` display adapter](RGBMatrixEmulator/adapters/raw_adapter/README.md) for further information regarding its configuration and usage.
 
 ## Screenshots
 
