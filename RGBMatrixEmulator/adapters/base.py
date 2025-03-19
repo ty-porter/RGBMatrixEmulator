@@ -17,9 +17,6 @@ class BaseAdapter:
         PixelStyle.REAL: "_draw_real_mask",
     }
 
-    # Ratio of pixel bleed to pixel size
-    PIXEL_GLOW_AUTO_RATIO = 6  # 1:6 pixel_glow:pixel_size
-
     def __init__(self, width, height, options):
         self.width = width
         self.height = height
@@ -129,29 +126,60 @@ class BaseAdapter:
     def _draw_real_mask(self, mask):
         pixel_size = self.options.pixel_size
         width, height = self.options.window_size()
-        pixel_glow = (
-            pixel_size // self.PIXEL_GLOW_AUTO_RATIO
-            if self.options.pixel_glow == "auto"
-            else self.options.pixel_glow
+        pixel_glow = self.options.pixel_glow
+
+        if pixel_glow == 0:
+            # Short circuit to a faster draw routine
+            return self._draw_circle_mask(mask)
+
+        # Create two gradients.
+        # The first is the LED with a gradient amount of 1 to antialias the result.
+        # The second is the actual glow given the setting.
+        gradient = self._gradient_add(
+            self._generate_gradient(pixel_size, 1),
+            self._generate_gradient(pixel_size, pixel_glow),
         )
-        mask_size = pixel_size + pixel_glow
 
-        # Calculate our own radial gradient to use in the mask. Image.radial_gradient() is not good enough.
-        x = np.linspace(-1, 1, mask_size)[None, :] * 255
-        y = np.linspace(-1, 1, mask_size)[:, None] * 255
-
-        alpha = np.sqrt(x**2 + y**2)
-        alpha = 255 - np.clip(0, 255, alpha)
-
-        # Composite a square pixel with the radial gradient alpha channel.
-        pixel = Image.new(
-            mode="L",
-            size=(mask_size, mask_size),
-            color=255,
-        )
-        pixel.putalpha(Image.fromarray(alpha.astype(np.uint8)))
+        pixel = Image.fromarray(gradient.astype(np.uint8))
 
         # Paste the pixel into the mask at each point.
         for y in range(0, height, pixel_size):
             for x in range(0, width, pixel_size):
-                mask.paste(pixel, (x - (pixel_glow // 2), y - (pixel_glow // 2)), pixel)
+                mask.paste(pixel, (x, y), pixel)
+
+    def _generate_gradient(self, sz, amt):
+        """
+        Generates a radial gradient of size sz with glow amt.
+
+        The resulting array is normalized between [0, 255].
+        """
+        # Calculate our own radial gradient to use in the mask.
+        # PIL.Image.radial_gradient() produces subpar results (LEDs look blocky)
+        x = np.linspace(0, sz, sz)
+        y = np.linspace(0, sz, sz)
+
+        # Discrete points (x, y) between 0 and pixel_size
+        X, Y = np.meshgrid(x, y)
+
+        # Distance of point to center
+        center = sz / 2
+        D = np.sqrt((X - center) ** 2 + (Y - center) ** 2)
+
+        # LED radius
+        L = (sz - amt) / 2
+        G = amt
+
+        # Calculate the radial gradient glow, clip it between 0 and 1, scale by 255 (WHITE), and get the additive inverse
+        gradient = 255 - np.clip((D - L) / G, 0, 1) * 255
+
+        return gradient
+
+    def _gradient_add(self, g1, g2):
+        """
+        Adds two arrays g1 and g2 with equal weight, and normalizes between [0, 255].
+        Assumes the input arrays are normalized between [0, 255].
+
+        Each pair of points is added with equal weight by first subtracting 128,
+        which produces fewer graphical artifacts than summation by average of the two points.
+        """
+        return np.clip((g1 - 128) + (g2 - 128), 0, 255)

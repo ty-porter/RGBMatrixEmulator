@@ -83,12 +83,10 @@ Defaulting to "{}"...
             )
 
         self.pixel_glow = emulator_config.pixel_glow
-        if self.pixel_glow != "auto" and not (
-            isinstance(self.pixel_glow, int) and self.pixel_glow >= 0
-        ):
+        if not (isinstance(self.pixel_glow, int) and self.pixel_glow >= 0):
             Logger.warning(
-                '"{}" pixel bleed option not recognized. Valid options are "auto" and integers >= 0. Defaulting to "auto"...'.format(
-                    self.pixel_glow
+                '"{}" pixel bleed option not recognized. Valid options are integers >= 0. Defaulting to {}...'.format(
+                    self.pixel_glow, emulator_config.DEFAULT_CONFIG.get("pixel_glow")
                 )
             )
 
