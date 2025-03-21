@@ -121,7 +121,7 @@ class RGBMatrixEmulatorConfig:
         "pixel_outline": 0,
         "pixel_size": 16,
         "pixel_style": "square",
-        "pixel_glow": "auto",
+        "pixel_glow": 6,
         "display_adapter": "browser",
         "suppress_font_warnings": False,
         "suppress_adapter_load_errors": False,
