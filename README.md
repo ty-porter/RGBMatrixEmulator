@@ -48,7 +48,7 @@ The default configuration is as follows:
   "pixel_outline": 0,
   "pixel_size": 16,
   "pixel_style": "square",
-  "pixel_glow": "auto",
+  "pixel_glow": 6,
   "display_adapter": "browser",
   "suppress_font_warnings": false,
   "suppress_adapter_load_errors": false,
@@ -72,7 +72,7 @@ The default configuration is as follows:
 pixel_outline          (Integer): Size of the black border around each pixel. Only works on some adapters; others will ignore this configuration.
 pixel_size             (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
 pixel_style            (String):  Style of the emulated LED. Supported pixel styles are "square", "circle", and "real". Some display adapters do not support all options and will revert to a supported style.
-pixel_glow             (Integer): Amount of glow to add to pixels. Currently only supported by "real" pixel style. Defaults to "auto", otherwise must be an integer >= 0.
+pixel_glow             (Integer): Amount of glow to add to pixels. Currently only supported by "real" pixel style. Must be an integer >= 0.
 display_adapter        (String):  Display adapter for the emulator. See Display Adapters section for details.
 suppress_font_warnings (Boolean): Suppress BDF font parsing errors, such as for missing characters.
 browser                (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
