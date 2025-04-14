@@ -1,7 +1,39 @@
+from functools import wraps
+from inspect import signature
+
 from RGBMatrixEmulator.graphics.color import Color
 from RGBMatrixEmulator.graphics.font import Font
 
 
+def validate_color(func):
+    """
+    Decorator to validate that the 'color' argument is of type Color.
+    If not, attempts to map to the rpi-rgb-led-matrix error message.
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Map positional + keyword args to parameter names
+        sig = signature(func)
+        bound = sig.bind(*args, **kwargs)
+        bound.apply_defaults()
+
+        if "color" in bound.arguments:
+            value = bound.arguments["color"]
+            if not isinstance(value, Color):
+                expected = f"{Color.__module__}.{Color.__qualname__}"
+                actual = f"{type(value).__module__}.{type(value).__qualname__}"
+                raise TypeError(
+                    f"Argument 'color' has incorrect type "
+                    f"(expected {expected}, got {actual})"
+                )
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+@validate_color
 def DrawText(canvas, font, x, y, color, text):
     # Early return for empty string prevents bugs in bdfparser library
     # and makes good sense anyway
@@ -38,40 +70,33 @@ def DrawText(canvas, font, x, y, color, text):
         for y2, row in enumerate(text_map):
             for x2, value in enumerate(row):
                 if value == 1:
-                    if isinstance(color, tuple):
-                        canvas.SetPixel(x + x2, y + y2 + font_y_offset, *color)
-                    else:
-                        canvas.SetPixel(
-                            x + x2,
-                            y + y2 + font_y_offset,
-                            color.red,
-                            color.green,
-                            color.blue,
-                        )
+                    canvas.SetPixel(
+                        x + x2,
+                        y + y2 + font_y_offset,
+                        color.red,
+                        color.green,
+                        color.blue,
+                    )
 
     return total_width
 
 
+@validate_color
 def DrawLine(canvas, x1, y1, x2, y2, color):
     int_points = __coerce_int(x1, y1, x2, y2)
     rows, cols = __line(*int_points)
 
     for point in zip(rows, cols):
-        if isinstance(color, tuple):
-            canvas.SetPixel(*point, *color)
-        else:
-            canvas.SetPixel(*point, color.red, color.green, color.blue)
+        canvas.SetPixel(*point, color.red, color.green, color.blue)
 
 
+@validate_color
 def DrawCircle(canvas, x, y, r, color):
     int_points = __coerce_int(x, y)
     rows, cols = __circle_perimeter(*int_points, r)
 
     for point in zip(rows, cols):
-        if isinstance(color, tuple):
-            canvas.SetPixel(*point, *color)
-        else:
-            canvas.SetPixel(*point, color.red, color.green, color.blue)
+        canvas.SetPixel(*point, color.red, color.green, color.blue)
 
 
 def __actual_width(font, letter):
