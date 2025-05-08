@@ -12,6 +12,7 @@ import pygame
 from pygame.locals import QUIT
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.adapters import PixelStyle
+from RGBMatrixEmulator.renderers.global_mask import GlobalMaskRenderer
 from RGBMatrixEmulator.logger import Logger
 
 
@@ -25,6 +26,8 @@ class PygameAdapter(BaseAdapter):
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
         self.__surface = None
+
+        self.renderer = GlobalMaskRenderer(options)
 
     def load_emulator_window(self):
         if self.loaded:
@@ -40,7 +43,7 @@ class PygameAdapter(BaseAdapter):
         self.loaded = True
 
     def draw_to_screen(self, pixels):
-        image = self._get_masked_image(pixels)
+        image = self.renderer.render(pixels)
         pygame_surface = pygame.image.fromstring(
             image.tobytes(), self.options.window_size(), "RGB"
         )

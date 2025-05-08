@@ -3,6 +3,8 @@ import io
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.adapters import PixelStyle
 from RGBMatrixEmulator.adapters.browser_adapter.server import Server
+from RGBMatrixEmulator.renderers.global_mask import GlobalMaskRenderer
+from RGBMatrixEmulator.renderers.incremental_mask import IncrementalMaskRenderer
 from RGBMatrixEmulator.logger import Logger
 
 
@@ -33,6 +35,8 @@ class BrowserAdapter(BaseAdapter):
                 self.default_image_format.lower()
             )
 
+        self.renderer = IncrementalMaskRenderer(options)
+
     def load_emulator_window(self):
         if self.loaded:
             return
@@ -45,7 +49,7 @@ class BrowserAdapter(BaseAdapter):
         self.loaded = True
 
     def draw_to_screen(self, pixels):
-        image = self._get_masked_image(pixels)
+        image = self.renderer.render(pixels)
         with io.BytesIO() as bytesIO:
             image.save(
                 bytesIO,
