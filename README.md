@@ -74,6 +74,8 @@ pixel_size             (Integer): Size of the emulated LED. Helpful for emulatin
 pixel_style            (String):  Style of the emulated LED. Supported pixel styles are "square", "circle", and "real". Some display adapters do not support all options and will revert to a supported style.
 pixel_glow             (Integer): Amount of glow to add to pixels. Currently only supported by "real" pixel style. Must be an integer >= 0.
 display_adapter        (String):  Display adapter for the emulator. See Display Adapters section for details.
+icon_path              (Path):    Relative path to a custom icon file (PNG, ICO, JPG/JPEG, etc.). If not set, the emulator window uses the default RGBME icon.
+emulator_title         (String):  Custom title to display at the top of the emulator window. If not set, RGBME uses default debug text.
 suppress_font_warnings (Boolean): Suppress BDF font parsing errors, such as for missing characters.
 browser                (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
   port                 (Integer): Port for the rendering server to attach to. Example: http://localhost:8888
@@ -204,6 +206,6 @@ hatch run test:lint
 
 ## Contact
 
-Tyler Porter
+Ty Porter
 
 tyler.b.porter@gmail.com
