@@ -30,12 +30,12 @@ class PygameAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        Logger.info("Loading {}".format(self.emulator_details_text()))
+        Logger.info("Loading {}".format(self.emulator_title))
         self.__surface = pygame.display.set_mode(self.options.window_size())
         pygame.init()
 
         self.__set_emulator_icon()
-        pygame.display.set_caption(self.emulator_details_text())
+        pygame.display.set_caption(self.emulator_title)
 
         self.loaded = True
 
@@ -57,8 +57,5 @@ class PygameAdapter(BaseAdapter):
                 sys.exit()
 
     def __set_emulator_icon(self):
-        emulator_path = os.path.abspath(os.path.dirname(__file__))
-        icon_path = os.path.join(emulator_path, "..", "icon.png")
-        icon = pygame.image.load(os.path.normpath(icon_path))
-
+        icon = pygame.image.load(self.icon_path)
         pygame.display.set_icon(icon)

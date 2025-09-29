@@ -1,5 +1,4 @@
 import tkinter
-import os
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.adapters import PixelStyle
@@ -20,10 +19,10 @@ class TkinterAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        Logger.info("Loading {}".format(self.emulator_details_text()))
+        Logger.info("Loading {}".format(self.emulator_title))
         self.__root = tkinter.Tk()
         self.__set_emulator_icon()
-        self.__root.title(self.emulator_details_text())
+        self.__root.title(self.emulator_title)
 
         window_size = self.options.window_size()
         self.__root.geometry("{}x{}".format(*window_size))
@@ -76,9 +75,5 @@ class TkinterAdapter(BaseAdapter):
         return (start, stop, start + size, stop + size)
 
     def __set_emulator_icon(self):
-        emulator_path = os.path.abspath(os.path.dirname(__file__))
-        raw_icon_path = os.path.join(emulator_path, "..", "icon.png")
-        icon_path = os.path.normpath(raw_icon_path)
-
-        icon = tkinter.PhotoImage(file=icon_path)
+        icon = tkinter.PhotoImage(file=self.icon_path)
         self.__root.tk.call("wm", "iconphoto", self.__root._w, icon)

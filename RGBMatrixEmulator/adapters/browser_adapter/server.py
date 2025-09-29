@@ -5,7 +5,7 @@ import threading
 import tornado.web
 import tornado.ioloop
 
-from os import path
+from pathlib import Path
 from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 
 from RGBMatrixEmulator.adapters.browser_adapter.request_handlers import *
@@ -30,14 +30,20 @@ class Server:
             ImageWebSocketHandler.register_adapter(self.adapter)
             ImageHandler.register_adapter(self.adapter)
 
-            script_path = path.dirname(path.realpath(__file__))
-            asset_path = path.normpath(script_path + "/static/assets/")
+            script_path = Path(__file__).resolve().parent
+            asset_path = script_path / "static" / "assets"
 
             self.app = tornado.web.Application(
                 [
                     (r"/websocket", ImageWebSocketHandler),
                     (r"/image", ImageHandler),
                     (r"/", MainHandler),
+                    # Icons are served by a specific handler to allow custom icons at arbitrary filepaths
+                    (
+                        r"/assets/icon.ico",
+                        SingleFileHandler,
+                        {"file_path": adapter.icon_path},
+                    ),
                     (
                         r"/assets/(.*)",
                         tornado.web.StaticFileHandler,

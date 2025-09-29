@@ -1,4 +1,5 @@
 import io
+from pathlib import Path
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.adapters import PixelStyle
@@ -33,11 +34,17 @@ class BrowserAdapter(BaseAdapter):
                 self.default_image_format.lower()
             )
 
+        # Default icon path is browser adapter assets
+        self.default_icon_path = str(
+            (Path(__file__).parent / "static" / "assets" / "icon.ico").resolve()
+        )
+        self.icon_path = self.options.icon_path or self.default_icon_path
+
     def load_emulator_window(self):
         if self.loaded:
             return
 
-        Logger.info(self.emulator_details_text())
+        Logger.info(self.emulator_title)
 
         self.__server = Server(self)
         self.__server.run()
