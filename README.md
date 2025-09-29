@@ -188,7 +188,7 @@ See [Samples README](samples/README.md) for more information about running examp
 
 ### Pull Requests
 
-Before submitting a PR, please open an issue to help us track development. All development should be based off of the `dev` branch. This branch is kept up-to-date with `main` after releases.
+Before submitting a PR, please open an issue to help us track development. All development should be based off of the `main` branch and PRs should be squash merged. Releases are cut periodically and follow semantic versioning.
 
 Pull requests that fail builds will not be merged.
 
