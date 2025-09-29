@@ -50,6 +50,8 @@ The default configuration is as follows:
   "pixel_style": "square",
   "pixel_glow": 6,
   "display_adapter": "browser",
+  "icon_path": null,
+  "emulator_title": null,
   "suppress_font_warnings": false,
   "suppress_adapter_load_errors": false,
   "browser": {
@@ -116,6 +118,28 @@ Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adap
 If you prefer fine-grained control over the raw pixel data, such as to build integration testing or build your own UI on top of it, you can use the `raw` display adapter.
 
 Please see the [README for the `raw` display adapter](RGBMatrixEmulator/adapters/raw_adapter/README.md) for further information regarding its configuration and usage.
+
+### White Label Customization
+
+The emulator config allows you to customize icons and window text in simple one-off scripts. However, this needs to be done manually for each user since RGBME generates a new emulator config on first bootup. If you are packaging RGBME as a part of a larger project, you may wish to automatically configure the branding options for end users (i.e. add "white-label" customization).
+
+To do so, you can directly write to the `icon_path` and `emulator_text` options:
+
+```python
+from RGBMatrixEmulator import RGBMatrixOptions
+
+options = RGBMatrixOptions() # Fill out the options struct with user args
+
+# Set the title
+options.emulator_title = "White Label LED Matrix"
+
+# Pass the icon path as string
+options.icon_path = "path/to/your/icon.png"
+
+# A better option is to use relative paths:
+from pathlib import Path
+options.icon_path = (Path(__file__).parent / "path" / "to" / "your" / "icon.png").resolve()
+```
 
 ## Screenshots
 
