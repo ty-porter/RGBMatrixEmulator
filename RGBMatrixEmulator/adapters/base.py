@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 
 from PIL import Image, ImageDraw
 from RGBMatrixEmulator import version
@@ -17,6 +18,10 @@ class BaseAdapter:
         PixelStyle.REAL: "_draw_real_mask",
     }
 
+    DEBUG_TEXT_TEMPLATE = (
+        "RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}"
+    )
+
     def __init__(self, width, height, options):
         self.width = width
         self.height = height
@@ -25,6 +30,11 @@ class BaseAdapter:
         self.__mask = self.__draw_mask()
         self.loaded = False
 
+        self.emulator_title = self.options.emulator_title or str(self)
+
+        self.default_icon_path = (Path(__file__).parent / ".." / "icon.png").resolve()
+        self.icon_path = self.options.icon_path or self.default_icon_path
+
     @classmethod
     def get_instance(cls, *args, **kwargs):
         if cls.INSTANCE is None:
@@ -32,20 +42,6 @@ class BaseAdapter:
             cls.INSTANCE = instance
 
         return cls.INSTANCE
-
-    def emulator_details_text(self):
-        details_text = "RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}"
-
-        return details_text.format(
-            version.__version__,
-            self.options.cols,
-            self.options.rows,
-            self.options.chain_length,
-            self.options.parallel,
-            self.options.pixel_size,
-            self.options.pixel_style.name,
-            self.__class__.__name__,
-        )
 
     # This method is required for the pygame adapter but nothing else, so just skip it if not defined.
     def check_for_quit_event(self):
@@ -183,3 +179,15 @@ class BaseAdapter:
         which produces fewer graphical artifacts than summation by average of the two points.
         """
         return np.clip((g1 - 128) + (g2 - 128), 0, 255)
+
+    def __str__(self):
+        return self.DEBUG_TEXT_TEMPLATE.format(
+            version.__version__,
+            self.options.cols,
+            self.options.rows,
+            self.options.chain_length,
+            self.options.parallel,
+            self.options.pixel_size,
+            self.options.pixel_style.name,
+            self.__class__.__name__,
+        )

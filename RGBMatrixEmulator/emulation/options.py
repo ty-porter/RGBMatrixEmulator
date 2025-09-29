@@ -96,6 +96,8 @@ Defaulting to "{}"...
         self.pixel_outline = emulator_config.DEFAULT_CONFIG["pixel_outline"]
         self.pixel_outline = emulator_config.pixel_outline
         self.browser = emulator_config.browser
+        self.emulator_title = emulator_config.emulator_title
+        self.icon_path = emulator_config.icon_path
 
         if emulator_config.suppress_font_warnings:
             import bdfparser
@@ -123,6 +125,8 @@ class RGBMatrixEmulatorConfig:
         "pixel_style": "square",
         "pixel_glow": 6,
         "display_adapter": "browser",
+        "icon_path": None,
+        "emulator_title": None,
         "suppress_font_warnings": False,
         "suppress_adapter_load_errors": False,
         "browser": {

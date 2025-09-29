@@ -1,6 +1,6 @@
 <html>
    <head>
-      <title>{{ adapter.emulator_details_text() }}</title>
+      <title>{{ adapter.emulator_title }}</title>
       <link rel="shortcut icon" href="assets/icon.ico">
       <link rel="stylesheet" href="assets/styles.css">
    </head>
@@ -15,7 +15,7 @@
 
       {% if adapter.options.browser.debug_text %}
          <div id="emulatorDetails">
-            <h2>{{ adapter.emulator_details_text() }}</h2>
+            <h2>{{ str(adapter) }}</h2>
             
             <div class="emulatorDetailsTableRow">
                <div id="matrixDetails" class="tableContainer">
