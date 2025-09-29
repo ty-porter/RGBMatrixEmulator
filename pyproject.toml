@@ -59,7 +59,7 @@ LICENSE = "docs/LICENSE"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/rgbmatrixemulator",
+    "RGBMatrixEmulator",
 ]
 
 [tool.hatch.envs.test]
