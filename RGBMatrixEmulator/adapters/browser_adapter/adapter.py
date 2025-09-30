@@ -38,7 +38,7 @@ class BrowserAdapter(BaseAdapter):
         self.default_icon_path = str(
             (Path(__file__).parent / "static" / "assets" / "icon.ico").resolve()
         )
-        self.icon_path = self.options.icon_path or self.default_icon_path
+        self._set_icon_path()
 
     def load_emulator_window(self):
         if self.loaded:

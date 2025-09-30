@@ -22,6 +22,9 @@ class BaseAdapter:
         "RGBME v{} - {}x{} Matrix | {}x{} Chain | {}px per LED ({}) | {}"
     )
 
+    ICON_FORMATS = ["PNG", "ICO", "JPEG"]
+    ICON_MAX_SIZE = (512, 512)
+
     def __init__(self, width, height, options):
         self.width = width
         self.height = height
@@ -33,7 +36,7 @@ class BaseAdapter:
         self.emulator_title = self.options.emulator_title or str(self)
 
         self.default_icon_path = (Path(__file__).parent / ".." / "icon.png").resolve()
-        self.icon_path = self.options.icon_path or self.default_icon_path
+        self._set_icon_path()
 
     @classmethod
     def get_instance(cls, *args, **kwargs):
@@ -179,6 +182,30 @@ class BaseAdapter:
         which produces fewer graphical artifacts than summation by average of the two points.
         """
         return np.clip((g1 - 128) + (g2 - 128), 0, 255)
+    
+    def _set_icon_path(self):
+        self.icon_path = self.default_icon_path
+        custom_path = self.options.icon_path
+        
+        if not custom_path:
+            return
+
+        try:
+            icon = Image.open(custom_path)
+
+            if icon.format not in self.ICON_FORMATS:
+                Logger.info(f"Custom icon format '{icon.format}' is not in allowed formats ({self.ICON_FORMATS}). Using default icon instead.")
+                return
+            
+            if icon.width > self.ICON_MAX_SIZE[0] or icon.height > self.ICON_MAX_SIZE[1]:
+                Logger.info(f"Icon of size '{icon.size}' is too large (max size is {self.ICON_MAX_SIZE}). Using default icon instead.")
+                return
+        except Exception as e:
+            Logger.exception("Encountered exception while loading custom icon. Using default icon instead.")
+            Logger.exception(e)
+            return
+
+        self.icon_path = self.options.icon_path
 
     def __str__(self):
         return self.DEBUG_TEXT_TEMPLATE.format(
