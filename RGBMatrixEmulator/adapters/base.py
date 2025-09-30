@@ -182,11 +182,11 @@ class BaseAdapter:
         which produces fewer graphical artifacts than summation by average of the two points.
         """
         return np.clip((g1 - 128) + (g2 - 128), 0, 255)
-    
+
     def _set_icon_path(self):
         self.icon_path = self.default_icon_path
         custom_path = self.options.icon_path
-        
+
         if not custom_path:
             return
 
@@ -194,14 +194,23 @@ class BaseAdapter:
             icon = Image.open(custom_path)
 
             if icon.format not in self.ICON_FORMATS:
-                Logger.info(f"Custom icon format '{icon.format}' is not in allowed formats ({self.ICON_FORMATS}). Using default icon instead.")
+                Logger.info(
+                    f"Custom icon format '{icon.format}' is not in allowed formats ({self.ICON_FORMATS}). Using default icon instead."
+                )
                 return
-            
-            if icon.width > self.ICON_MAX_SIZE[0] or icon.height > self.ICON_MAX_SIZE[1]:
-                Logger.info(f"Icon of size '{icon.size}' is too large (max size is {self.ICON_MAX_SIZE}). Using default icon instead.")
+
+            if (
+                icon.width > self.ICON_MAX_SIZE[0]
+                or icon.height > self.ICON_MAX_SIZE[1]
+            ):
+                Logger.info(
+                    f"Icon of size '{icon.size}' is too large (max size is {self.ICON_MAX_SIZE}). Using default icon instead."
+                )
                 return
         except Exception as e:
-            Logger.exception("Encountered exception while loading custom icon. Using default icon instead.")
+            Logger.exception(
+                "Encountered exception while loading custom icon. Using default icon instead."
+            )
             Logger.exception(e)
             return
 
