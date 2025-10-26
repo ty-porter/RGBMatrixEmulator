@@ -2,7 +2,7 @@
 
 [![pypi Badge](https://img.shields.io/pypi/v/RGBMatrixEmulator)](https://pypi.org/project/RGBMatrixEmulator/)
 
-![hello-world](assets/hello-world.gif)
+<img src="assets/hello-world.gif" style="max-height:200px;"/>
 
 `RGBMatrixEmulator` is a Python package for emulating RGB LED matrices that are normally driven by the [rpi-rgb-led-matrix library](https://github.com/hzeller/rpi-rgb-led-matrix). Most commonly, these are used with single-board computers such as the Raspberry Pi.
 
@@ -143,12 +143,12 @@ options.icon_path = (Path(__file__).parent / "path" / "to" / "your" / "icon.png"
 
 ## Screenshots
 
-![rotating-block](assets/rotating-block.gif)
-![mlb-led-scoreboard](assets/mlb-led-scoreboard.png)
-![nhl-led-scoreboard](assets/nhl-clock.png)
-![circular-leds](assets/circular-leds.png)
-![browser-adapter](assets/browser-adapter.gif)
-![mlb-led-scoreboard-final](assets/mlb-led-scoreboard-final.png)
+<img src="assets/rotating-block.gif" style="max-height:200px;" />
+<img src="assets/mlb-led-scoreboard.png" style="max-height:200px;" />
+<img src="assets/nhl-clock.png" style="max-height:200px;" />
+<img src="assets/circular-leds.png" style="max-height:200px;" />
+<img src="assets/browser-adapter.gif" style="max-height:200px;" />
+<img src="assets/mlb-led-scoreboard-final.png" style="max-height:200px;" />
 
 ## Samples
 
