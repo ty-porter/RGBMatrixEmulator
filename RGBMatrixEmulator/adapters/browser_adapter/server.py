@@ -52,6 +52,13 @@ class Server:
                 ]
             )
 
+            self.periodic = tornado.ioloop.PeriodicCallback(
+                ImageWebSocketHandler.broadcast,
+                1000 / adapter.options.browser.target_fps
+            )
+
+            self.periodic.start()
+
     def __init__(self, adapter):
         if not Server.instance:
             Server.instance = Server.__Singleton(adapter)
