@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-import io, contextlib, os, shutil, json
+import io, contextlib, os, shutil, json, random
 
 import numpy as np
 
@@ -11,10 +11,14 @@ from reference import REFERENCES, REFERENCE_SIZES, run_sample, reference_to_npar
 from parameterized import parameterized
 
 from RGBMatrixEmulator.emulation.options import RGBMatrixEmulatorConfig
+from test.context import (
+    REFERENCE_RANDOM_SEED,
+    TEST_CONFIG_PATH,
+    SAMPLE_CONFIG_PATH,
+    TestConfigContext,
+)
 
-# Tests will be run from the samples directory
-CONFIG_PATH = os.path.join(os.path.join("samples", RGBMatrixEmulatorConfig.CONFIG_PATH))
-BACKUP_PATH = CONFIG_PATH + ".bak"
+random.seed(REFERENCE_RANDOM_SEED)
 
 
 class TestSampleRunMatchesReference(TestCase):
@@ -27,24 +31,14 @@ class TestSampleRunMatchesReference(TestCase):
                 (f"{reference.name}-w{refsize[0]}h{refsize[1]}", reference, refsize)
             )
 
-    def setUp(self):
-        self.emulator_config = RGBMatrixEmulatorConfig.DEFAULT_CONFIG | {
-            "suppress_adapter_load_errors": True,
-            "display_adapter": "raw",
-        }
+    @classmethod
+    def setUpClass(cls):
+        cls.temp_context = TestConfigContext(TEST_CONFIG_PATH, SAMPLE_CONFIG_PATH)
+        cls.temp_path = cls.temp_context.__enter__()
 
-        if os.path.exists(CONFIG_PATH):
-            shutil.move(CONFIG_PATH, BACKUP_PATH)
-
-        with open(CONFIG_PATH, "w") as f:
-            json.dump(self.emulator_config, f, indent=4)
-
-    def tearDown(self):
-        if os.path.exists(CONFIG_PATH):
-            os.remove(CONFIG_PATH)
-
-        if os.path.exists(BACKUP_PATH):
-            shutil.move(BACKUP_PATH, CONFIG_PATH)
+    @classmethod
+    def tearDownClass(cls):
+        cls.temp_context.__exit__(None, None, None)
 
     @parameterized.expand(TESTS)
     def test_sample(self, name, sample, size):

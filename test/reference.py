@@ -4,6 +4,14 @@ from collections import namedtuple
 
 from PIL import Image
 import numpy as np
+import random
+
+from context import (
+    REFERENCE_RANDOM_SEED,
+    TEST_CONFIG_PATH,
+    SAMPLE_CONFIG_PATH,
+    TestConfigContext,
+)
 
 os.environ["RGBME_SUPPRESS_ADAPTER_LOAD_ERRORS"] = "true"
 
@@ -15,12 +23,14 @@ sys.modules["samplebase"] = samples.samplebase
 
 time.sleep = lambda _: 1 + 1
 
+random.seed(REFERENCE_RANDOM_SEED)
+
 
 class SampleExecutionHalted(Exception):
     pass
 
 
-def send_kb_interrupt(*_args):
+def halt_reference(*_args):
     raise SampleExecutionHalted
 
 
@@ -29,23 +39,24 @@ REFERENCE_SIZES = [(128, 32), (128, 64), (64, 32), (64, 64), (32, 32)]
 Reference = namedtuple("Reference", ("file_name", "name", "frame", "halt_fn"))
 
 _REFERENCES = [
-    Reference("canvas-brightness", "CanvasBrightness", 256, send_kb_interrupt),
-    Reference("graphics", "GraphicsTest", 140, send_kb_interrupt),
-    Reference("grayscale-block", "GrayscaleBlock", 256, send_kb_interrupt),
-    Reference("image-brightness", "ImageBrightness", 256, send_kb_interrupt),
-    Reference("image-scroller", "ImageScroller", 50, send_kb_interrupt),
-    Reference("pulsing-brightness", "GrayscaleBlock", 256, send_kb_interrupt),
-    Reference("pulsing-colors", "PulsingColors", 256, send_kb_interrupt),
+    Reference("canvas-brightness", "CanvasBrightness", 256, halt_reference),
+    Reference("graphics", "GraphicsTest", 140, halt_reference),
+    Reference("grayscale-block", "GrayscaleBlock", 256, halt_reference),
+    Reference("image-brightness", "ImageBrightness", 256, halt_reference),
+    Reference("image-scroller", "ImageScroller", 50, halt_reference),
+    Reference("pulsing-brightness", "GrayscaleBlock", 256, halt_reference),
+    Reference("pulsing-colors", "PulsingColors", 256, halt_reference),
     Reference(
-        "rotating-block-generator", "RotatingBlockGenerator", 256, send_kb_interrupt
+        "rotating-block-generator", "RotatingBlockGenerator", 256, halt_reference
     ),
-    Reference("runtext", "RunText", 264, send_kb_interrupt),
-    Reference("simple-square", "SimpleSquare", 256, send_kb_interrupt),
-    Reference("singleton", "MultCanvas", 256, send_kb_interrupt),
+    Reference("runtext", "RunText", 264, halt_reference),
+    Reference("simple-square", "SimpleSquare", 256, halt_reference),
+    Reference("singleton", "MultCanvas", 256, halt_reference),
+    Reference("static", "Static", 256, halt_reference),
     # Not a class
-    # Reference("image-draw", "ImageDraw", 256, send_kb_interrupt)
+    # Reference("image-draw", "ImageDraw", 256, halt_reference)
     # Needs an extra arg
-    # Reference("image-viewer", "ImageViewer", 256, send_kb_interrupt)
+    # Reference("image-viewer", "ImageViewer", 256, halt_reference)
 ]
 
 REFERENCES = []
@@ -62,7 +73,7 @@ for reference in _REFERENCES:
 
 def generate_reference(reference, refsize):
     run_sample(
-        reference, refsize, screenshot_path=os.path.join(__file__, "..", "reference")
+        reference, refsize, screenshot_path=os.path.join(__file__, "..", "references")
     )
 
 
@@ -124,7 +135,7 @@ def run_sample(sample_class, size, screenshot_path=None):
 
 def reference_to_nparray(sample, size):
     refpath = os.path.join(
-        __file__, "..", "reference", sample.file_name, f"w{size[0]}h{size[1]}.png"
+        __file__, "..", "references", sample.file_name, f"w{size[0]}h{size[1]}.png"
     )
     refpath = os.path.abspath(refpath)
 
@@ -137,8 +148,9 @@ def reference_to_nparray(sample, size):
 
 
 if __name__ == "__main__":
-    for reference in REFERENCES:
-        print(f"Generating references for {reference.file_name}...")
-        # Suppress "Press CTRL-C to stop sample" messages
-        with io.StringIO() as buf, contextlib.redirect_stdout(buf):
-            generate_references(reference)
+    with TestConfigContext(TEST_CONFIG_PATH, SAMPLE_CONFIG_PATH):
+        for reference in REFERENCES:
+            print(f"Generating references for {reference.file_name}...")
+            # Suppress "Press CTRL-C to stop sample" messages
+            with io.StringIO() as buf, contextlib.redirect_stdout(buf):
+                generate_references(reference)
