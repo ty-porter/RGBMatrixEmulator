@@ -19,6 +19,7 @@ class BrowserAdapter(BaseAdapter):
         super().__init__(width, height, options)
         self.__server = None
         self.image = None
+        self.image_ready = False
         self.default_image_format = "JPEG"
 
         image_format = options.browser.image_format
@@ -61,3 +62,5 @@ class BrowserAdapter(BaseAdapter):
                 optimize=True,
             )
             self.image = bytesIO.getvalue()
+
+        self.image_ready = True

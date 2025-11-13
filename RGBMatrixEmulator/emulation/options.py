@@ -132,7 +132,7 @@ class RGBMatrixEmulatorConfig:
         "browser": {
             "_comment": "For use with the browser adapter only.",
             "port": 8888,
-            "target_fps": 24,
+            "target_fps": 60,
             "fps_display": False,
             "quality": 70,
             "image_border": True,
