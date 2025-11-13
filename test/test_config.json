@@ -1,0 +1,22 @@
+{
+    "pixel_outline": 0,
+    "pixel_size": 16,
+    "pixel_style": "square",
+    "pixel_glow": 6,
+    "display_adapter": "raw",
+    "icon_path": null,
+    "emulator_title": null,
+    "suppress_font_warnings": false,
+    "suppress_adapter_load_errors": true,
+    "browser": {
+        "_comment": "For use with the browser adapter only.",
+        "port": 8888,
+        "target_fps": 60,
+        "fps_display": true,
+        "quality": 70,
+        "image_border": true,
+        "debug_text": true,
+        "image_format": "JPEG"
+    },
+    "log_level": "debug"
+}
