@@ -4,8 +4,9 @@ from RGBMatrixEmulator.logger import Logger
 from RGBMatrixEmulator.adapters.browser_adapter.fps import FPSMonitor
 
 
-FPS_UPDATE_RATE = 10 # seconds
-FPS             = FPSMonitor(FPS_UPDATE_RATE)
+FPS_UPDATE_RATE = 10  # seconds
+FPS = FPSMonitor(FPS_UPDATE_RATE)
+
 
 class ImageWebSocketHandler(tornado.websocket.WebSocketHandler):
     clients = set()
@@ -24,10 +25,12 @@ class ImageWebSocketHandler(tornado.websocket.WebSocketHandler):
             )
             return
 
-        io_loop = tornado.ioloop.IOLoop.current();
-    
+        io_loop = tornado.ioloop.IOLoop.current()
+
         for client in list(cls.clients):
-            io_loop.add_callback(client.write_message, ImageWebSocketHandler.adapter.image, binary=True)
+            io_loop.add_callback(
+                client.write_message, ImageWebSocketHandler.adapter.image, binary=True
+            )
 
         FPS.tick()
 

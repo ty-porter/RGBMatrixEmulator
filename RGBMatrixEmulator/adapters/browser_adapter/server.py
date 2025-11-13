@@ -54,7 +54,7 @@ class Server:
 
             self.periodic = tornado.ioloop.PeriodicCallback(
                 ImageWebSocketHandler.broadcast,
-                1000 / adapter.options.browser.target_fps
+                1000 / adapter.options.browser.target_fps,
             )
 
             self.periodic.start()
