@@ -1,4 +1,6 @@
-from RGBMatrixEmulator.adapters.browser_adapter.request_handlers import NoCacheRequestHandler
+from RGBMatrixEmulator.adapters.browser_adapter.request_handlers import (
+    NoCacheRequestHandler,
+)
 
 
 class ImageHandler(NoCacheRequestHandler):

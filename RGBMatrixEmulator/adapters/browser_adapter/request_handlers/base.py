@@ -6,7 +6,9 @@ class NoCacheRequestHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self):
         """Set headers to prevent browser caching."""
-        self.set_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.set_header(
+            "Cache-Control", "no-store, no-cache, must-revalidate, max-age=0"
+        )
         self.set_header("Pragma", "no-cache")
         self.set_header("Expires", "0")
 
@@ -16,6 +18,8 @@ class NoCacheStaticFileHandler(tornado.web.StaticFileHandler):
 
     def set_default_headers(self):
         """Set headers to prevent browser caching."""
-        self.set_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.set_header(
+            "Cache-Control", "no-store, no-cache, must-revalidate, max-age=0"
+        )
         self.set_header("Pragma", "no-cache")
         self.set_header("Expires", "0")
