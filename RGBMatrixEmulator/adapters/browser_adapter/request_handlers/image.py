@@ -1,7 +1,9 @@
-import tornado.web
+from RGBMatrixEmulator.adapters.browser_adapter.request_handlers import (
+    NoCacheRequestHandler,
+)
 
 
-class ImageHandler(tornado.web.RequestHandler):
+class ImageHandler(NoCacheRequestHandler):
     def get(self):
         self.set_header(
             "Content-type", "image/{}".format(self.adapter.image_format.lower())

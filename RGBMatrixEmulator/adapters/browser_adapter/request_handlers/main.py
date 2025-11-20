@@ -1,7 +1,9 @@
-import tornado.web
+from RGBMatrixEmulator.adapters.browser_adapter.request_handlers import (
+    NoCacheRequestHandler,
+)
 
 
-class MainHandler(tornado.web.RequestHandler):
+class MainHandler(NoCacheRequestHandler):
     def get(self):
         self.render("./../static/index.html", adapter=MainHandler.adapter)
 

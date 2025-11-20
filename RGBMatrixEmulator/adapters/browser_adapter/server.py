@@ -46,7 +46,7 @@ class Server:
                     ),
                     (
                         r"/assets/(.*)",
-                        tornado.web.StaticFileHandler,
+                        NoCacheStaticFileHandler,
                         {"path": asset_path, "default_filename": "client.js"},
                     ),
                 ]

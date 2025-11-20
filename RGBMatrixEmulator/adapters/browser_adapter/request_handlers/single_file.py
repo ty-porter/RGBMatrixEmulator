@@ -1,8 +1,10 @@
 import os
-import tornado.web
+from RGBMatrixEmulator.adapters.browser_adapter.request_handlers import (
+    NoCacheRequestHandler,
+)
 
 
-class SingleFileHandler(tornado.web.RequestHandler):
+class SingleFileHandler(NoCacheRequestHandler):
     def initialize(self, file_path):
         self.file_path = file_path
 
