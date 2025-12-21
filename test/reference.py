@@ -53,11 +53,14 @@ _REFERENCES = [
     Reference("simple-square", "SimpleSquare", 256, halt_reference),
     Reference("singleton", "MultCanvas", 256, halt_reference),
     Reference("static", "Static", 256, halt_reference),
-    # Not a class
-    # Reference("image-draw", "ImageDraw", 256, halt_reference)
-    # Needs an extra arg
-    # Reference("image-viewer", "ImageViewer", 256, halt_reference)
+    Reference("still-viewer", "StillViewer", 256, halt_reference),
 ]
+
+# untested samples:
+#   image-draw
+#   image-viewer
+#   race-clock
+#   gif-viewer
 
 REFERENCES = []
 
