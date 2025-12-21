@@ -40,17 +40,17 @@ Sample images (`sample/images`) and fonts (`sample/fonts`) are included for use 
 
 | Name | Arguments | Description |
 | ---- | --------------- | ----------- |
-| `gif-viewer` | GIF path (positional, required) | Draws an animated gif, resizing it to fit the matrix |
-| `graphics` |  | A simple graphics routine for drawing text, lines, and circles |
-| `grayscale_block` | | A graphics routine for grayscale colors |
-| `image-draw` | | Draws an image using `PIL` and slides it across the display
-| `image-scroller` | `-i` / `--image` | Scrolls an image from a file. Defaults to `samples/images/runtext.ppm` unless optional arguments included |
-| `image-viewer` | Image path (positional, required) | Draws a static image from a file |
-| `pulsing-brightness` | | Example of manipulating pixel brightness |
-| `pulsing-colors` | | Example of manipulating pixel color |
-| `race-clock` | | A simple countdown timer (such as for a race). Note: This sample is degenerate for RGBME. See [Known Issues](../README.md/#known-issues) for details. |
-| `rotating-block-generator` | | Draws a rotating multicolored block |
-| `runtext` | See command help text (`-h`) | Scrolls configurable text. |
-| `samplebase` | | **DO NOT USE DIRECTLY**. Base class for driver setup, argument parsing, etc. |
-| `simple-square` | | A simple graphics drawing routine |
-| `still-viewer` | `-i` / `--image` | Draws a still image from a file. Defaults to `samples/images/runtext.ppm` unless optional arguments included. Does not support image fetching from URL (unlike upstream sample). |
+| [gif-viewer](gif-viewer.py) | GIF path (positional, required) | Draws an animated gif, resizing it to fit the matrix |
+| [graphics](graphics.py) | | A simple graphics routine for drawing text, lines, and circles |
+| [grayscale_block](grayscale_block.py) | | A graphics routine for grayscale colors |
+| [image-draw](image-draw.py) | | Draws an image using `PIL` and slides it across the display
+| [image-scroller](image-scroller.py) | `-i` / `--image` | Scrolls an image from a file. Defaults to `samples/images/runtext.ppm` unless optional arguments included |
+| [image-viewer](image-viewer.py) | Image path (positional, required) | Draws a static image from a file |
+| [pulsing-brightness](pulsing-brightness.py) | | Example of manipulating pixel brightness |
+| [pulsing-colors](pulsing-colors.py) | | Example of manipulating pixel color |
+| [race-clock](race-clock.py) | | A simple countdown timer (such as for a race). Note: This sample is degenerate for RGBME. See [Known Issues](../README.md/#known-issues) for details. |
+| [rotating-block-generator](rotating-block-generator.py) | | Draws a rotating multicolored block |
+| [runtext](runtext.py) | See command help text (`-h`) | Scrolls configurable text. |
+| [samplebase](samplebase.py) | | **DO NOT USE DIRECTLY**. Base class for driver setup, argument parsing, etc. |
+| [simple-square](simple-square.py) | | A simple graphics drawing routine |
+| [still-viewer](still-viewer.py) | `-i` / `--image` | Draws a still image from a file. Defaults to `samples/images/runtext.ppm` unless optional arguments included. Does not support image fetching from URL (unlike upstream sample). |
