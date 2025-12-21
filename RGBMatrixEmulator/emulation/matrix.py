@@ -15,7 +15,9 @@ class RGBMatrix:
 
         return self.canvas
 
-    def SwapOnVSync(self, canvas):
+    # TODO: framerate_fraction support not yet implemented
+    # https://github.com/hzeller/rpi-rgb-led-matrix/commit/f88355e46faafb9de7f1e59dd258ab36c7e7b097
+    def SwapOnVSync(self, canvas, *other):
         canvas.check_for_quit_event()
         canvas.draw_to_screen()
         self.canvas = canvas
