@@ -21,6 +21,11 @@ class Pi5Adapter(BaseAdapter):
             return
 
         config = self.options.pi5
+
+        if config.n_addr_lines == 5 and self.height < 64:
+             import sys
+             Logger.critical(f"n_addr_lines=5 requires a display height of at least 64 pixels. Current height: {self.height}")
+             sys.exit(1)
         
         # Configure Geometry
         pinout_str = config.pinout
