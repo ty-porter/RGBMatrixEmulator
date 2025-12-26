@@ -93,17 +93,22 @@ class Pi5Adapter(BaseAdapter):
             )
             rotation = piomatter.Orientation.Normal
 
-        if (
-            config.n_planes == 10
-            and config.n_temporal_planes == 4
-            and config.n_lanes == 1
-        ):
+        if "Active3" not in pinout_str and config.n_lanes > 1:
+            Logger.warning(
+                f"Pinout '{pinout_str}' does not support multiple lanes. "
+                "Setting n_lanes to 1."
+            )
+            config.n_lanes = 1
+
+        if config.n_lanes == 1:
             # Simple Geometry
             geometry = piomatter.Geometry(
                 width=self.width,
                 height=self.height,
+                n_planes=config.n_planes,
                 n_addr_lines=config.n_addr_lines,
-                rotation=rotation,
+                n_temporal_planes=config.n_temporal_planes,
+                rotation=rotation
             )
         else:
             pixelmap = None
