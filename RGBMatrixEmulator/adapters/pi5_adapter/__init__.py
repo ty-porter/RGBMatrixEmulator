@@ -111,6 +111,17 @@ class Pi5Adapter(BaseAdapter):
             geometry=geometry
         )
         
+        # Register cleanup to clear the screen on exit
+        import atexit
+        def cleanup():
+            if self.framebuffer is not None and self.matrix is not None:
+                self.framebuffer.fill(0)
+                self.matrix.show()
+                # Deinit if possible, though show() with 0s might be enough
+                # self.matrix.deinit() # PioMatter object might not support deinit or it's automatic on GC
+        
+        atexit.register(cleanup)
+        
         self.loaded = True
 
     def draw_to_screen(self, pixels):
