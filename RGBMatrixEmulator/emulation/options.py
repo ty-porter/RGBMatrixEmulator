@@ -98,7 +98,7 @@ Defaulting to "{}"...
         self.browser = emulator_config.browser
         self.emulator_title = emulator_config.emulator_title
         self.icon_path = emulator_config.icon_path
-        
+
         self.pi5 = emulator_config.pi5
 
         if emulator_config.suppress_font_warnings:
@@ -149,7 +149,7 @@ class RGBMatrixEmulatorConfig:
             "n_planes": 10,
             "n_temporal_planes": 4,
             "n_lanes": 1,
-            "led_rgb_sequence": "RGB"
+            "led_rgb_sequence": "RGB",
         },
         "log_level": "info",
     }
