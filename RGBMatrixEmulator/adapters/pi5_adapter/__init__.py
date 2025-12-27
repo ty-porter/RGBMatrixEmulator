@@ -23,6 +23,34 @@ class Pi5Adapter(BaseAdapter):
 
         config = self.options.pi5
 
+        # Validate n_planes
+        if config.n_planes > 10:
+            config.n_planes = 10
+        elif config.n_planes < 1:
+            Logger.warning(
+                f"n_planes must be at least 1. Got {config.n_planes}, setting to 1."
+            )
+            config.n_planes = 1
+
+        # Validate n_temporal_planes
+        valid_temporal = [0, 2, 4]
+        if config.n_temporal_planes not in valid_temporal:
+            closest = min(valid_temporal, key=lambda x: abs(x - config.n_temporal_planes))
+            Logger.warning(
+                f"Invalid n_temporal_planes {config.n_temporal_planes}. "
+                f"Snapping to closest valid value: {closest}."
+            )
+            config.n_temporal_planes = closest
+
+        if config.n_temporal_planes > config.n_planes:
+            # Find max valid value <= n_planes
+            new_val = max([v for v in valid_temporal if v <= config.n_planes], default=0)
+            Logger.warning(
+                f"n_temporal_planes ({config.n_temporal_planes}) cannot be greater than n_planes ({config.n_planes}). "
+                f"Reducing to {new_val}."
+            )
+            config.n_temporal_planes = new_val
+
         if config.n_addr_lines == 5 and self.height < 64:
             import sys
 
