@@ -13,8 +13,8 @@ The adapter is configured via the `pi5` section in your `emulator_config.json`.
 | `pinout` | String | The hardware pinout definition. Matches attributes in `piomatter.Pinout` (e.g., `"Active3","AdafruitMatrixHat","AdafruitMatrixBonnet"`). |
 | `n_addr_lines` | Integer | Number of address lines for the display. Typically `4` for 32-pixel height panels, or `5` for 64-pixel height panels. |
 | `led_rgb_sequence` | String | Color sequence of the LEDs (e.g., `"RGB"`, `"BGR"`, `"RBG"`). |
-| `rotation` | String | Display rotation. Matches attributes in `piomatter.Orientation` (e.g., `"Normal"`, `"R180"`, `"CW"`, `"CCW"`). |
-| `n_lanes` | Integer | Number of parallel matrix chains (lanes). Only works with Active3 boards.|
+| `rotation` | String | Display rotation. Matches attributes in `piomatter.Orientation` (e.g., `"Normal"`, `"R180"`, `"CW"`, `"CCW"`). Does not work with `"Active3"` pinouts. |
+| `n_lanes` | Integer | Number of parallel matrix chains (lanes). Only works with Active3 boards.  Must be 2 or more. |
 | `n_planes` | Integer | Colour Bit depth/number of planes. Maximum of 10, minimum of 1|
 | `n_temporal_planes` | Integer | Number of temporal planes for dithering/brightness control. Possible values are 0, 2 or 4 and can't be greater than the value of n_planes. |
 
@@ -26,7 +26,7 @@ The adapter is configured via the `pi5` section in your `emulator_config.json`.
   "n_addr_lines": 4,
   "led_rgb_sequence": "RGB",
   "rotation": "Normal",
-  "n_lanes": 1,
+  "n_lanes": 2,
   "n_planes": 6,
   "n_temporal_planes": 0
 }
