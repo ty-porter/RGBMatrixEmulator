@@ -1,5 +1,8 @@
 # Pi5 Adapter
 
+> [!NOTE]  
+> This adapter is currently experimental. Please report issues to https://github.com/ty-porter/RGBMatrixEmulator/issues
+
 This adapter enables the RGBMatrixEmulator to drive RGB led matrices connected to a Raspberry Pi 5 using the `adafruit-circuitpython-piomatter` library. It bridges the emulator's frame generation with the PIO-based hardware driving capabilities of the Pi 5.
 
 ## Configuration

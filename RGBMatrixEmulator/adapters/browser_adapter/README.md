@@ -47,33 +47,6 @@ The emulator also exposes static images in a format you configure. By default, t
 
 This can be used to allow applications to poll the webserver for updated images or where a websocket is not applicable.
 
-#### Tydbit Support
-
-Tydbit requires `WebP` images to be exposed over a static HTTP endpoint. You can use the browser adapter's static image endpoint to provide cross-functional compatibility to Tydbit boards.
-
-An example configuration that works for Tydbit matrices is provided:
-
-```json
-{
-  "pixel_outline": 0,
-  "pixel_size": 1,
-  "pixel_style": "square",
-  "display_adapter": "browser",
-  "suppress_font_warnings": false,
-  "suppress_adapter_load_errors": false,
-  "browser": {
-    "port": 8888,
-    "target_fps": 24,
-    "fps_display": false,
-    "quality": 70,
-    "image_border": true,
-    "debug_text": false,
-    "image_format": "WebP"
-  },
-  "log_level": "info"
-}
-```
-
 ## Error Handling
 
 Exceptions in emulated Python scripts will cause the server to shut down. Fix the errors in the script before attempting to restart.

@@ -66,6 +66,16 @@ The default configuration is as follows:
     "debug_text": false,
     "image_format": "JPEG"
   },
+  "pi5": {
+    "_comment": "For use with the pi5 adapter only.",
+    "pinout": "AdafruitMatrixBonnet",
+    "n_addr_lines": 4,
+    "rotation": "Normal",
+    "n_planes": 10,
+    "n_temporal_planes": 4,
+    "n_lanes": 1,
+    "led_rgb_sequence": "RGB"
+  },
   "log_level": "info"
 }
 ```
@@ -73,21 +83,32 @@ The default configuration is as follows:
 ### Configuration Options
 
 ```
-pixel_outline          (Integer): Size of the black border around each pixel. Only works on some adapters; others will ignore this configuration.
-pixel_size             (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
-pixel_style            (String):  Style of the emulated LED. Supported pixel styles are "square", "circle", and "real". Some display adapters do not support all options and will revert to a supported style.
-pixel_glow             (Integer): Amount of glow to add to pixels. Currently only supported by "real" pixel style. Must be an integer >= 0.
-display_adapter        (String):  Display adapter for the emulator. See Display Adapters section for details.
-icon_path              (Path):    Relative path to a custom icon file (PNG, ICO, JPG/JPEG, etc.). If not set, the emulator window uses the default RGBME icon.
-emulator_title         (String):  Custom title to display at the top of the emulator window. If not set, RGBME uses default debug text.
-suppress_font_warnings (Boolean): Suppress BDF font parsing errors, such as for missing characters.
-browser                (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
-  port                 (Integer): Port for the rendering server to attach to. Example: http://localhost:8888
-  target_fps           (Integer): Target frames per second. Higher values may lead to lower performance.
-  fps_display          (Bool):    Display the FPS.
-  quality              (Intger):  Value from 0 - 100 indicating the quality percentage for the rendered image. Higher values may lead to lower performance.
-  image_border         (Bool):    Display a slight border around the rendered image.
-  debug_text           (Bool):    Display debug text.
+pixel_outline                (Integer): Size of the black border around each pixel. Only works on some adapters; others will ignore this configuration.
+pixel_size                   (Integer): Size of the emulated LED. Helpful for emulating large matrices on small screens. Actual window size is the matrix size scaled by pixel size.
+pixel_style                  (String):  Style of the emulated LED. Supported pixel styles are "square", "circle", and "real". Some display adapters do not support all options and will revert to a supported style.
+pixel_glow                   (Integer): Amount of glow to add to pixels. Currently only supported by "real" pixel style. Must be an integer >= 0.
+display_adapter              (String):  Display adapter for the emulator. See Display Adapters section for details.
+icon_path                    (Path):    Relative path to a custom icon file (PNG, ICO, JPG/JPEG, etc.). If not set, the emulator window uses the default RGBME icon.
+emulator_title               (String):  Custom title to display at the top of the emulator window. If not set, RGBME uses default debug text.
+suppress_font_warnings       (Boolean): Suppress BDF font parsing errors, such as for missing characters.
+suppress_adapter_load_errors (Boolean): Suppress errors when loading display adapters.
+browser                      (Dict):    Additional configuration options for the "browser" display adapter. Does nothing for other adapters.
+  port                       (Integer): Port for the rendering server to attach to. Example: http://localhost:8888
+  target_fps                 (Integer): Target frames per second. Higher values may lead to lower performance.
+  fps_display                (Bool):    Display the FPS.
+  quality                    (Intger):  Value from 0 - 100 indicating the quality percentage for the rendered image. Higher values may lead to lower performance.
+  image_border               (Bool):    Display a slight border around the rendered image.
+  debug_text                 (Bool):    Display debug text.
+  image_format               (String):  Image format to use for rendering. Options are "JPEG" or "PNG".
+pi5                          (Dict):    Additional configuration options for the "pi5" display adapter. Does nothing for other adapters.
+  pinout                     (String):  The hardware pinout definition. Matches attributes in `piomatter.Pinout` (e.g., "Active3", "AdafruitMatrixHat", "AdafruitMatrixBonnet").
+  n_addr_lines               (Integer): Number of address lines for the display. Typically `4` for 32-pixel height panels, or `5` for 64-pixel height panels.
+  led_rgb_sequence           (String):  Color sequence of the LEDs (e.g., "RGB", "BGR", "RBG").
+  rotation                   (String):  Display rotation. Matches attributes in `piomatter.Orientation` (e.g., "Normal", "R180", "CW", "CCW"). Does not work with "Active3" pinouts.
+  n_lanes                    (Integer): Number of parallel matrix chains (lanes). Only works with Active3 boards. Must be 2 or more.
+  n_planes                   (Integer): Colour Bit depth/number of planes. Maximum of 10, minimum of 1.
+  n_temporal_planes          (Integer): Number of temporal planes for dithering/brightness control. Possible values are 0, 2 or 4 and can't be greater than the value of n_planes.
+log_level                    (String):  Logging level for the emulator.
 ```
 Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.
 
@@ -114,6 +135,15 @@ You can swap display adapters by changing the `display_adapter` value to one of 
 ### Browser Display Adapter
 
 Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adapters/browser_adapter/README.md) for further information regarding its configuration and usage.
+
+### Raspberry Pi 5 Adapter
+
+> [!NOTE]  
+> This adapter is currently experimental.
+
+RGBME can be used to "bridge" scripts written for `rpi-rgb-led-matrix` to Raspberry Pi model 5 through [Adafruit Blinka](https://github.com/adafruit/Adafruit_Blinka) and the [Adafruit-Blinka-Raspberry-Pi5-Piomatter](https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Piomatter) libraries. As of Jan 1, 2026 `rpi-rgb-led-matrix` does not support Raspberry Pi 5 natively.
+
+Please see the [README for the `pi5` display adapter](RGBMatrixEmulator/adapters/pi5_adapter/README.md) for further information regarding its configuration and usage.
 
 ### Raw Display Adapter
 
