@@ -99,6 +99,8 @@ Defaulting to "{}"...
         self.emulator_title = emulator_config.emulator_title
         self.icon_path = emulator_config.icon_path
 
+        self.pi5 = emulator_config.pi5
+
         if emulator_config.suppress_font_warnings:
             import bdfparser
 
@@ -138,6 +140,16 @@ class RGBMatrixEmulatorConfig:
             "image_border": True,
             "debug_text": False,
             "image_format": "JPEG",
+        },
+        "pi5": {
+            "_comment": "For use with the pi5 adapter only.",
+            "pinout": "AdafruitMatrixBonnet",
+            "n_addr_lines": 4,
+            "rotation": "Normal",
+            "n_planes": 10,
+            "n_temporal_planes": 4,
+            "n_lanes": 1,
+            "led_rgb_sequence": "RGB",
         },
         "log_level": "info",
     }

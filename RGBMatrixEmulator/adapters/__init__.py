@@ -60,6 +60,11 @@ adapters = [
         "class": "RawAdapter",
         "type": "raw",
     },
+    {
+        "path": "RGBMatrixEmulator.adapters.pi5_adapter",
+        "class": "Pi5Adapter",
+        "type": "pi5",
+    },
 ]
 
 ADAPTER_TYPES = {}
