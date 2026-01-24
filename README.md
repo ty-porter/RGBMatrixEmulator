@@ -15,13 +15,17 @@
 `RGBMatrixEmulator` is in the [Python Package Index (PyPI)](http://pypi.python.org/pypi/RGBMatrixEmulator/).
 Installing with ``pip`` is recommended for all systems.
 
+```sh
 pip install RGBMatrixEmulator
 ```
 
-To use the experimental `pi5` adapter, you can install the optional adapter as follows
+### Experimental `pi5` Adapter
+
+To use the experimental `pi5` adapter, you can install the optional adapter as follows. This installation is only valid for Raspberry Pi 5 hardware.
 
 ```sh
 pip install RGBMatrixEmulator[pi5]
+```
 
 ## Usage
 

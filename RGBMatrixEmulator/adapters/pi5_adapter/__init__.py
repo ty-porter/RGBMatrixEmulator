@@ -12,44 +12,9 @@ class Pi5Adapter(BaseAdapter):
         self.framebuffer = None
         self.pixel_swizzle = None
 
+        self.__ensure_pi5_runtime()
+
     def load_emulator_window(self):
-        """
-        Validates that the code is running on a Raspberry Pi 5 
-        and has the necessary dependencies installed.
-        """
-        # 1. Hardware Check
-        is_pi5 = False
-        try:
-            model_path = Path("/proc/device-tree/model")
-            if model_path.exists():
-                model_name = model_path.read_text().strip()
-                if "Raspberry Pi 5" in model_name:
-                    is_pi5 = True
-        except Exception:
-            # If we can't read the file (Windows/Mac/Linux PC), it's not a Pi 5
-            pass
-
-        # IF NOT PI 5: Raise strict error immediately
-        if not is_pi5:
-            raise RuntimeError(
-                "\n"
-                "❌ Incompatible Hardware Detected.\n"
-                "   This module is designed exclusively for the Raspberry Pi 5.\n"
-                "   It will not run on PCs, Macs, or older Raspberry Pi models."
-            )
-
-        # 2. Dependency Check (Only runs if we passed the hardware check)
-        try:
-            import adafruit_blinka_raspberry_pi5_piomatter as piomatter
-        except ImportError:
-            raise ImportError(
-                    "\n"
-                    "❌ Missing Dependencies for Raspberry Pi 5.\n"
-                    "It looks like you are running on a Pi 5, but the required drivers are missing.\n"
-                    "Please fix this by running:\n\n"
-                    "    pip install RGBMatrixEmulator[pi5]\n"
-                )
-
         config = self.options.pi5
 
         # Validate n_planes
@@ -81,8 +46,6 @@ class Pi5Adapter(BaseAdapter):
             config.n_temporal_planes = new_val
 
         if config.n_addr_lines == 5 and self.height < 64:
-            import sys
-
             Logger.critical(
                 f"n_addr_lines=5 requires a display height of at least 64 pixels. Current height: {self.height}"
             )
@@ -241,3 +204,32 @@ class Pi5Adapter(BaseAdapter):
         except Exception as e:
             # Throttle logging?
             pass
+
+    def __ensure_pi5_runtime(self):
+        """
+        Validates that the code is running on a Raspberry Pi 5 
+        and has the necessary dependencies installed.
+        """
+        is_pi5 = False
+        try:
+            model_path = Path("/proc/device-tree/model")
+            if model_path.exists():
+                model_name = model_path.read_text().strip()
+                if "Raspberry Pi 5" in model_name:
+                    is_pi5 = True
+        except Exception:
+            pass
+
+        if not is_pi5:
+            Logger.critical("This module is designed exclusively for the Raspberry Pi 5.")
+            sys.exit(1)
+
+        try:
+            import adafruit_blinka_raspberry_pi5_piomatter as piomatter
+        except ImportError:
+            Logger.critical(
+                    "Pi5 adapter cannot load due to missing dependencies for Raspberry Pi 5.\n"
+                    "Please install dependencies using the [pi5] feature option:\n"
+                    "    pip install RGBMatrixEmulator[pi5]"
+                )
+            sys.exit(1)
