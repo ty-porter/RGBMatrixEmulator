@@ -41,6 +41,14 @@ dependencies = [
     "adafruit-blinka>=8.0.0",
 ]
 
+[project.optional-dependencies]
+# Dependencies specifically for the Pi 5
+# Install via: pip install .[pi5] or hatch shell pi5
+pi5 = [
+    "Adafruit-Blinka-Raspberry-Pi5-Piomatter>=1.0.0",
+    "adafruit-blinka>=8.0.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/ty-porter/RGBMatrixEmulator"
 
@@ -62,6 +70,20 @@ LICENSE = "docs/LICENSE"
 include = [
     "RGBMatrixEmulator",
 ]
+
+# --- Hatch Environment Configuration ---
+
+[tool.hatch.envs.default]
+# This is the default environment (for PC/Mac/Linux)
+# Usage: hatch shell
+# It includes ONLY the base dependencies (no pi5 stuff)
+features = []
+
+[tool.hatch.envs.pi5]
+# This is the environment specifically for the Pi 5
+# Usage: hatch shell pi5
+# It inherits the base dependencies and ADDS the [pi5] extra
+features = ["pi5"]
 
 [tool.hatch.envs.test]
 dependencies = [

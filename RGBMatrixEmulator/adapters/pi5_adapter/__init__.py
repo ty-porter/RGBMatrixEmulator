@@ -1,8 +1,9 @@
 from RGBMatrixEmulator.adapters.base import BaseAdapter
 from RGBMatrixEmulator.logger import Logger
 
+import sys
+from pathlib import Path
 import numpy as np
-
 
 class Pi5Adapter(BaseAdapter):
     def __init__(self, width, height, options):
@@ -12,14 +13,42 @@ class Pi5Adapter(BaseAdapter):
         self.pixel_swizzle = None
 
     def load_emulator_window(self):
+        """
+        Validates that the code is running on a Raspberry Pi 5 
+        and has the necessary dependencies installed.
+        """
+        # 1. Hardware Check
+        is_pi5 = False
+        try:
+            model_path = Path("/proc/device-tree/model")
+            if model_path.exists():
+                model_name = model_path.read_text().strip()
+                if "Raspberry Pi 5" in model_name:
+                    is_pi5 = True
+        except Exception:
+            # If we can't read the file (Windows/Mac/Linux PC), it's not a Pi 5
+            pass
+
+        # IF NOT PI 5: Raise strict error immediately
+        if not is_pi5:
+            raise RuntimeError(
+                "\n"
+                "❌ Incompatible Hardware Detected.\n"
+                "   This module is designed exclusively for the Raspberry Pi 5.\n"
+                "   It will not run on PCs, Macs, or older Raspberry Pi models."
+            )
+
+        # 2. Dependency Check (Only runs if we passed the hardware check)
         try:
             import adafruit_blinka_raspberry_pi5_piomatter as piomatter
         except ImportError:
-            Logger.critical(
-                "Failed to import piomatter dependencies! "
-                "Ensure `adafruit-circuitpython-piomatter` and `adafruit-blinka` are installed."
-            )
-            return
+            raise ImportError(
+                    "\n"
+                    "❌ Missing Dependencies for Raspberry Pi 5.\n"
+                    "It looks like you are running on a Pi 5, but the required drivers are missing.\n"
+                    "Please fix this by running:\n\n"
+                    "    pip install RGBMatrixEmulator[pi5]\n"
+                )
 
         config = self.options.pi5
 
@@ -35,9 +64,7 @@ class Pi5Adapter(BaseAdapter):
         # Validate n_temporal_planes
         valid_temporal = [0, 2, 4]
         if config.n_temporal_planes not in valid_temporal:
-            closest = min(
-                valid_temporal, key=lambda x: abs(x - config.n_temporal_planes)
-            )
+            closest = min(valid_temporal, key=lambda x: abs(x - config.n_temporal_planes))
             Logger.warning(
                 f"Invalid n_temporal_planes {config.n_temporal_planes}. "
                 f"Snapping to closest valid value: {closest}."
@@ -46,9 +73,7 @@ class Pi5Adapter(BaseAdapter):
 
         if config.n_temporal_planes > config.n_planes:
             # Find max valid value <= n_planes
-            new_val = max(
-                [v for v in valid_temporal if v <= config.n_planes], default=0
-            )
+            new_val = max([v for v in valid_temporal if v <= config.n_planes], default=0)
             Logger.warning(
                 f"n_temporal_planes ({config.n_temporal_planes}) cannot be greater than n_planes ({config.n_planes}). "
                 f"Reducing to {new_val}."
@@ -140,7 +165,7 @@ class Pi5Adapter(BaseAdapter):
                 n_planes=config.n_planes,
                 n_addr_lines=config.n_addr_lines,
                 n_temporal_planes=config.n_temporal_planes,
-                rotation=rotation,
+                rotation=rotation
             )
         else:
             if config.n_lanes < 2:
