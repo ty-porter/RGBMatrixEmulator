@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 import numpy as np
 
+
 class Pi5Adapter(BaseAdapter):
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
@@ -29,7 +30,9 @@ class Pi5Adapter(BaseAdapter):
         # Validate n_temporal_planes
         valid_temporal = [0, 2, 4]
         if config.n_temporal_planes not in valid_temporal:
-            closest = min(valid_temporal, key=lambda x: abs(x - config.n_temporal_planes))
+            closest = min(
+                valid_temporal, key=lambda x: abs(x - config.n_temporal_planes)
+            )
             Logger.warning(
                 f"Invalid n_temporal_planes {config.n_temporal_planes}. "
                 f"Snapping to closest valid value: {closest}."
@@ -38,7 +41,9 @@ class Pi5Adapter(BaseAdapter):
 
         if config.n_temporal_planes > config.n_planes:
             # Find max valid value <= n_planes
-            new_val = max([v for v in valid_temporal if v <= config.n_planes], default=0)
+            new_val = max(
+                [v for v in valid_temporal if v <= config.n_planes], default=0
+            )
             Logger.warning(
                 f"n_temporal_planes ({config.n_temporal_planes}) cannot be greater than n_planes ({config.n_planes}). "
                 f"Reducing to {new_val}."
@@ -128,7 +133,7 @@ class Pi5Adapter(BaseAdapter):
                 n_planes=config.n_planes,
                 n_addr_lines=config.n_addr_lines,
                 n_temporal_planes=config.n_temporal_planes,
-                rotation=rotation
+                rotation=rotation,
             )
         else:
             if config.n_lanes < 2:
@@ -207,7 +212,7 @@ class Pi5Adapter(BaseAdapter):
 
     def __ensure_pi5_runtime(self):
         """
-        Validates that the code is running on a Raspberry Pi 5 
+        Validates that the code is running on a Raspberry Pi 5
         and has the necessary dependencies installed.
         """
         is_pi5 = False
@@ -221,15 +226,17 @@ class Pi5Adapter(BaseAdapter):
             pass
 
         if not is_pi5:
-            Logger.critical("This module is designed exclusively for the Raspberry Pi 5.")
+            Logger.critical(
+                "This module is designed exclusively for the Raspberry Pi 5."
+            )
             sys.exit(1)
 
         try:
             import adafruit_blinka_raspberry_pi5_piomatter as piomatter
         except ImportError:
             Logger.critical(
-                    "Pi5 adapter cannot load due to missing dependencies for Raspberry Pi 5.\n"
-                    "Please install dependencies using the [pi5] feature option:\n"
-                    "    pip install RGBMatrixEmulator[pi5]"
-                )
+                "Pi5 adapter cannot load due to missing dependencies for Raspberry Pi 5.\n"
+                "Please install dependencies using the [pi5] feature option:\n"
+                "    pip install RGBMatrixEmulator[pi5]"
+            )
             sys.exit(1)
