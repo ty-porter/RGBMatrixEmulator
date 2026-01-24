@@ -3,7 +3,6 @@ import tornado.websocket
 from RGBMatrixEmulator.logger import Logger
 from RGBMatrixEmulator.adapters.browser_adapter.fps import FPSMonitor
 
-
 FPS_UPDATE_RATE = 10  # seconds
 FPS = FPSMonitor(FPS_UPDATE_RATE)
 

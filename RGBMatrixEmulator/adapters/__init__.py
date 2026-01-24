@@ -92,8 +92,7 @@ for adapter in adapters:
         ):
             continue
 
-        Logger.exception(
-            f"""
+        Logger.exception(f"""
 Failed to load {adapter_class} for "{adapter_name}" display adapter!
 
 If this is not your configured display adapter, the emulator will continue to load.
@@ -102,5 +101,4 @@ You can suppress this error in the `emulator_config.json` by adding:
 
   "suppress_adapter_load_errors": true
 
-"""
-        )
+""")

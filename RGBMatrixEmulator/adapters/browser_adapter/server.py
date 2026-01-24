@@ -11,7 +11,6 @@ from tornado.platform.asyncio import AnyThreadEventLoopPolicy
 from RGBMatrixEmulator.adapters.browser_adapter.request_handlers import *
 from RGBMatrixEmulator.logger import Logger
 
-
 asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
 
