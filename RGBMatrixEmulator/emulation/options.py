@@ -140,6 +140,7 @@ class RGBMatrixEmulatorConfig:
             "image_border": True,
             "debug_text": False,
             "image_format": "JPEG",
+            "open_immediately": False,
         },
         "pi5": {
             "_comment": "For use with the pi5 adapter only.",

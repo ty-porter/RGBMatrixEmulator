@@ -72,7 +72,8 @@ The default configuration is as follows:
     "quality": 70,
     "image_border": true,
     "debug_text": false,
-    "image_format": "JPEG"
+    "image_format": "JPEG",
+    "open_immediately": false
   },
   "pi5": {
     "_comment": "For use with the pi5 adapter only.",
@@ -119,13 +120,14 @@ Certain adapters may specify additional configurations. These specialized config
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
-| browser.port         | Integer | Port for the rendering server to attach to. Example: http://localhost:8888
-| browser.target_fps   | Integer | Target frames per second. Higher values may lead to lower performance.
-| browser.fps_display  | Bool    | Display the FPS.
-| browser.quality      | Integer | Value from 0 - 100 indicating the quality percentage for the rendered image. Higher values may lead to lower performance.
-| browser.image_border | Bool    | Display a slight border around the rendered image.
-| browser.debug_text   | Bool    | Display debug text.
-| browser.image_format | String  | Image format to use for rendering. Options are "JPEG" or "PNG".
+| browser.port             | Integer | Port for the rendering server to attach to. Example: http://localhost:8888
+| browser.target_fps       | Integer | Target frames per second. Higher values may lead to lower performance.
+| browser.fps_display      | Bool    | Display the FPS.
+| browser.quality          | Integer | Value from 0 - 100 indicating the quality percentage for the rendered image. Higher values may lead to lower performance.
+| browser.image_border     | Bool    | Display a slight border around the rendered image.
+| browser.debug_text       | Bool    | Display debug text.
+| browser.image_format     | String  | Image format to use for rendering. Options are "JPEG" or "PNG".
+| browser.open_immediately | Bool    | Open a new browser window immediately on startup (similar to other adapters).
 
 ##### `pi5` Options
 

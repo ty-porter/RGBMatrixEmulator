@@ -1,4 +1,4 @@
-import io
+import io, webbrowser
 from pathlib import Path
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
@@ -52,6 +52,8 @@ class BrowserAdapter(BaseAdapter):
 
         self.loaded = True
 
+        self.__open_browser()
+
     def draw_to_screen(self, pixels):
         image = self._get_masked_image(pixels)
         with io.BytesIO() as bytesIO:
@@ -64,3 +66,15 @@ class BrowserAdapter(BaseAdapter):
             self.image = bytesIO.getvalue()
 
         self.image_ready = True
+
+    def __open_browser(self):
+        if self.options.browser.open_immediately:
+            try:
+                uri = f"http://localhost:{self.options.browser.port}"
+                Logger.info(
+                    f"Browser adapter configured to open immediately, opening new window/tab to {uri}"
+                )
+                webbrowser.open(uri)
+            except Exception as e:
+                Logger.exception("Failed to open a browser window")
+                Logger.exception(e)
