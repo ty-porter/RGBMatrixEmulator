@@ -5,6 +5,11 @@ import sys
 from pathlib import Path
 import numpy as np
 
+try:
+    import adafruit_blinka_raspberry_pi5_piomatter as piomatter
+except ImportError:
+    piomatter = None
+
 
 class Pi5Adapter(BaseAdapter):
     def __init__(self, width, height, options):
@@ -231,9 +236,7 @@ class Pi5Adapter(BaseAdapter):
             )
             sys.exit(1)
 
-        try:
-            import adafruit_blinka_raspberry_pi5_piomatter as piomatter
-        except ImportError:
+        if piomatter is None:
             Logger.critical(
                 "Pi5 adapter cannot load due to missing dependencies for Raspberry Pi 5.\n"
                 "Please install dependencies using the [pi5] feature option:\n"
