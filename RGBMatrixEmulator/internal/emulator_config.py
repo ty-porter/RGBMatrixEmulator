@@ -1,4 +1,4 @@
-import json, os, pprint, sys
+import json, os, pprint
 
 from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 from RGBMatrixEmulator.internal.adapter_loader import AdapterLoader
@@ -14,6 +14,7 @@ class RGBMatrixEmulatorConfig:
         "pixel_style": "square",
         "pixel_glow": 6,
         "display_adapter": "browser",
+        "allow_adapter_fallback": True,
         "icon_path": None,
         "emulator_title": None,
         "suppress_font_warnings": False,
@@ -48,7 +49,7 @@ class RGBMatrixEmulatorConfig:
         RGBMatrixEmulatorConfig.Utils.set_attributes(self)
 
         loader = AdapterLoader(requested_adapter=self.display_adapter.lower())
-        self.display_adapter = loader.load(fallback=True)
+        self.display_adapter = loader.load(fallback=self.allow_adapter_fallback)
 
         self.__validate_pixel_style()
         self.__validate_pixel_glow()

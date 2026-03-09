@@ -2,7 +2,6 @@ from functools import wraps
 from inspect import signature
 
 from RGBMatrixEmulator.graphics.color import Color
-from RGBMatrixEmulator.graphics.font import Font
 
 
 def validate_color(func):
