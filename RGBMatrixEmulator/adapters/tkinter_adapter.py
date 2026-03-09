@@ -1,7 +1,7 @@
 import tkinter
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.adapters import PixelStyle
+from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 from RGBMatrixEmulator.graphics import Color
 from RGBMatrixEmulator.logger import Logger
 
@@ -19,7 +19,7 @@ class TkinterAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        Logger.info("Loading {}".format(self.emulator_title))
+        Logger.info(self.emulator_title)
         self.__root = tkinter.Tk()
         self.__set_emulator_icon()
         self.__root.title(self.emulator_title)

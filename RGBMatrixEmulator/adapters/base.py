@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 from RGBMatrixEmulator import version
 from RGBMatrixEmulator.logger import Logger
-from RGBMatrixEmulator.adapters import PixelStyle
+from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 
 
 class BaseAdapter:
