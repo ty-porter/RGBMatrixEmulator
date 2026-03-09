@@ -5,7 +5,7 @@
     "pixel_style": "square",
     "pixel_glow": 6,
     "display_adapter": "raw",
-    "display_adapter_fallback": false,
+    "allow_adapter_fallback": false,
     "icon_path": null,
     "emulator_title": null,
     "suppress_font_warnings": false,
