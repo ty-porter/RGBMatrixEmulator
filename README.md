@@ -49,9 +49,19 @@ Startup of the existing script will be unchanged.
 
 ## Customization
 
-The first time you run a script with the emulator enabled, a file called `emulator_config.json` will be created in the script's directory. This enables configurations to be customized on a per-script basis. If you would like to regenerate the default configuration, you can delete the file and a new one will be created the next time the emulator starts.
+### Generating a Configuration File
 
-The default configuration is as follows:
+The first time you run a script with the emulator enabled, a file called `emulator_config.json` will be created in the script's directory.
+
+Alternatively, you can use the `rgbme` command to generate a new configuration on-demand:
+
+```sh
+rgbme config
+```
+
+The config file enables configurations to be customized on a per-script basis. You can delete and re-generate this file at any time.
+
+### Default Configuration
 
 ```json
 {
@@ -89,7 +99,7 @@ The default configuration is as follows:
 }
 ```
 
-### JSON Configuration
+### JSON Configuration Options
 
 #### Global Options
 

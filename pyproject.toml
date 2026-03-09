@@ -39,6 +39,9 @@ dependencies = [
     "tornado>=6.1"
 ]
 
+[project.scripts]
+rgbme = "RGBMatrixEmulator.cli:run_cli"
+
 [project.optional-dependencies]
 pi5 = [
     "Adafruit-Blinka-Raspberry-Pi5-Piomatter>=1.0.0",
