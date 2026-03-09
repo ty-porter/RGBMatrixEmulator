@@ -3,6 +3,7 @@ import argparse, sys
 from RGBMatrixEmulator.cli.config import ConfigCLICommand
 from RGBMatrixEmulator.logger import Logger
 
+
 class CLI:
     COMMANDS = {
         # Full commands
@@ -16,10 +17,16 @@ class CLI:
         parser = argparse.ArgumentParser(
             description="RGBMatrixEmulator command line interface."
         )
-        subparsers = parser.add_subparsers(dest="command", required=True, help="Available commands")
+        subparsers = parser.add_subparsers(
+            dest="command", required=True, help="Available commands"
+        )
 
         # "config" command
-        subparsers.add_parser("config", aliases=["c"], help="Initialize and manipulate emulator_config.json files")
+        subparsers.add_parser(
+            "config",
+            aliases=["c"],
+            help="Initialize and manipulate emulator_config.json files",
+        )
 
         args = parser.parse_args()
 
@@ -29,6 +36,7 @@ class CLI:
 
         cmd = CLI.COMMANDS[args.command]
         cmd(args).execute()
+
 
 def run_cli():
     CLI.execute()
