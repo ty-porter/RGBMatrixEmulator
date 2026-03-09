@@ -1,5 +1,6 @@
 from enum import Enum, auto
 
+
 class PixelStyle(Enum):
     SQUARE = auto()
     CIRCLE = auto()

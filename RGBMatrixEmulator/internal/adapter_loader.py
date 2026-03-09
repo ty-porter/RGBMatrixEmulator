@@ -15,11 +15,15 @@ class LoadResult(Enum):
     DEFAULT = SKIPPED
 
 
-class AdapterLoader():
+class AdapterLoader:
 
     def __init__(self, requested_adapter):
         self.requested_adapter = requested_adapter.lower()
-        self.adapter_priority = [self.requested_adapter] + [adapter_name for adapter_name in list(ADAPTERS.keys()) if adapter_name != self.requested_adapter]
+        self.adapter_priority = [self.requested_adapter] + [
+            adapter_name
+            for adapter_name in list(ADAPTERS.keys())
+            if adapter_name != self.requested_adapter
+        ]
         self.adapter = None
 
         self._loaded = False
@@ -29,10 +33,10 @@ class AdapterLoader():
         if self._loaded:
             return self.adapter
 
-        exceptions = []        
+        exceptions = []
 
         for adapter_name in self.adapter_priority:
-            (result, adapter, tb) = self._load(adapter_name, fallback=fallback)
+            result, adapter, tb = self._load(adapter_name, fallback=fallback)
 
             if result == LoadResult.SKIPPED:
                 continue
@@ -55,7 +59,7 @@ class AdapterLoader():
             Logger.error(tb)
 
         sys.exit(1)
-                
+
     def _load(self, adapter_name, fallback=False):
         try:
             adapter_config = ADAPTERS[adapter_name]

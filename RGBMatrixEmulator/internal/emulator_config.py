@@ -4,6 +4,7 @@ from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 from RGBMatrixEmulator.internal.adapter_loader import AdapterLoader
 from RGBMatrixEmulator.logger import Logger
 
+
 class RGBMatrixEmulatorConfig:
     CONFIG_PATH = "emulator_config.json"
 
@@ -68,7 +69,7 @@ class RGBMatrixEmulatorConfig:
         self._dump_default_config()
 
         return self.DEFAULT_CONFIG
-    
+
     @classmethod
     def _dump_default_config(cls):
         Logger.info("Creating a new default emulator config.")
@@ -107,7 +108,7 @@ Defaulting to "{}"...
                     PixelStyle.DEFAULT.config_name,
                 )
             )
-    
+
     def __validate_pixel_glow(self):
         if not (isinstance(self.pixel_glow, int) and self.pixel_glow >= 0):
             Logger.warning(

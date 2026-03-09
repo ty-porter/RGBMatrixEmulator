@@ -1,7 +1,7 @@
 import time
 from RGBMatrixEmulator.logger import Logger
 
-DEFAULT_UPDATE_RATE = 0.5 # seconds
+DEFAULT_UPDATE_RATE = 0.5  # seconds
 
 
 class FPSMonitor:

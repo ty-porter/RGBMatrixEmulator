@@ -1,5 +1,6 @@
 from RGBMatrixEmulator.internal.emulator_config import RGBMatrixEmulatorConfig
 
+
 class RGBMatrixOptions:
     def __init__(self):
         self.hardware_mapping = "EMULATED"
