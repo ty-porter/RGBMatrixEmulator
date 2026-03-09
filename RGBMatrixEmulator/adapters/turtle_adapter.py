@@ -28,7 +28,7 @@ class TurtleAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        Logger.info("Loading {}".format(self.emulator_title))
+        Logger.info(self.emulator_title)
         turtle.setup(*self.options.window_size())
         turtle.title(self.emulator_title)
         self.__pen = turtle.Turtle(visible=False)

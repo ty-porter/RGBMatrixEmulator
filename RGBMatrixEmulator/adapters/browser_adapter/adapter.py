@@ -2,7 +2,7 @@ import io, webbrowser
 from pathlib import Path
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.adapters import PixelStyle
+from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 from RGBMatrixEmulator.adapters.browser_adapter.server import Server
 from RGBMatrixEmulator.logger import Logger
 

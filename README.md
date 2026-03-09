@@ -63,7 +63,6 @@ The default configuration is as follows:
   "icon_path": null,
   "emulator_title": null,
   "suppress_font_warnings": false,
-  "suppress_adapter_load_errors": false,
   "browser": {
     "_comment": "For use with the browser adapter only.",
     "port": 8888,
@@ -105,7 +104,6 @@ The following configuration affects most display adapters or emulation as a whol
 | icon_path                    | Path    | Relative path to a custom icon file (PNG, ICO, JPG/JPEG, etc.). If not set, the emulator window uses the default RGBME icon.
 | emulator_title               | String  | Custom title to display at the top of the emulator window. If not set, RGBME uses default debug text.
 | suppress_font_warnings       | Boolean | Suppress BDF font parsing errors, such as for missing characters.
-| suppress_adapter_load_errors | Boolean | Suppress errors when loading display adapters.
 | log_level                    | String  | Logging level for the emulator.
 
 Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.

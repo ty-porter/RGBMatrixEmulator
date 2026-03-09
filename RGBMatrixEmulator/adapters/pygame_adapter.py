@@ -11,7 +11,7 @@ import pygame
 
 from pygame.locals import QUIT
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.adapters import PixelStyle
+from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 from RGBMatrixEmulator.logger import Logger
 
 
@@ -30,7 +30,7 @@ class PygameAdapter(BaseAdapter):
         if self.loaded:
             return
 
-        Logger.info("Loading {}".format(self.emulator_title))
+        Logger.info(self.emulator_title)
         self.__surface = pygame.display.set_mode(self.options.window_size())
         pygame.init()
 

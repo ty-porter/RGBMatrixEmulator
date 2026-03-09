@@ -2,7 +2,7 @@ import os
 import sys
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.adapters import PixelStyle
+from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 
 
 class TerminalAdapter(BaseAdapter):

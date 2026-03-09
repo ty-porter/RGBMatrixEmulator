@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageEnhance
 from typing import List
 
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-from RGBMatrixEmulator.adapters import PixelStyle
+from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 from RGBMatrixEmulator.graphics.color import Color
 
 
