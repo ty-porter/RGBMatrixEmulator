@@ -5,6 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "RGBMatrixEmulator"
 dynamic = ["version"]
+requires-python = ">=3.10"
 description = "A PC emulator for Raspberry Pi LED matrices driven by rpi-rgb-led-matrix"
 readme = "README.md"
 license = "MIT"
@@ -44,15 +45,16 @@ rgbme = "RGBMatrixEmulator.cli:run_cli"
 
 [project.optional-dependencies]
 pi5 = [
-    "Adafruit-Blinka-Raspberry-Pi5-Piomatter>=1.0.0",
-    "adafruit-blinka>=8.0.0",
+    "Adafruit-Blinka-Raspberry-Pi5-Piomatter>=1.0.0; python_version>='3.11'",
+    "adafruit-blinka>=8.0.0; python_version>='3.11'",
 ]
 
 [project.urls]
 Homepage = "https://github.com/ty-porter/RGBMatrixEmulator"
 
 [tool.black]
-exclude = "samples"
+target-version = ["py310"]
+extend-exclude = "samples"
 
 [tool.hatch.version]
 path = "RGBMatrixEmulator/version.py"
@@ -70,19 +72,8 @@ include = [
     "RGBMatrixEmulator",
 ]
 
-[tool.hatch.envs.default]
-features = []
-
-[tool.hatch.envs.pi5]
-features = ["pi5"]
-
-[tool.hatch.envs.test]
-dependencies = [
+[dependency-groups]
+dev = [
     "parameterized",
     "black"
 ]
-
-[tool.hatch.envs.test.scripts]
-run = "python -m unittest discover -s test"
-lint = "black ."
-lint_check = "black . --check"

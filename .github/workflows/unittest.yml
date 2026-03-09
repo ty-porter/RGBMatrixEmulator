@@ -20,7 +20,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install hatch
-      - name: hatch run test:run
+          pip install --upgrade uv
+      - name: uv sync
         run: |
-          hatch run test:run
+          uv sync
+      - name: uv run python -m unittest discover -s test
+        run: |
+          uv run python -m unittest discover -s test

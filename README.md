@@ -276,38 +276,27 @@ Pull requests that fail builds will not be merged.
 
 ### Installing Locally
 
-RGBME uses `hatch` to manage dependencies. To enter a hatch shell:
+RGBME uses `uv` to manage dependencies.
 
 ```sh
-hatch shell dev
+uv sync --group dev
 
 # Example:
 #   To run a sample script:
-(rgbmatrixemulator) cd samples
-(rgbmatrixemulator) python runtext.py
+cd samples
+uv run python runtext.py
 ```
----
-> [!NOTE]
-> hatch has an issue dealing with keyboard interrupts (such as CTRL + C), which is heavily used to stop emulated scripts.
-> 
-> See https://github.com/pypa/hatch/issues/1633 and https://github.com/pypa/hatch/issues/1647
-> 
-> Until this is resolved, you may want to install RGBME directly instead:
-> ```sh
-> pip install -e .[dev]
-> ```
----
 
 #### Running Tests
 
 ```sh
-hatch run test:run
+uv run python -m unittest discover -s test
 ```
 
 #### Lint
 
 ```sh
-hatch run test:lint
+uv run black .
 ```
 
 ## Contact
