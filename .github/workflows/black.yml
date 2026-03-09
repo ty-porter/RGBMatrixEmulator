@@ -21,6 +21,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade uv
-      - name: uv run black .
+      - name: uv sync
         run: |
-          uv run black .
+          uv sync
+      - name: uv run black --check
+        run: |
+          uv run black --check
