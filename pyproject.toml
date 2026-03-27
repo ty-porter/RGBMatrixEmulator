@@ -66,6 +66,7 @@ LICENSE = "docs/LICENSE"
 "RGBMatrixEmulator/icon.png" = "RGBMatrixEmulator/icon.png"
 "RGBMatrixEmulator/adapters/browser_adapter/static/index.html" = "RGBMatrixEmulator/index.html"
 "RGBMatrixEmulator/adapters/browser_adapter/static/assets" = "RGBMatrixEmulator"
+"RGBMatrixEmulator/py.typed" = "RGBMatrixEmulator/py.typed"
 
 [tool.hatch.build.targets.sdist]
 include = [

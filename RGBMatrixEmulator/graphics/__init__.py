@@ -1,9 +1,11 @@
 from functools import wraps
 from inspect import signature
 
+from RGBMatrixEmulator.emulation.canvas import Canvas
 from RGBMatrixEmulator.graphics.color import Color
 from RGBMatrixEmulator.graphics.font import Font
 
+__all__ = ["Color", "Font", "DrawText", "DrawLine", "DrawCircle"]
 
 def validate_color(func):
     """
@@ -34,11 +36,13 @@ def validate_color(func):
 
 
 @validate_color
-def DrawText(canvas, font, x, y, color, text):
+def DrawText(
+    canvas: Canvas, font: Font, x: int, y: int, color: Color, text: str
+) -> int:
     # Early return for empty string prevents bugs in bdfparser library
     # and makes good sense anyway
     if len(text) == 0:
-        return
+        return 0
 
     # Support multiple spacings based on device width
     character_widths = [__actual_width(font, letter) for letter in text]
@@ -82,7 +86,7 @@ def DrawText(canvas, font, x, y, color, text):
 
 
 @validate_color
-def DrawLine(canvas, x1, y1, x2, y2, color):
+def DrawLine(canvas: Canvas, x1: int, y1: int, x2: int, y2: int, color: Color) -> None:
     int_points = __coerce_int(x1, y1, x2, y2)
     rows, cols = __line(*int_points)
 
@@ -91,9 +95,9 @@ def DrawLine(canvas, x1, y1, x2, y2, color):
 
 
 @validate_color
-def DrawCircle(canvas, x, y, r, color):
-    int_points = __coerce_int(x, y)
-    rows, cols = __circle_perimeter(*int_points, r)
+def DrawCircle(canvas: Canvas, x: int, y: int, r: int, color: Color):
+    x, y = __coerce_int(x, y)
+    rows, cols = __circle_perimeter(x, y, r)
 
     for point in zip(rows, cols):
         canvas.SetPixel(*point, color.red, color.green, color.blue)
@@ -112,7 +116,7 @@ def __actual_width(font, letter):
     return font.CharacterWidth(font.default_character.cp())
 
 
-def __coerce_int(*values):
+def __coerce_int(*values) -> list[int]:
     return [int(value) for value in values]
 
 

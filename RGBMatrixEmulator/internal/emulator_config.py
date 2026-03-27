@@ -1,4 +1,6 @@
 import json, os, pprint
+from typing import Optional
+
 
 from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 from RGBMatrixEmulator.internal.adapter_loader import AdapterLoader
@@ -41,6 +43,18 @@ class RGBMatrixEmulatorConfig:
         },
         "log_level": "info",
     }
+
+    pixel_outline: int
+    pixel_size: int
+    pixel_style: str
+    pixel_glow: int
+    allow_adapter_fallback: bool
+    icon_path: Optional[str]
+    emulator_title: Optional[str]
+    suppress_font_warnings: bool
+    log_level: str
+    pi5: "ChildConfig"
+    browser: "ChildConfig"
 
     def __init__(self):
         self.config = self.__load_config()
@@ -87,9 +101,9 @@ class RGBMatrixEmulatorConfig:
                 self.pixel_style = PixelStyle.DEFAULT
                 Logger.warning(
                     """
-"{}" pixel style option is not supported by adapter "{}". 
+"{}" pixel style option is not supported by adapter "{}".
 Supported pixel styles for this adapter are {}
-                                                              
+
 Defaulting to "{}"...
 """.format(
                         self.pixel_style.lower(),

@@ -34,7 +34,7 @@ class TurtleAdapter(BaseAdapter):
         self.__pen = turtle.Turtle(visible=False)
         self.__screen = self.__pen.getscreen()
         self.__set_emulator_icon()
-        self.__screen.bgcolor(Color.BLACK())
+        self.__screen.bgcolor((0, 0, 0))
         turtle.tracer(0, 0)
         turtle.colormode(255)
 

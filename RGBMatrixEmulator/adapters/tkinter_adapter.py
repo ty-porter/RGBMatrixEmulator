@@ -45,7 +45,9 @@ class TkinterAdapter(BaseAdapter):
             for col, pixel in enumerate(pixel_row):
                 shape_id = self.__pixels[row][col]
 
-                self.__canvas.itemconfig(shape_id, fill=Color.to_hex(tuple(pixel)))
+                self.__canvas.itemconfig(
+                    shape_id, fill=("#%02x%02x%02x" % tuple(pixel))
+                )
 
         self.__canvas.pack()
         self.__root.update()

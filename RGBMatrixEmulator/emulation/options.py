@@ -2,7 +2,7 @@ from RGBMatrixEmulator.internal.emulator_config import RGBMatrixEmulatorConfig
 
 
 class RGBMatrixOptions:
-    def __init__(self):
+    def __init__(self) -> None:
         self.hardware_mapping = "EMULATED"
         self.rows = 32
         self.cols = 32
@@ -35,13 +35,13 @@ class RGBMatrixOptions:
         # Pi5 Adapter
         self.pi5 = emulator_config.pi5
 
-    def window_size(self):
+    def window_size(self) -> tuple[int, int]:
         return (
             self.cols * self.pixel_size * self.chain_length,
             self.rows * self.pixel_size * self.parallel,
         )
 
-    def window_size_str(self, pixel_text=""):
+    def window_size_str(self, pixel_text: str = "") -> str:
         width, height = self.window_size()
 
         return f"{width} x {height} {pixel_text}"

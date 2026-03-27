@@ -2,12 +2,11 @@ import bdfparser
 
 
 class Font:
-    def __init__(self):
-        self.bdf_font = None
-        self.headers = {}
-        self.spacing = {}
+    bdf_font: bdfparser.Font
+    headers: dict
+    props: dict
 
-    def LoadFont(self, path):
+    def LoadFont(self, path: str) -> None:
         self.bdf_font = bdfparser.Font(path)
         self.headers = self.bdf_font.headers
         self.props = self.bdf_font.props
@@ -16,7 +15,7 @@ class Font:
         # Cache this for use later so we don't have to constantly look it up
         self.default_character = self.bdf_font.glyphbycp(0xFFFD)
 
-    def CharacterWidth(self, char):
+    def CharacterWidth(self, char: str) -> int:
         # Missing glyphs return 0 width in rpi-rgb-led-matrix
         if self.bdf_font == None or not self.bdf_font.glyphbycp(char):
             return 0
@@ -24,13 +23,13 @@ class Font:
         return self.bdf_font.glyphbycp(char).meta["dwx0"]
 
     @property
-    def height(self):
+    def height(self) -> int:
         if self.bdf_font is None:
             return -1
         return self.headers["fbby"]
 
     @property
-    def baseline(self):
+    def baseline(self) -> int:
         if self.bdf_font is None:
             return 0
         return self.headers["fbby"] + self.headers["fbbyoff"]
