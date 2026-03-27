@@ -69,7 +69,7 @@ class Canvas:
         self.options.brightness = value
 
     def __create_pixel(self, pixel):
-        return __adjust_brightness(tuple(pixel), self.brightness / 100.0)
+        return self.__adjust_brightness(tuple(pixel), self.brightness / 100.0)
 
     def __pixel_out_of_bounds(self, x, y):
         if x < 0 or x >= self.width:
@@ -80,16 +80,15 @@ class Canvas:
 
         return False
 
+    def __adjust_brightness(self, pixel, alpha, to_int=False):
+        if to_int:
+            return tuple(int(channel) for channel in pixel)
+
+        return tuple(channel * alpha for channel in pixel)
+
     # These are delegated to the display adapter to handle specific implementation.
     def draw_to_screen(self) -> None:
         self.display_adapter.draw_to_screen(self.__pixels)
 
     def check_for_quit_event(self) -> None:
         self.display_adapter.check_for_quit_event()
-
-
-def __adjust_brightness(pixel, alpha, to_int=False):
-    if to_int:
-        return tuple(int(channel) for channel in pixel)
-
-    return tuple(channel * alpha for channel in pixel)

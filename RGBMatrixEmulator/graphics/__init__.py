@@ -7,6 +7,7 @@ from RGBMatrixEmulator.graphics.font import Font
 
 __all__ = ["Color", "Font", "DrawText", "DrawLine", "DrawCircle"]
 
+
 def validate_color(func):
     """
     Decorator to validate that the 'color' argument is of type Color.
