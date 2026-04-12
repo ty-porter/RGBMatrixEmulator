@@ -1,7 +1,7 @@
 {
     "_comment": "This config is used specifically to test RGBME via the raw adapter",
     "pixel_outline": 0,
-    "pixel_size": 16,
+    "pixel_size": 1,
     "pixel_style": "square",
     "pixel_glow": 6,
     "display_adapter": "raw",
