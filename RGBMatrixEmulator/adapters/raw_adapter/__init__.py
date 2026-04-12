@@ -1,11 +1,14 @@
 from RGBMatrixEmulator.adapters.base import BaseAdapter
-
-from PIL import Image
-
-import numpy as np
+from RGBMatrixEmulator.internal.pixel_style import PixelStyle
 
 
 class RawAdapter(BaseAdapter):
+    SUPPORTED_PIXEL_STYLES = [
+        PixelStyle.SQUARE,
+        PixelStyle.CIRCLE,
+        PixelStyle.REAL,
+    ]
+
     MAX_FRAMES_STORED = 128
     DEFAULT_MAX_FRAME = -1  # Never halts
 
@@ -29,7 +32,7 @@ class RawAdapter(BaseAdapter):
         pass
 
     def _dump_screenshot(self, path):
-        image = Image.fromarray(np.array(self._last_frame(), dtype="uint8"), "RGB")
+        image = self._get_masked_image(self._last_frame())
         image.save(path)
 
     def _last_frame(self):
