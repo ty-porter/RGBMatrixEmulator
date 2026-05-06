@@ -13,8 +13,6 @@ from context import (
     TestConfigContext,
 )
 
-os.environ["RGBME_SUPPRESS_ADAPTER_LOAD_ERRORS"] = "true"
-
 sys.path.append(os.path.abspath(os.path.join(__file__, "..", "..")))
 
 import samples

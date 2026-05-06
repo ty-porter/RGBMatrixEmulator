@@ -33,17 +33,21 @@ classifiers = [
 ]
 dependencies = [
     "bdfparser<=2.2.0",
-    "libsixel-python>=0.5.0",
     "numpy>=1.2.0",
     "Pillow>=10.0.1",
-    "pygame>=2.0.1,<3",
-    "tornado>=6.5.5"
+    "tornado>=6.5.5",
 ]
 
 [project.scripts]
 rgbme = "RGBMatrixEmulator.cli:run_cli"
 
 [project.optional-dependencies]
+pygame = [
+    "pygame>=2.0.1,<3",
+]
+sixel = [
+    "libsixel-python>=0.5.0",
+]
 pi5 = [
     "Adafruit-Blinka-Raspberry-Pi5-Piomatter>=1.0.0; python_version>='3.11'",
     "adafruit-blinka>=8.0.0; python_version>='3.11'",
