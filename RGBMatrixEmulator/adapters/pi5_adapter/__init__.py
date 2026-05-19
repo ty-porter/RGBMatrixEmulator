@@ -18,7 +18,7 @@ class Pi5Adapter(BaseAdapter):
             "The Pi5 adapter is deprecated. rpi-rgb-led-matrix now provides Raspberry Pi 5 support natively. "
             "This adapter will be removed no later than July 1, 2026.",
             FutureWarning,
-            stacklevel=2
+            stacklevel=2,
         )
 
         super().__init__(width, height, options)
