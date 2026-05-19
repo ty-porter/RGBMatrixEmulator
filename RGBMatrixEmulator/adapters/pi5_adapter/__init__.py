@@ -4,6 +4,7 @@ from RGBMatrixEmulator.logger import Logger
 import sys
 from pathlib import Path
 import numpy as np
+import warnings
 
 try:
     import adafruit_blinka_raspberry_pi5_piomatter as piomatter
@@ -13,6 +14,13 @@ except ImportError:
 
 class Pi5Adapter(BaseAdapter):
     def __init__(self, width, height, options):
+        warnings.warn(
+            "The Pi5 adapter is deprecated. rpi-rgb-led-matrix now provides Raspberry Pi 5 support natively. "
+            "This adapter will be removed no later than July 1, 2026.",
+            FutureWarning,
+            stacklevel=2
+        )
+
         super().__init__(width, height, options)
         self.matrix = None
         self.framebuffer = None
