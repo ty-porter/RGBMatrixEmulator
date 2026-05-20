@@ -196,10 +196,10 @@ Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adap
 
 ### Raspberry Pi 5 Adapter
 
-> [!NOTE]  
-> This adapter is currently experimental.
+> [!WARNING]  
+> This adapter is deprecated. It will be removed no later than July 1, 2026. Please use native `rpi-rgb-led-matrix` Raspberry Pi 5 support.
 
-RGBME can be used to "bridge" scripts written for `rpi-rgb-led-matrix` to Raspberry Pi model 5 through [Adafruit Blinka](https://github.com/adafruit/Adafruit_Blinka) and the [Adafruit-Blinka-Raspberry-Pi5-Piomatter](https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Piomatter) libraries. As of Jan 1, 2026 `rpi-rgb-led-matrix` does not support Raspberry Pi 5 natively.
+RGBME can be used to "bridge" scripts written for `rpi-rgb-led-matrix` to Raspberry Pi model 5 through [Adafruit Blinka](https://github.com/adafruit/Adafruit_Blinka) and the [Adafruit-Blinka-Raspberry-Pi5-Piomatter](https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Piomatter) libraries.
 
 Please see the [README for the `pi5` display adapter](RGBMatrixEmulator/adapters/pi5_adapter/README.md) for further information regarding its configuration and usage.
 

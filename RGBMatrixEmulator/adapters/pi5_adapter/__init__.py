@@ -13,6 +13,11 @@ except ImportError:
 
 class Pi5Adapter(BaseAdapter):
     def __init__(self, width, height, options):
+        Logger.warning(
+            "The Pi5 adapter is deprecated. rpi-rgb-led-matrix now provides Raspberry Pi 5 support natively. "
+            "This adapter will be removed no later than July 1, 2026.",
+        )
+
         super().__init__(width, height, options)
         self.matrix = None
         self.framebuffer = None
