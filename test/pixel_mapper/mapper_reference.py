@@ -6,7 +6,7 @@ from PIL import Image
 import numpy as np
 
 # Make the sibling test modules and the project root importable, whether this
-# file is imported by the test runner (as pixel_mapper_specs.mapper_reference) or
+# file is imported by the test runner (as pixel_mapper.mapper_reference) or
 # executed directly to regenerate references.
 SPECS_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_DIR = os.path.abspath(os.path.join(SPECS_DIR, ".."))
