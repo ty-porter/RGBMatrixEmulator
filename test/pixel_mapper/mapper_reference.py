@@ -36,7 +36,7 @@ MapperSpec = namedtuple(
     "MapperSpec", ("name", "cols", "rows", "chain", "parallel", "mapper")
 )
 
-'''
+"""
 Geometries follow the canonical examples in rpi-rgb-led-matrix's lib/README.md
 (https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/lib/README.md).
 
@@ -51,7 +51,7 @@ Note: Some mappers cause panel layouts to behave differently than rpi-rgb-led-ma
 For instance:
 V-mapper:Z is identical to V-mapper -- the Z (zigzag) flag only flips alternate
 physical panels for cabling, which the emulator does not model.
-'''
+"""
 MAPPER_SPECS = [
     MapperSpec("identity", 32, 32, 4, 1, ""),
     MapperSpec("vmapper", 64, 32, 2, 1, "V-mapper"),
