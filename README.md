@@ -87,7 +87,7 @@ python main.py --led-cols 64 --led-rows 32 --led-chain 2 --led-parallel 2
 
 ### `--led-pixel-mapper`
 
-> [!NOTICE]  
+> [!TIP]  
 > Contributions welcome to support more complex mapper behavior!
 
 RGBME assumes that the user wants to simulate a physical arrangement of panels such that the image appears continuous and upright. This differs a bit from how `rpi-rgb-led-matrix` treats chains and pixel mappers, which describe the wiring arrangement of the panels and the physical arrangement of panels is not specified.
@@ -243,7 +243,7 @@ Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adap
 
 ### Raspberry Pi 5 Adapter
 
-> [!WARNING]  
+> [!WARNING]
 > This adapter is deprecated. It will be removed no later than July 1, 2026. Please use native `rpi-rgb-led-matrix` Raspberry Pi 5 support.
 
 RGBME can be used to "bridge" scripts written for `rpi-rgb-led-matrix` to Raspberry Pi model 5 through [Adafruit Blinka](https://github.com/adafruit/Adafruit_Blinka) and the [Adafruit-Blinka-Raspberry-Pi5-Piomatter](https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Piomatter) libraries.
