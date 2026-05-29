@@ -29,7 +29,7 @@ class TurtleAdapter(BaseAdapter):
             return
 
         Logger.info(self.emulator_title)
-        turtle.setup(*self.options.window_size())
+        turtle.setup(*self.scaled_screen_size)
         turtle.title(self.emulator_title)
         self.__pen = turtle.Turtle(visible=False)
         self.__screen = self.__pen.getscreen()

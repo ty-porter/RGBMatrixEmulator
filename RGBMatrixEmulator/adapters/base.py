@@ -29,7 +29,7 @@ class BaseAdapter:
         self.width = width
         self.height = height
         self.options = options
-        self.__black = Image.new("RGB", self.options.window_size(), "black")
+        self.__black = Image.new("RGB", self.scaled_screen_size, "black")
         self.__mask = self.__draw_mask()
         self.loaded = False
 
@@ -37,6 +37,25 @@ class BaseAdapter:
 
         self.default_icon_path = (Path(__file__).parent / ".." / "icon.png").resolve()
         self._set_icon_path()
+
+
+    @property
+    def scaled_screen_size(self):
+        """On-screen size in pixels: the screen (LED grid) scaled by pixel_size."""
+        pixel_size = self.options.pixel_size
+
+        return (self.width * pixel_size, self.height * pixel_size)
+
+    def scaled_screen_size_str(self, pixel_text: str = ""):
+        width, height = self.scaled_screen_size
+
+        return "".join([f"{width} x {height}", pixel_text])
+    
+    def screen_size_str(self, pixel_text: str = ""):
+        return "".join([f"{self.width} x {self.height}", pixel_text])
+    
+    def panel_size_str(self, pixel_text: str = ""):
+        return "".join([f"{self.options.cols} x {self.options.rows}", pixel_text])
 
     @classmethod
     def get_instance(cls, *args, **kwargs):
@@ -74,7 +93,7 @@ class BaseAdapter:
     #############################################################
     def _get_masked_image(self, pixels):
         image = Image.fromarray(np.array(pixels, dtype=np.uint8), "RGB")
-        image = image.resize(self.options.window_size(), Image.NEAREST)
+        image = image.resize(self.scaled_screen_size, Image.NEAREST)
 
         return Image.composite(image, self.__black, self.__mask)
 
@@ -87,7 +106,7 @@ class BaseAdapter:
         return getattr(self, self.MASK_FNS.get(pixel_style, self.DEFAULT_MASK_FN))
 
     def __draw_mask(self):
-        mask = Image.new("L", self.options.window_size())
+        mask = Image.new("L", self.scaled_screen_size)
 
         draw_fn = self.__mask_fn(self.options.pixel_style)
         draw_fn(mask)
@@ -96,7 +115,7 @@ class BaseAdapter:
 
     def _draw_circle_mask(self, mask):
         pixel_size = self.options.pixel_size
-        width, height = self.options.window_size()
+        width, height = self.scaled_screen_size
 
         drawer = ImageDraw.Draw(mask)
 
@@ -110,7 +129,7 @@ class BaseAdapter:
 
     def _draw_square_mask(self, mask):
         pixel_size = self.options.pixel_size
-        width, height = self.options.window_size()
+        width, height = self.scaled_screen_size
 
         drawer = ImageDraw.Draw(mask)
 
@@ -124,7 +143,7 @@ class BaseAdapter:
 
     def _draw_real_mask(self, mask):
         pixel_size = self.options.pixel_size
-        width, height = self.options.window_size()
+        width, height = self.scaled_screen_size
         pixel_glow = self.options.pixel_glow
 
         if pixel_glow == 0:
@@ -219,8 +238,8 @@ class BaseAdapter:
     def __str__(self):
         return self.DEBUG_TEXT_TEMPLATE.format(
             version.__version__,
-            self.options.cols,
-            self.options.rows,
+            self.width,
+            self.height,
             self.options.chain_length,
             self.options.parallel,
             self.options.pixel_size,

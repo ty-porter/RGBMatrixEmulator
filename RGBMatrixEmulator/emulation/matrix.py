@@ -8,8 +8,7 @@ class RGBMatrix:
     def __init__(self, options: RGBMatrixOptions = RGBMatrixOptions()) -> None:
         self.options = options
 
-        self.width = options.cols * options.chain_length
-        self.height = options.rows * options.parallel
+        self.width, self.height = options.screen.pixel_buffer_size
 
     def CreateFrameCanvas(self) -> Canvas:
         self.canvas = Canvas(options=self.options)

@@ -26,27 +26,26 @@
                      <tbody>
                         <tr>
                            <td>
-                              Matrix Width:
+                              Panel Size:
                            </td>
                            <td>
-                              {{ adapter.options.cols }}
+                              {{ adapter.panel_size_str(pixel_text="px") }}
                            </td>
                         </tr>
                         <tr>
                            <td>
-                              Matrix Height:
+                              Overall Size:
                            </td>
                            <td>
-                              {{ adapter.options.rows }}
+                              {{ adapter.screen_size_str(pixel_text="px") }}
                            </td>
-                        </td>
                         </tr>
                         <tr>
                            <td>
                               Image Size:
                            </td>
                            <td>
-                              {{ adapter.options.window_size_str(pixel_text="px") }}
+                              {{ adapter.scaled_screen_size_str(pixel_text="px") }}
                            </td>
                         </tr>
                         <tr>
