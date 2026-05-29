@@ -8,7 +8,7 @@ class UMapper(PixelMapper):
     U-arrangement mapper: a long chain folded back on itself into a U.
 
     Based on rpi-rgb-led-matrix's UArrangementMapper ("U-mapper"). This changes
-    the aspect of the drawn image but the emulator does not model physical
+    the dimensions of the drawn image but the emulator does not model physical
     layout, so it is otherwise unchanged.
 
     Requires an even chain of at least 2 panels.

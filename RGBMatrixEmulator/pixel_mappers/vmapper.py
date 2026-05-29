@@ -8,7 +8,7 @@ class VMapper(PixelMapper):
     Vertical mapper: a horizontal chain folded into vertical panel stacks.
 
     Based on rpi-rgb-led-matrix's VerticalMapper ("V-mapper"). This changes
-    the aspect of the drawn image but the emulator does not model physical
+    the dimensions of the drawn image but the emulator does not model physical
     layout, so it is otherwise unchanged.
     """
 

@@ -9,7 +9,7 @@ class RotateMapper(PixelMapper):
 
     Based on rpi-rgb-led-matrix's RotatePixelMapper ("Rotate"). With panels in a
     normal upright arrangement the viewer sees the rotated image. At 90/270 degrees
-    the rotation also swaps the aspect, so the drawn canvas and the displayed
+    the rotation also swaps the dimensions, so the drawn canvas and the displayed
     screen have transposed dimensions.
     """
 

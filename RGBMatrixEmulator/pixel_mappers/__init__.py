@@ -40,7 +40,7 @@ class PixelMapper(abc.ABC):
         coordinates. `draw_w` / `draw_h` are the drawn-canvas dimensions.
 
         Arrangement mappers that only resize return their inputs unchanged. A
-        content transform may change the aspect (e.g. a 90 degree rotation).
+        content transform may change the dimensions (e.g. a 90 degree rotation).
         """
 
     def build_lut(self, draw_w: int, draw_h: int) -> tuple[LUT | None, tuple[int, int]]:

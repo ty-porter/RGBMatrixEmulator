@@ -8,7 +8,7 @@ class StackToRowMapper(PixelMapper):
     Lay parallel chains end-to-end as one wide horizontal row.
 
     Based on rpi-rgb-led-matrix's StackToRowMapper ("StackToRow"). This changes
-    the aspect of the drawn image but the emulator does not model physical
+    the dimensions of the drawn image but the emulator does not model physical
     layout, so it is otherwise unchanged.
     """
 

@@ -19,7 +19,7 @@ class Screen:
       pixel_buffer_size  -- what the program draws into (SetPixel/SetImage),
                             and the size reported as RGBMatrix.width/height
       screen_size        -- what the screen shows after the mapper's LUT; a
-                            content transform may change the aspect (e.g. a 90
+                            content transform may change the dimensions (e.g. a 90
                             degree rotation), so this can differ from the buffer
     """
 

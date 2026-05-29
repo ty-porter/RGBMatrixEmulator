@@ -67,6 +67,50 @@ After this, most of the existing command line arguments from the `rpi-rgb-led-ma
 
 Startup of the existing script will be unchanged.
 
+## Multi-Panel Emulation
+
+Emulated multi-panel chaining is supported via `rpi-rgb-led-matrix` CLI flags such as `--led-chain`, `--led-parallel`, `--led-pixel-mappers`. RGBME makes the assumption that the desired orientation for a multi-panel arrangement is a rectangular, upright array of panels.
+
+### `--led-chain` / `--led-parallel`
+
+Single-panel emulation creates an emulated matrix size of `--led-cols` (width) x `--led-rows` (height). For instance, the following command creates a 64x32 emulated matrix.
+
+```sh
+python main.py --led-cols 64 --led-rows 32
+```
+
+`--led-chain` can be thought of as the number of panels chained horizontally, and `--led-parallel` is the number of parallel chains. This also assumes the chains contain the same number of panels. Thus, these flags create a  `--led-cols` x `--led-chain` wide by `--led-rows` x `--led-parallel` high. The following example creates a 128x64 emulated matrix.
+
+```sh
+python main.py --led-cols 64 --led-rows 32 --led-chain 2 --led-parallel 2
+```
+
+### `--led-pixel-mapper`
+
+RGBME assumes that the user wants to simulate a physical arrangement of panels such that the image appears continuous and upright. This differs a bit from how `rpi-rgb-led-matrix` treats chains and pixel mappers, which describe the wiring arrangement of the panels and the physical arrangement of panels is not specified.
+
+RGBME does **NOT** support pixel mapper chaining:
+
+```sh
+# More than one pixel mapper, V-mapper:Z chained into Rotate:90
+# RGBME will use the first detected mapper.
+python main.py --led-chain 2 --led-parallel 2 --led-pixel-mapper "V-mapper:Z;Rotate:90"
+
+# Valid
+python main.py --led-chain 2 --led-parallel 2 --led-pixel-mapper "V-mapper:Z"
+python main.py --led-chain 2 --led-parallel 2 --led-pixel-mapper "Rotate:90"
+```
+
+Instead, RGBME can use a single pixel mapper to alter the emulated dimensions or perform affine transformations over the entire emulated matrix.
+
+| Mapper | Parameter | Description |
+| --- | --- | --- |
+| `V-mapper` | `Z` (optional) for zig-zag wiring | Folds a horizontal chain into vertical panel stacks. Changes the dimensions to `(W·parallel/chain) × (H·chain/parallel)`.  |
+| `U-mapper` | | Folds a long chain back on itself into a U, halving the width and doubling the height (`W/2 × H·2`). Requires an even chain of at least 2 panels. |
+| `StackToRow` | | Lays parallel chains end-to-end into one wide horizontal row, reshaping the dimensions to `(W·parallel) × (H/parallel)`. |
+| `Rotate` | Angle in degrees, a multiple of 90 (e.g. `90`) | Rotates the displayed image by the given angle. At 90° or 270° the width and height are swapped. |
+| `Mirror` | `H` (default) or `V` | Mirrors the display left/right (`H`) or top/bottom (`V`). Preserves dimensions. |
+
 ## Customization
 
 ### Generating a Configuration File
@@ -285,6 +329,7 @@ See [Samples README](samples/README.md) for more information about running examp
     ```
   </details>
 - Drawing large strings is slow, partly because of the `linelimit` parameter in the BDF font parser this emulator uses to prevent multiline text from being rendered unintentionally.
+- `--led-pixel-mapper` emulation differs from `rpi-rgb-led-matrix`. This is due to the assumption made by RGBME for an upright, rectangular emulated matrix. See [Multi-Panel Emulation](#multi-panel-emulation) for details.
 
 ## Contributing
 
