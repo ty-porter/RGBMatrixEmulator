@@ -87,6 +87,9 @@ python main.py --led-cols 64 --led-rows 32 --led-chain 2 --led-parallel 2
 
 ### `--led-pixel-mapper`
 
+> [!NOTICE]  
+> Contributions welcome to support more complex mapper behavior!
+
 RGBME assumes that the user wants to simulate a physical arrangement of panels such that the image appears continuous and upright. This differs a bit from how `rpi-rgb-led-matrix` treats chains and pixel mappers, which describe the wiring arrangement of the panels and the physical arrangement of panels is not specified.
 
 RGBME does **NOT** support pixel mapper chaining:
