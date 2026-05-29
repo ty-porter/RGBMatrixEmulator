@@ -2,9 +2,9 @@ import abc
 
 import numpy as np
 
-'''A gather lookup table: a pair of integer index arrays (vy_lut, vx_lut), each shaped
+"""A gather lookup table: a pair of integer index arrays (vy_lut, vx_lut), each shaped
 like the screen, holding the visible coordinate that feeds each screen pixel.
-Apply with `screen_pixels = visible_pixels[vy_lut, vx_lut]`.'''
+Apply with `screen_pixels = visible_pixels[vy_lut, vx_lut]`."""
 LUT = tuple[np.ndarray, np.ndarray]
 
 

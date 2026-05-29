@@ -38,7 +38,6 @@ class BaseAdapter:
         self.default_icon_path = (Path(__file__).parent / ".." / "icon.png").resolve()
         self._set_icon_path()
 
-
     @property
     def scaled_screen_size(self):
         """On-screen size in pixels: the screen (LED grid) scaled by pixel_size."""
@@ -50,10 +49,10 @@ class BaseAdapter:
         width, height = self.scaled_screen_size
 
         return "".join([f"{width} x {height}", pixel_text])
-    
+
     def screen_size_str(self, pixel_text: str = ""):
         return "".join([f"{self.width} x {self.height}", pixel_text])
-    
+
     def panel_size_str(self, pixel_text: str = ""):
         return "".join([f"{self.options.cols} x {self.options.rows}", pixel_text])
 
