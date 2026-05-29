@@ -7,11 +7,9 @@ class StackToRowMapper(PixelMapper):
     """
     Lay parallel chains end-to-end as one wide horizontal row.
 
-    Based on rpi-rgb-led-matrix's StackToRowMapper ("StackToRow"). This is an
-    arrangement mapper: stacked parallel bands are presented side by side, but
-    the physical placement is what the viewer sees, so on-screen content is
-    unchanged -- only the aspect changes. The "Z"/"F" band-flip parameters are
-    cabling concerns the emulator does not model.
+    Based on rpi-rgb-led-matrix's StackToRowMapper ("StackToRow"). This changes
+    the aspect of the drawn image but the emulator does not model physical
+    layout, so it is otherwise unchanged.
     """
 
     def __init__(self, chain_length: int = 1, parallel: int = 1):

@@ -7,13 +7,11 @@ class UMapper(PixelMapper):
     """
     U-arrangement mapper: a long chain folded back on itself into a U.
 
-    Based on rpi-rgb-led-matrix's UArrangementMapper ("U-mapper"). This is an
-    arrangement mapper: the fold makes a long chain into a squarer block, but
-    the physical placement is what the viewer sees, so on-screen content is
-    unchanged -- only the aspect changes.
+    Based on rpi-rgb-led-matrix's UArrangementMapper ("U-mapper"). This changes
+    the aspect of the drawn image but the emulator does not model physical
+    layout, so it is otherwise unchanged.
 
-    Requires an even chain of at least 2 panels; the upstream wiring caveats are
-    not modeled since the emulator only cares about the resulting screen.
+    Requires an even chain of at least 2 panels.
     """
 
     def __init__(self, chain_length: int = 1, parallel: int = 1):

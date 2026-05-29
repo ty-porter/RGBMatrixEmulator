@@ -7,10 +7,10 @@ class RotateMapper(PixelMapper):
     """
     Rotate the display by a multiple of 90 degrees.
 
-    Based on rpi-rgb-led-matrix's RotatePixelMapper ("Rotate"). This is a
-    content mapper: with panels in a normal upright arrangement the viewer sees
-    the rotated image. At 90/270 degrees the rotation also swaps the aspect, so
-    the drawn canvas and the displayed screen have transposed dimensions.
+    Based on rpi-rgb-led-matrix's RotatePixelMapper ("Rotate"). With panels in a
+    normal upright arrangement the viewer sees the rotated image. At 90/270 degrees
+    the rotation also swaps the aspect, so the drawn canvas and the displayed
+    screen have transposed dimensions.
     """
 
     def __init__(self, angle: int = 0):

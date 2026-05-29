@@ -2,9 +2,9 @@ import abc
 
 import numpy as np
 
-#: A gather LUT: a pair of integer index arrays (vy_lut, vx_lut), each shaped
-#: like the screen, holding the visible coordinate that feeds each screen pixel.
-#: Apply with ``screen_pixels = visible_pixels[vy_lut, vx_lut]``.
+'''A gather lookup table: a pair of integer index arrays (vy_lut, vx_lut), each shaped
+like the screen, holding the visible coordinate that feeds each screen pixel.
+Apply with `screen_pixels = visible_pixels[vy_lut, vx_lut]`.'''
 LUT = tuple[np.ndarray, np.ndarray]
 
 
@@ -13,18 +13,14 @@ class PixelMapper(abc.ABC):
     A pixel mapper, modeled on rpi-rgb-led-matrix's PixelMapper.
 
     The emulator assumes panels are physically arranged as an upright,
-    rectangular matrix (the common case; arbitrary layouts are not modeled).
-    Under that assumption a mapper has two orthogonal effects:
+    rectangular matrix.
 
-    - it may *resize* the canvas relative to the base panel grid
-      (``get_size_mapping`` -- V/U/StackToRow do this), and
-    - it may *transform the content* the viewer sees within that size
-      (``map_visible_to_screen`` -- Mirror/Rotate do this).
+    A pixel mapper may:
+    - resize the canvas relative to the base panel grid (V, U, StackToRow)
+    - transform the content the viewer sees within that size (Mirror, Rotate)
 
-    The emulator never drives real LEDs, so the electrical wiring order is not
-    modeled: mappers describe what ends up on screen, not the matrix layout.
-
-    See docs/chainable-pixel-mappers.md.
+    The emulator never drives real LEDs. Mappers describe where pixels
+    end up on screen and not physical panel arrangement.
     """
 
     @abc.abstractmethod
@@ -38,36 +34,24 @@ class PixelMapper(abc.ABC):
         """
         Map drawn coordinates to displayed-screen coordinates, elementwise.
 
-        ``vx`` / ``vy`` are integer arrays of matching shape holding coordinates
-        in the *drawn* canvas (the ``get_size_mapping`` size the user draws
+        `vx` / `vy` are integer arrays of matching shape holding coordinates
+        in the drawn pixel buffer (the `get_size_mapping` size the user draws
         into). The return is a pair of same-shape arrays holding screen
-        coordinates. ``draw_w`` / ``draw_h`` are the drawn-canvas dimensions.
+        coordinates. `draw_w` / `draw_h` are the drawn-canvas dimensions.
 
         Arrangement mappers that only resize return their inputs unchanged. A
-        content transform may change the aspect (e.g. a 90 degree rotation), in
-        which case the displayed size differs from the drawn size; callers infer
-        the displayed size from the output range.
+        content transform may change the aspect (e.g. a 90 degree rotation).
         """
 
     def build_lut(self, draw_w: int, draw_h: int) -> tuple[LUT | None, tuple[int, int]]:
         """
-        Compile this mapper's coordinate transform, over a drawn canvas of
-        ``draw_w`` x ``draw_h``, into a gather LUT plus the resulting displayed
-        (W, H).
-
-        Both fall out of a single evaluation of ``map_visible_to_screen`` over
-        the canvas: the displayed size is the bounding box of the outputs, and
-        the LUT is their scatter-inversion (so ``pixels[vy_lut, vx_lut]`` gathers
-        the right drawn pixel for each displayed pixel).
-
-        The LUT is ``None`` when the transform is the identity (arrangement
-        mappers, which only resize) so callers can skip remapping; the displayed
-        size then equals the drawn size.
+        Compile this mapper's coordinate transform over a pixel buffer of
+        `draw_w` x `draw_h` into a LUT plus the resulting displayed (W, H).
         """
         vy_grid, vx_grid = np.indices((draw_h, draw_w))
         sx, sy = self.map_visible_to_screen(draw_w, draw_h, vx_grid, vy_grid)
 
-        # Identity content transform -> no remapping needed; display matches draw.
+        # Identity content transform -> no remapping needed
         if np.array_equal(sx, vx_grid) and np.array_equal(sy, vy_grid):
             return None, (draw_w, draw_h)
 

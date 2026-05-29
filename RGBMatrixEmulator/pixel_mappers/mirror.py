@@ -8,7 +8,7 @@ class MirrorMapper(PixelMapper):
     Mirror the display horizontally (default) or vertically.
 
     Vectorized port of rpi-rgb-led-matrix's MirrorPixelMapper ("Mirror").
-    Parameter "H" mirrors left/right, "V" mirrors top/bottom. Size-preserving.
+    Parameter "H" mirrors left/right, "V" mirrors top/bottom. Preserves aspect.
     """
 
     def __init__(self, horizontal: bool = True):

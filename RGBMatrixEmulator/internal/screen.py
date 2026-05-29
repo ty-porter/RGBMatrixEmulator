@@ -21,9 +21,6 @@ class Screen:
       screen_size        -- what the screen shows after the mapper's LUT; a
                             content transform may change the aspect (e.g. a 90
                             degree rotation), so this can differ from the buffer
-
-    Constructed lazily by RGBMatrixOptions.screen, so the snapshot is taken
-    after the program has configured its options rather than at their defaults.
     """
 
     def __init__(self, options) -> None:
