@@ -6,8 +6,8 @@ from PIL import Image
 import numpy as np
 
 # Make the sibling test modules and the project root importable, whether this
-# file is imported by the test runner (as specs.mapper_reference) or executed
-# directly to regenerate references.
+# file is imported by the test runner (as pixel_mapper_specs.mapper_reference) or
+# executed directly to regenerate references.
 SPECS_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_DIR = os.path.abspath(os.path.join(SPECS_DIR, ".."))
 ROOT_DIR = os.path.abspath(os.path.join(TEST_DIR, ".."))
@@ -36,24 +36,22 @@ MapperSpec = namedtuple(
     "MapperSpec", ("name", "cols", "rows", "chain", "parallel", "mapper")
 )
 
-# Geometries follow the canonical examples in rpi-rgb-led-matrix's lib/README.md
-# (https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/lib/README.md).
-#
-#   identity     32x32, chain 4 x parallel 1 -> 128x32  four panels chained, no
-#                                                        mapper: a 4x1 row
-#   U-mapper     32x32, chain 4 x parallel 1 ->  64x64  that same chain folded
-#                                                        ("--led-chain=4 ... behaves
-#                                                        like a 64x64 screen") -> 2x2
-#   V-mapper     64x32, chain 2 x parallel 1 ->  64x64  "2 panels of 64x32" stacked
-#                                                        vertically instead of
-#                                                        horizontally -> 1x2
-#   StackToRow   64x32, chain 1 x parallel 2 -> 128x32  two parallel chains laid
-#                                                        end-to-end into a row -> 2x1
-#   Rotate/Mirror 32x32, chain 2 x parallel 2 -> 64x64  the 2x2 grid visibly
-#                                                        rotated / mirrored
-#
-# V-mapper:Z is identical to V-mapper here: the :Z zigzag only flips alternate
-# physical panels for cabling, which the emulator does not model.
+'''
+Geometries follow the canonical examples in rpi-rgb-led-matrix's lib/README.md
+(https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/lib/README.md).
+
+  identity      32x32, chain 4 x parallel 1 -> 128x32
+  U-mapper      32x32, chain 4 x parallel 1 ->  64x64
+  V-mapper      64x32, chain 2 x parallel 1 ->  64x64
+  StackToRow    64x32, chain 1 x parallel 2 -> 128x32
+  Rotate/Mirror 32x32, chain 2 x parallel 2 ->  64x64
+
+Note: Some mappers cause panel layouts to behave differently than rpi-rgb-led-matrix
+
+For instance:
+V-mapper:Z is identical to V-mapper -- the Z (zigzag) flag only flips alternate
+physical panels for cabling, which the emulator does not model.
+'''
 MAPPER_SPECS = [
     MapperSpec("identity", 32, 32, 4, 1, ""),
     MapperSpec("vmapper", 64, 32, 2, 1, "V-mapper"),
@@ -74,9 +72,7 @@ def run_mapper_spec(spec, screenshot_path=None):
     the raw adapter. Returns the screen pixel array (also dumps a PNG into
     screenshot_path when provided).
     """
-    # Each spec can produce a differently sized screen. The display adapter is a
-    # process-wide singleton whose pixel mask is sized on first construction, so
-    # clear it to force a correctly sized adapter (and mask) for this spec.
+    # Reset the adapter to force a correctly sized adapter (and mask) for this spec.
     RawAdapter.INSTANCE = None
 
     sys.argv = [

@@ -10,8 +10,6 @@ class Canvas:
         self.options = options
         self.__screen = options.screen
 
-        # The pixel buffer (where SetPixel/SetImage write); matches the size the
-        # program sees via RGBMatrix.width/height.
         self.width, self.height = self.__screen.pixel_buffer_size
 
         # 3D numpy array -- rows (H), columns (W), 3-tuple RGB

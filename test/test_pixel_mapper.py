@@ -6,7 +6,11 @@ import numpy as np
 
 from PIL import Image
 
-from specs.mapper_reference import MAPPER_SPECS, run_mapper_spec, reference_to_nparray
+from pixel_mapper.mapper_reference import (
+    MAPPER_SPECS,
+    run_mapper_spec,
+    reference_to_nparray,
+)
 
 from parameterized import parameterized
 
