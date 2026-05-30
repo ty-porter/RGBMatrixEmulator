@@ -31,7 +31,7 @@ class PygameAdapter(BaseAdapter):
             return
 
         Logger.info(self.emulator_title)
-        self.__surface = pygame.display.set_mode(self.options.window_size())
+        self.__surface = pygame.display.set_mode(self.scaled_screen_size)
         pygame.init()
 
         self.__set_emulator_icon()
@@ -42,7 +42,7 @@ class PygameAdapter(BaseAdapter):
     def draw_to_screen(self, pixels):
         image = self._get_masked_image(pixels)
         pygame_surface = pygame.image.fromstring(
-            image.tobytes(), self.options.window_size(), "RGB"
+            image.tobytes(), self.scaled_screen_size, "RGB"
         )
         self.__surface.blit(pygame_surface, (0, 0))
 

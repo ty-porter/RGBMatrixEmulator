@@ -8,15 +8,16 @@ from RGBMatrixEmulator.emulation.options import RGBMatrixOptions
 class Canvas:
     def __init__(self, options: RGBMatrixOptions) -> None:
         self.options = options
+        self.__screen = options.screen
 
-        self.width = options.cols * options.chain_length
-        self.height = options.rows * options.parallel
+        self.width, self.height = self.__screen.pixel_buffer_size
 
         # 3D numpy array -- rows (H), columns (W), 3-tuple RGB
         self.__pdims = (self.height, self.width, 3)
 
+        screen_w, screen_h = self.__screen.screen_size
         self.display_adapter = options.display_adapter.get_instance(
-            self.width, self.height, options
+            screen_w, screen_h, options
         )
 
         self.Clear()
@@ -88,7 +89,7 @@ class Canvas:
 
     # These are delegated to the display adapter to handle specific implementation.
     def draw_to_screen(self) -> None:
-        self.display_adapter.draw_to_screen(self.__pixels)
+        self.display_adapter.draw_to_screen(self.__screen.render(self.__pixels))
 
     def check_for_quit_event(self) -> None:
         self.display_adapter.check_for_quit_event()

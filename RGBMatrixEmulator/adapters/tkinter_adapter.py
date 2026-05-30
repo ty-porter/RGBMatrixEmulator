@@ -24,12 +24,12 @@ class TkinterAdapter(BaseAdapter):
         self.__set_emulator_icon()
         self.__root.title(self.emulator_title)
 
-        window_size = self.options.window_size()
-        self.__root.geometry("{}x{}".format(*window_size))
+        scaled_screen_size = self.scaled_screen_size
+        self.__root.geometry("{}x{}".format(*scaled_screen_size))
         self.__canvas = tkinter.Canvas(
             self.__root,
-            width=window_size[0],
-            height=window_size[1],
+            width=scaled_screen_size[0],
+            height=scaled_screen_size[1],
             bd=0,
             highlightthickness=0,
             bg="black",

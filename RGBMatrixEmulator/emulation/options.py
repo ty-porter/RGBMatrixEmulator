@@ -1,4 +1,5 @@
 from RGBMatrixEmulator.internal.emulator_config import RGBMatrixEmulatorConfig
+from RGBMatrixEmulator.internal.screen import Screen
 
 
 class RGBMatrixOptions:
@@ -14,6 +15,7 @@ class RGBMatrixOptions:
         self.brightness = 100
         self.pwm_lsb_nanoseconds = 130
         self.led_rgb_sequence = "RGB-EMULATED"
+        self.pixel_mapper_config = ""
         self.show_refresh_rate = 0
         self.gpio_slowdown = None
         self.disable_hardware_pulsing = False
@@ -35,13 +37,13 @@ class RGBMatrixOptions:
         # Pi5 Adapter
         self.pi5 = emulator_config.pi5
 
-    def window_size(self) -> tuple[int, int]:
-        return (
-            self.cols * self.pixel_size * self.chain_length,
-            self.rows * self.pixel_size * self.parallel,
-        )
+    @property
+    def screen(self) -> Screen:
+        """The emulated screen model (mapper geometry + render).
 
-    def window_size_str(self, pixel_text: str = "") -> str:
-        width, height = self.window_size()
+        Built lazily and cached, so it snapshots the configured options rather
+        than the defaults present at construction time."""
+        if not hasattr(self, "_screen"):
+            self._screen = Screen(self)
 
-        return f"{width} x {height} {pixel_text}"
+        return self._screen
