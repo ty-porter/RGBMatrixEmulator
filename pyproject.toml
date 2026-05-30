@@ -48,10 +48,6 @@ pygame = [
 sixel = [
     "libsixel-python>=0.5.0",
 ]
-pi5 = [
-    "Adafruit-Blinka-Raspberry-Pi5-Piomatter>=1.0.0; python_version>='3.11'",
-    "adafruit-blinka>=8.0.0; python_version>='3.11'",
-]
 
 [project.urls]
 Homepage = "https://github.com/ty-porter/RGBMatrixEmulator"

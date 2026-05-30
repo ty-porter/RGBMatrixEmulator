@@ -34,17 +34,15 @@ The following adapters are supported but not installed by default.
 
 * `sixel`
 * `pygame`
-* `pi5` (experimental)
 
 You can install optional adapters via `pip`:
 
 ```sh
 pip install RGBMatrixEmulator[sixel]
 pip install RGBMatrixEmulator[pygame]
-pip install RGBMatrixEmulator[pi5]
 
 # All optional adapters at once
-pip install RGBMatrixEmulator[sixel,pygame,pi5]
+pip install RGBMatrixEmulator[sixel,pygame]
 ```
 
 ## Usage
@@ -152,16 +150,6 @@ The config file enables configurations to be customized on a per-script basis. Y
     "image_format": "JPEG",
     "open_immediately": false
   },
-  "pi5": {
-    "_comment": "For use with the pi5 adapter only.",
-    "pinout": "AdafruitMatrixBonnet",
-    "n_addr_lines": 4,
-    "rotation": "Normal",
-    "n_planes": 10,
-    "n_temporal_planes": 4,
-    "n_lanes": 1,
-    "led_rgb_sequence": "RGB"
-  },
   "log_level": "info"
 }
 ```
@@ -206,18 +194,6 @@ Certain adapters may specify additional configurations. These specialized config
 | browser.image_format     | String  | Image format to use for rendering. Options are "JPEG" or "PNG".
 | browser.open_immediately | Bool    | Open a new browser window immediately on startup (similar to other adapters).
 
-##### `pi5` Options
-
-| Key | Type | Description |
-| --- | ---- | ----------- |
-| pi5.pinout            | String  | The hardware pinout definition. Matches attributes in `piomatter.Pinout` (e.g., "Active3", "AdafruitMatrixHat", "AdafruitMatrixBonnet").
-| pi5.n_addr_lines      | Integer | Number of address lines for the display. Typically `4` for 32-pixel height panels, or `5` for 64-pixel height panels.
-| pi5.led_rgb_sequence  | String  | Color sequence of the LEDs (e.g., "RGB", "BGR", "RBG").
-| pi5.rotation          | String  | Display rotation. Matches attributes in `piomatter.Orientation` (e.g., "Normal", "R180", "CW", "CCW"). Does not work with "Active3" pinouts.
-| pi5.n_lanes           | Integer | Number of parallel matrix chains (lanes). Only works with Active3 boards. Must be 2 or more.
-| pi5.n_planes          | Integer | Colour Bit depth/number of planes. Maximum of 10, minimum of 1.
-| pi5.n_temporal_planes | Integer | Number of temporal planes for dithering/brightness control. Possible values are 0, 2 or 4 and can't be greater than the value of n_planes.
-
 ### Display Adapters
 
 By default, `RGBMatrixEmulator` uses `browser` as its display adapter for maximum compatibility with different operating systems as well as thread-safety. However, you can also use other display adapters as well if the default adapter does not suit your needs.
@@ -230,7 +206,6 @@ Currently supported display adapters are:
 * `tkinter`
 * `turtle`
 * `sixel`
-* `pi5` (experimental)
 * `raw`
 
 You can swap display adapters by changing the `display_adapter` value to one of the above in `emulator_config.json`.
@@ -240,15 +215,6 @@ You can swap display adapters by changing the `display_adapter` value to one of 
 ### Browser Display Adapter
 
 Please see the [README for the `browser` display adapter](RGBMatrixEmulator/adapters/browser_adapter/README.md) for further information regarding its configuration and usage.
-
-### Raspberry Pi 5 Adapter
-
-> [!WARNING]
-> This adapter is deprecated. It will be removed no later than July 1, 2026. Please use native `rpi-rgb-led-matrix` Raspberry Pi 5 support.
-
-RGBME can be used to "bridge" scripts written for `rpi-rgb-led-matrix` to Raspberry Pi model 5 through [Adafruit Blinka](https://github.com/adafruit/Adafruit_Blinka) and the [Adafruit-Blinka-Raspberry-Pi5-Piomatter](https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Piomatter) libraries.
-
-Please see the [README for the `pi5` display adapter](RGBMatrixEmulator/adapters/pi5_adapter/README.md) for further information regarding its configuration and usage.
 
 ### Raw Display Adapter
 
