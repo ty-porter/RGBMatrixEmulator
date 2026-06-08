@@ -31,16 +31,6 @@ class RGBMatrixEmulatorConfig:
             "image_format": "JPEG",
             "open_immediately": False,
         },
-        "pi5": {
-            "_comment": "For use with the pi5 adapter only.",
-            "pinout": "AdafruitMatrixBonnet",
-            "n_addr_lines": 4,
-            "rotation": "Normal",
-            "n_planes": 10,
-            "n_temporal_planes": 4,
-            "n_lanes": 1,
-            "led_rgb_sequence": "RGB",
-        },
         "log_level": "info",
     }
 
@@ -53,7 +43,6 @@ class RGBMatrixEmulatorConfig:
     emulator_title: Optional[str]
     suppress_font_warnings: bool
     log_level: str
-    pi5: "ChildConfig"
     browser: "ChildConfig"
 
     def __init__(self):

@@ -34,9 +34,6 @@ class RGBMatrixOptions:
         self.emulator_title = emulator_config.emulator_title
         self.icon_path = emulator_config.icon_path
 
-        # Pi5 Adapter
-        self.pi5 = emulator_config.pi5
-
     @property
     def screen(self) -> Screen:
         """The emulated screen model (mapper geometry + render).

@@ -34,9 +34,4 @@ ADAPTERS = {
         "class": "RawAdapter",
         "fallback": False,
     },
-    "pi5": {
-        "path": "RGBMatrixEmulator.adapters.pi5_adapter",
-        "class": "Pi5Adapter",
-        "fallback": False,
-    },
 }
