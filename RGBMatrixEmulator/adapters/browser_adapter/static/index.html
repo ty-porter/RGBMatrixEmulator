@@ -6,7 +6,7 @@
       <link rel="stylesheet" href="assets/styles.css">
    </head>
    <body>
-      <img id="liveImg" class={{ "" if adapter.options.browser.image_border else "no-border" }} />
+      <canvas id="liveImg" class={{ "" if adapter.options.browser.image_border else "no-border" }}></canvas>
 
       {% if adapter.options.browser.fps_display %}
          <div id="fpsDisplay">
@@ -139,6 +139,7 @@
 
       <input id="targetFps" type="hidden" value={{ adapter.options.browser.target_fps }} />
 
+      <script>const IMAGE_MIME = "image/{{ adapter.image_format.lower() }}";</script>
       <script type="text/javascript" src="assets/client.js"></script>
    </body>
 </html>

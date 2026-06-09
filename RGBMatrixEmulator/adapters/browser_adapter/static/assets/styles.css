@@ -4,11 +4,12 @@ body {
   font-family: monospace;
 }
 
-img#liveImg {
+#liveImg {
   border: 1px solid gray;
+  image-rendering: pixelated;
 }
 
-img#liveImg.no-border {
+#liveImg.no-border {
   border: none;
 }
 

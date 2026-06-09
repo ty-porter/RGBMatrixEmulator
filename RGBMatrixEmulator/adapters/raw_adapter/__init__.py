@@ -15,7 +15,11 @@ class RawAdapter(BaseAdapter):
     def __init__(self, width, height, options):
         super().__init__(width, height, options)
 
-        self._reset()
+        self.frames = {}
+        self.frame = 0
+
+        self.halt_after = RawAdapter.DEFAULT_MAX_FRAME
+        self.halt_fn = lambda: 1 + 1
 
     def draw_to_screen(self, pixels):
         self.frames[self.frame] = pixels
@@ -37,10 +41,3 @@ class RawAdapter(BaseAdapter):
 
     def _last_frame(self):
         return self.frames[self.frame - 1]
-
-    def _reset(self):
-        self.frames = {}
-        self.frame = 0
-
-        self.halt_after = RawAdapter.DEFAULT_MAX_FRAME
-        self.halt_fn = lambda: 1 + 1
