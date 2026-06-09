@@ -119,7 +119,8 @@ def run_mapper_spec(spec, screenshot_path=None):
     except Exception:
         traceback.print_exc()
     finally:
-        sample.matrix.canvas.display_adapter._reset()
+        adapter = sample.matrix.canvas.display_adapter
+        type(adapter).INSTANCE = None
         LabeledPanels.__setattr__ = object.__setattr__
         os.chdir(cwd)
 
