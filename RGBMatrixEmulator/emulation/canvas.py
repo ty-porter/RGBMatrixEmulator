@@ -26,19 +26,17 @@ class Canvas:
 
     def Clear(self) -> None:
         self.__pixels = np.full(
-            self.__pdims, self.__create_pixel((0, 0, 0)), dtype=np.uint8
+            self.__pdims, (0, 0, 0), dtype=np.uint8
         )
 
     def Fill(self, r: int, g: int, b: int) -> None:
         self.__pixels = np.full(
-            self.__pdims, self.__create_pixel((r, g, b)), dtype=np.uint8
+            self.__pdims, (r, g, b), dtype=np.uint8
         )
 
     def SetPixel(self, x: int, y: int, r: int, g: int, b: int) -> None:
-        if self.__pixel_out_of_bounds(x, y):
-            return
-
-        self.__pixels[int(y)][int(x)] = self.__create_pixel((r, g, b))
+        if 0 <= x < self.width and 0 <= y < self.height:
+            self.__pixels[int(y), int(x)] = (r, g, b)
 
     def SetImage(
         self,
@@ -47,9 +45,6 @@ class Canvas:
         offset_y: int = 0,
         unsafe: bool = True,
     ) -> None:
-        enhancer = ImageEnhance.Brightness(image)
-        image = enhancer.enhance(self.brightness / 100.0)
-
         original = Image.fromarray(self.__pixels, "RGB")
         original.paste(image, (offset_x, offset_y))
         self.__pixels = np.copy(original)  # type: ignore
@@ -69,27 +64,13 @@ class Canvas:
 
         self.options.brightness = value
 
-    def __create_pixel(self, pixel):
-        return self.__adjust_brightness(tuple(pixel), self.brightness / 100.0)
-
-    def __pixel_out_of_bounds(self, x, y):
-        if x < 0 or x >= self.width:
-            return True
-
-        if y < 0 or y >= self.height:
-            return True
-
-        return False
-
-    def __adjust_brightness(self, pixel, alpha, to_int=False):
-        if to_int:
-            return tuple(int(channel) for channel in pixel)
-
-        return tuple(channel * alpha for channel in pixel)
-
     # These are delegated to the display adapter to handle specific implementation.
     def draw_to_screen(self) -> None:
-        self.display_adapter.draw_to_screen(self.__screen.render(self.__pixels))
+        # Handle brightness across the entire pixel buffer as soon as it's ready to draw.
+        alpha = self.brightness / 100.0
+        pixels = (self.__screen.render(self.__pixels) * alpha).astype(np.uint8)
+        
+        self.display_adapter.draw_to_screen(pixels)
 
     def check_for_quit_event(self) -> None:
         self.display_adapter.check_for_quit_event()
