@@ -84,6 +84,6 @@ class BrowserAdapter(BaseAdapter):
     def __build_encode_kwargs(self) -> dict:
         # use libwebp's realtime encoder
         if self.image_format == "WebP":
-            return { "method": 0 }
+            return {"method": 0}
 
         return {}

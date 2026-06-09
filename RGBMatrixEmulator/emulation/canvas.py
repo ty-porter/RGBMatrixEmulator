@@ -25,14 +25,10 @@ class Canvas:
         self.display_adapter.load_emulator_window()
 
     def Clear(self) -> None:
-        self.__pixels = np.full(
-            self.__pdims, (0, 0, 0), dtype=np.uint8
-        )
+        self.__pixels = np.full(self.__pdims, (0, 0, 0), dtype=np.uint8)
 
     def Fill(self, r: int, g: int, b: int) -> None:
-        self.__pixels = np.full(
-            self.__pdims, (r, g, b), dtype=np.uint8
-        )
+        self.__pixels = np.full(self.__pdims, (r, g, b), dtype=np.uint8)
 
     def SetPixel(self, x: int, y: int, r: int, g: int, b: int) -> None:
         if 0 <= x < self.width and 0 <= y < self.height:
@@ -69,7 +65,7 @@ class Canvas:
         # Handle brightness across the entire pixel buffer as soon as it's ready to draw.
         alpha = self.brightness / 100.0
         pixels = (self.__screen.render(self.__pixels) * alpha).astype(np.uint8)
-        
+
         self.display_adapter.draw_to_screen(pixels)
 
     def check_for_quit_event(self) -> None:
