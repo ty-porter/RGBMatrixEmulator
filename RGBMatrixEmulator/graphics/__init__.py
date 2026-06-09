@@ -12,18 +12,29 @@ def validate_color(func):
     """
     Decorator to validate that the 'color' argument is of type Color.
     If not, attempts to map to the rpi-rgb-led-matrix error message.
+
+    The 'color' parameter's position is resolved once at decoration time so the
+    per-call path is just a lookup and an isinstance check -- these draw
+    functions run in tight per-frame loops, so inspecting the signature on every
+    call (signature/bind/apply_defaults) is far too expensive.
     """
+    try:
+        color_index = list(signature(func).parameters).index("color")
+    except ValueError:
+        color_index = None
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        # Map positional + keyword args to parameter names
-        sig = signature(func)
-        bound = sig.bind(*args, **kwargs)
-        bound.apply_defaults()
+        if color_index is not None:
+            if "color" in kwargs:
+                value = kwargs["color"]
+            elif color_index < len(args):
+                value = args[color_index]
+            else:
+                # 'color' not supplied; let func raise the missing-argument error.
+                value = None
 
-        if "color" in bound.arguments:
-            value = bound.arguments["color"]
-            if not isinstance(value, Color):
+            if value is not None and not isinstance(value, Color):
                 expected = f"{Color.__module__}.{Color.__qualname__}"
                 actual = f"{type(value).__module__}.{type(value).__qualname__}"
                 raise TypeError(
