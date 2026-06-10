@@ -25,14 +25,13 @@ def validate_color(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
+        value = None
+
         if color_index is not None:
             if "color" in kwargs:
                 value = kwargs["color"]
             elif color_index < len(args):
                 value = args[color_index]
-            else:
-                # 'color' not supplied; let func raise the missing-argument error.
-                value = None
 
             if value is not None and not isinstance(value, Color):
                 expected = f"{Color.__module__}.{Color.__qualname__}"

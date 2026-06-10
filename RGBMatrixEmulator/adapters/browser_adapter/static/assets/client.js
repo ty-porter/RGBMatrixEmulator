@@ -51,9 +51,6 @@
         ws.onmessage = function(evt) {
             nFrames++;
 
-            // Decode off the main thread and paint straight to the canvas. This
-            // avoids the per-frame blob-URL churn (createObjectURL/revokeObjectURL)
-            // and main-thread decode of the old <img> approach.
             const blob = new Blob([evt.data], { type: IMAGE_MIME });
             createImageBitmap(blob).then((bitmap) => {
                 if (canvas.width !== bitmap.width || canvas.height !== bitmap.height) {
