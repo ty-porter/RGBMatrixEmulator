@@ -130,7 +130,8 @@ def run_sample(sample_class, size, screenshot_path=None):
     except Exception:
         traceback.print_exc()
     finally:
-        sample.matrix.canvas.display_adapter._reset()
+        adapter = sample.matrix.canvas.display_adapter
+        type(adapter).INSTANCE = None
         os.chdir(cwd)
 
 

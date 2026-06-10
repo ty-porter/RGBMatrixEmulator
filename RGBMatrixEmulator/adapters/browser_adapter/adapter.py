@@ -35,6 +35,8 @@ class BrowserAdapter(BaseAdapter):
                 self.default_image_format.lower()
             )
 
+        self._encode_kwargs = self.__build_encode_kwargs()
+
         # Default icon path is browser adapter assets
         self.default_icon_path = str(
             (Path(__file__).parent / "static" / "assets" / "icon.ico").resolve()
@@ -61,7 +63,7 @@ class BrowserAdapter(BaseAdapter):
                 bytesIO,
                 self.image_format,
                 quality=self.options.browser.quality,
-                optimize=True,
+                **self._encode_kwargs,
             )
             self.image = bytesIO.getvalue()
 
@@ -78,3 +80,10 @@ class BrowserAdapter(BaseAdapter):
             except Exception as e:
                 Logger.exception("Failed to open a browser window")
                 Logger.exception(e)
+
+    def __build_encode_kwargs(self) -> dict:
+        # use libwebp's realtime encoder
+        if self.image_format == "WebP":
+            return {"method": 0}
+
+        return {}

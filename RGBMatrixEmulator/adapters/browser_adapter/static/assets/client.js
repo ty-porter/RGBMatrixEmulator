@@ -3,7 +3,8 @@
     const FPS_DEFAULT     = 60;   // seconds
     const FPS_UPDATE_RATE = 300;  // milliseconds
 
-    const img       = document.getElementById("liveImg");
+    const canvas    = document.getElementById("liveImg");
+    const ctx       = canvas.getContext("2d", { alpha: false });
     const fpsText   = document.getElementById("fps");
     const fpsTarget = parseInt(document.getElementById("targetFps").value) || FPS_DEFAULT;
 
@@ -50,11 +51,15 @@
         ws.onmessage = function(evt) {
             nFrames++;
 
-            const arrayBuffer = evt.data;
-            const blob = new Blob([new Uint8Array(arrayBuffer)], { type: "image/jpeg" });
-            const old_img = img.src.slice()
-            img.src = window.URL.createObjectURL(blob);
-            window.URL.revokeObjectURL(old_img);
+            const blob = new Blob([evt.data], { type: IMAGE_MIME });
+            createImageBitmap(blob).then((bitmap) => {
+                if (canvas.width !== bitmap.width || canvas.height !== bitmap.height) {
+                    canvas.width  = bitmap.width;
+                    canvas.height = bitmap.height;
+                }
+                ctx.drawImage(bitmap, 0, 0);
+                bitmap.close();
+            }).catch(() => {});
 
             if (fpsText) {
                 const endTime = performance.now();

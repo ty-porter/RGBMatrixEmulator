@@ -53,6 +53,9 @@ class TestSampleRunMatchesReference(TestCase):
             actual = run_sample(sample, size)
 
         if not np.array_equal(expected, actual):
+            diff = expected.astype(np.int16) - actual.astype(np.int16)
+            MAE = round(float(np.abs(diff).mean()), 5)
+
             image = Image.fromarray(np.array(actual, dtype="uint8"), "RGB")
             image.save(
                 os.path.abspath(
@@ -67,7 +70,10 @@ class TestSampleRunMatchesReference(TestCase):
 
             self.assertTrue(
                 False,
-                f"Actual results do not match reference screenshot. See test/result/{sample.file_name}-w{size[0]}h{size[1]}.png to compare",
+                f"""\
+Actual results do not match reference screenshot (MAE = {MAE}). \
+See test/result/{sample.file_name}-w{size[0]}h{size[1]}.png to compare.\
+""",
             )
 
         self.assertTrue(True)
