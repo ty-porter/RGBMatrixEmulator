@@ -35,7 +35,7 @@ dependencies = [
     "bdfparser<=2.2.0",
     "numpy>=1.2.0",
     "Pillow>=10.0.1",
-    "tornado>=6.5.5",
+    "tornado>=6.5.7",
 ]
 
 [project.scripts]
