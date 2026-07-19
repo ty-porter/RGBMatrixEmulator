@@ -4,21 +4,21 @@ from RGBMatrixEmulator.internal.screen import Screen
 
 class RGBMatrixOptions:
     def __init__(self) -> None:
-        self.hardware_mapping = "EMULATED"
-        self.rows = 32
-        self.cols = 32
-        self.chain_length = 1
-        self.parallel = 1
-        self.row_address_type = 0
-        self.multiplexing = 0
-        self.pwm_bits = 0
-        self.brightness = 100
-        self.pwm_lsb_nanoseconds = 130
-        self.led_rgb_sequence = "RGB-EMULATED"
-        self.pixel_mapper_config = ""
-        self.show_refresh_rate = 0
-        self.gpio_slowdown = None
-        self.disable_hardware_pulsing = False
+        self.hardware_mapping: str = "EMULATED"
+        self.rows: int = 32
+        self.cols: int = 32
+        self.chain_length: int = 1
+        self.parallel: int = 1
+        self.row_address_type: int = 0
+        self.multiplexing: int = 0
+        self.pwm_bits: int = 0
+        self.brightness: int = 100
+        self.pwm_lsb_nanoseconds: int = 130
+        self.led_rgb_sequence: str = "RGB-EMULATED"
+        self.pixel_mapper_config: str = ""
+        self.show_refresh_rate: int = 0
+        self.gpio_slowdown: int | None = None
+        self.disable_hardware_pulsing: bool = False
 
         emulator_config = RGBMatrixEmulatorConfig()
 
