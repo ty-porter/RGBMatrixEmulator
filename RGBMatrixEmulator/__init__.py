@@ -3,3 +3,9 @@ from RGBMatrixEmulator.emulation.matrix import RGBMatrix
 from RGBMatrixEmulator.emulation.options import RGBMatrixOptions
 
 from RGBMatrixEmulator.version import __version__
+
+__all__ = [
+    "RGBMatrix",
+    "RGBMatrixOptions",
+    "__version__",
+]
