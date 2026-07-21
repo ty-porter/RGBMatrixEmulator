@@ -43,6 +43,9 @@ rgbme = "RGBMatrixEmulator.cli:run_cli"
 
 [project.optional-dependencies]
 pygame = [
+    "pygame-ce>=2.5.7",
+]
+pygame-legacy = [
     "pygame>=2.0.1,<3",
 ]
 sixel = [
