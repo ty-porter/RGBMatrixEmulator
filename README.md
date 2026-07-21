@@ -45,6 +45,16 @@ pip install RGBMatrixEmulator[pygame]
 pip install RGBMatrixEmulator[sixel,pygame]
 ```
 
+### `pygame` Adapter
+
+The upstream [pygame](https://github.com/pygame/pygame) package does not support Python 3.14 or greater. The adapter has been swapped to use the [pygame-ce](https://github.com/pygame-community/pygame-ce) package instead. This should be a backwards compatible change with no noticeable issues.
+
+If you need to use the legacy `pygame` package for any reason, you can install it:
+
+```sh
+pip install RGBMatrixEmulator[pygame-legacy]
+```
+
 ## Usage
 
 Projects that are able to be emulated will rely on importing classes from `rpi-rgb-led-matrix`. These will need to be replaced by equivalent `RGBMatrixEmulator` classes.
