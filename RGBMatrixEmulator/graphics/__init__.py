@@ -50,8 +50,6 @@ def validate_color(func):
 def DrawText(
     canvas: Canvas, font: Font, x: int, y: int, color: Color, text: str
 ) -> int:
-    # Early return for empty string prevents bugs in bdfparser library
-    # and makes good sense anyway
     if len(text) == 0:
         return 0
 
@@ -73,25 +71,8 @@ def DrawText(
         text = text[: ((canvas.width + 1) // max_char_width) + 2]
 
     # Draw the text!
-    if len(text) != 0:
-        # Ensure text doesn't get drawn as multiple lines
-        linelimit = len(text) * (font.headers["fbbx"] + 1)
-
-        text_map = font.bdf_font.draw(
-            text, linelimit, missing=font.default_character
-        ).todata(2)
-        font_y_offset = -(font.headers["fbby"] + font.headers["fbbyoff"])
-
-        for y2, row in enumerate(text_map):
-            for x2, value in enumerate(row):
-                if value == 1:
-                    canvas.SetPixel(
-                        x + x2,
-                        y + y2 + font_y_offset,
-                        color.red,
-                        color.green,
-                        color.blue,
-                    )
+    for letter in text:
+        x += font.DrawGlyph(canvas, x, y, color, ord(letter))
 
     return total_width
 
@@ -124,7 +105,7 @@ def __actual_width(font, letter):
     if width > 0:
         return width
 
-    return font.CharacterWidth(font.default_character.cp())
+    return font.CharacterWidth(0xFFFD)
 
 
 def __coerce_int(*values) -> list[int]:
