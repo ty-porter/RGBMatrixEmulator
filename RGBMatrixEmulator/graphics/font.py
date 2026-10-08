@@ -1,35 +1,74 @@
-import bdfparser
+from typing import Optional
+
+from RGBMatrixEmulator.emulation.canvas import Canvas
+from RGBMatrixEmulator.graphics.color import Color
+from RGBMatrixEmulator.internal.bdf_font import BDFFont
+
+# Unicode replacement character, drawn in place of glyphs the font doesn't have
+REPLACEMENT_CODEPOINT = 0xFFFD
 
 
 class Font:
-    bdf_font: bdfparser.Font
-    headers: dict
-    props: dict
+    _bdf_font: Optional[BDFFont] = None
 
-    def LoadFont(self, path: str) -> None:
-        self.bdf_font = bdfparser.Font(path)
-        self.headers = self.bdf_font.headers
-        self.props = self.bdf_font.props
+    def LoadFont(self, file: str) -> None:
+        try:
+            self._bdf_font = BDFFont.load(file)
+        except (OSError, BDFFont.UnsupportedFontVersion, BDFFont.ParseError) as e:
+            raise Exception("Couldn't load font " + file) from e
 
-        # All rpi-rgb-led-matrix fonts have a character at 0xFFFD to represent a missing character
-        # Cache this for use later so we don't have to constantly look it up
-        self.default_character = self.bdf_font.glyphbycp(0xFFFD)
+    def CharacterWidth(self, char: int) -> int:
+        glyph = self._glyph(char)
 
-    def CharacterWidth(self, char: str) -> int:
-        # Missing glyphs return 0 width in rpi-rgb-led-matrix
-        if self.bdf_font == None or not self.bdf_font.glyphbycp(char):
+        # Missing glyphs return -1 in rpi-rgb-led-matrix
+        if glyph is None:
+            return -1
+
+        return glyph.DWIDTH[0]
+
+    def DrawGlyph(self, c: Canvas, x: int, y: int, color: Color, char: int) -> int:
+        """Draws a single glyph with its baseline at y. Returns the advance width."""
+        glyph = self._glyph(char) or self._glyph(REPLACEMENT_CODEPOINT)
+
+        if glyph is None:
             return 0
 
-        return self.bdf_font.glyphbycp(char).meta["dwx0"]
+        width, height, x_offset, y_offset = glyph.BBX
+        advance = glyph.DWIDTH[0]
+        top = y - height - y_offset
+
+        for row_index, row in enumerate(glyph.BITMAP):
+            for col in range(width):
+                # Pixels past the advance width are dropped
+                if x_offset + col >= advance:
+                    break
+
+                if (row >> (glyph.BITMAP_ROW_BITS - 1 - col)) & 1:
+                    c.SetPixel(
+                        x + x_offset + col,
+                        top + row_index,
+                        color.red,
+                        color.green,
+                        color.blue,
+                    )
+
+        return advance
 
     @property
     def height(self) -> int:
-        if self.bdf_font is None:
+        if self._bdf_font is None:
             return -1
-        return self.headers["fbby"]
+        return self._bdf_font.FONTBOUNDINGBOX[1]
 
     @property
     def baseline(self) -> int:
-        if self.bdf_font is None:
+        if self._bdf_font is None:
             return 0
-        return self.headers["fbby"] + self.headers["fbbyoff"]
+        _, height, _, y_offset = self._bdf_font.FONTBOUNDINGBOX
+        return height + y_offset
+
+    def _glyph(self, codepoint: int) -> Optional[BDFFont.Glyph]:
+        if self._bdf_font is None:
+            return None
+
+        return self._bdf_font._cp_to_glyph.get(codepoint)
