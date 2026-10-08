@@ -75,9 +75,6 @@ include = [
     "RGBMatrixEmulator",
 ]
 
-[tool.hatch.metadata]
-allow-direct-references = true
-
 [dependency-groups]
 dev = [
     "parameterized",
