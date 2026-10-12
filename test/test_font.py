@@ -90,7 +90,9 @@ class TestFontParsing(unittest.TestCase):
             20: [0, 1, 2, 3],
         }
         expected = {
-            (10 + col, y): (1, 2, 3) for y, cols in expected_rows.items() for col in cols
+            (10 + col, y): (1, 2, 3)
+            for y, cols in expected_rows.items()
+            for col in cols
         }
 
         self.assertEqual(canvas.pixels, expected)
