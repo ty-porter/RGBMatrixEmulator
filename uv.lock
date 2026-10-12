@@ -7,15 +7,6 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "bdfparser"
-version = "2.2.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e3/b7/8e2a9b806450254f1ae0d4e18e4d8612cf7561fb87a5a8395e369b3bf4b9/bdfparser-2.2.0.tar.gz", hash = "sha256:75cebd7c2f1ed5e5d0985763b255726a9538c602c7c5ca8639707aec54a58683", size = 14631, upload-time = "2021-02-06T21:30:50.86Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/2f/00/846b41165fd31b5668fe89bdbda9f44099d9df8760c3865404336af094a3/bdfparser-2.2.0-py3-none-any.whl", hash = "sha256:62ceed3b90b1fca050fcb414e70cc5b1f4551d57b088f9e7417678563eebf135", size = 12611, upload-time = "2021-02-06T21:30:49.736Z" },
-]
-
-[[package]]
 name = "black"
 version = "26.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -501,7 +492,6 @@ wheels = [
 name = "rgbmatrixemulator"
 source = { editable = "." }
 dependencies = [
-    { name = "bdfparser" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pillow" },
@@ -527,7 +517,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bdfparser", specifier = "<=2.2.0" },
     { name = "libsixel-python", marker = "extra == 'sixel'", specifier = ">=0.5.0" },
     { name = "numpy", specifier = ">=1.2.0" },
     { name = "pillow", specifier = ">=10.0.1" },
