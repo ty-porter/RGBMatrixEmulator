@@ -61,6 +61,12 @@ class Font:
         return self._bdf_font.FONTBOUNDINGBOX[1]
 
     @property
+    def width(self) -> int:
+        if self._bdf_font is None:
+            return -1
+        return self._bdf_font.FONTBOUNDINGBOX[0]
+
+    @property
     def baseline(self) -> int:
         if self._bdf_font is None:
             return 0
