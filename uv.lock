@@ -522,7 +522,7 @@ requires-dist = [
     { name = "pillow", specifier = ">=10.0.1" },
     { name = "pygame", marker = "extra == 'pygame-legacy'", specifier = ">=2.0.1,<3" },
     { name = "pygame-ce", marker = "extra == 'pygame'", specifier = ">=2.5.7" },
-    { name = "tornado", specifier = ">=6.5.7" },
+    { name = "tornado", specifier = ">=6.5.9" },
 ]
 provides-extras = ["pygame", "pygame-legacy", "sixel"]
 
