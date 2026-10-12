@@ -8,7 +8,6 @@
     "allow_adapter_fallback": false,
     "icon_path": null,
     "emulator_title": null,
-    "suppress_font_warnings": false,
     "browser": {
         "_comment": "For use with the browser adapter only.",
         "port": 8888,

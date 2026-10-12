@@ -148,7 +148,6 @@ The config file enables configurations to be customized on a per-script basis. Y
   "allow_adapter_fallback": true,
   "icon_path": null,
   "emulator_title": null,
-  "suppress_font_warnings": false,
   "browser": {
     "_comment": "For use with the browser adapter only.",
     "port": 8888,
@@ -180,7 +179,6 @@ The following configuration affects most display adapters or emulation as a whol
 | allow_adapter_fallback       | Boolean | Whether to continue to the next available adapter if the preferred adapter fails to load. Only fails if all adapters fail to load.
 | icon_path                    | Path    | Relative path to a custom icon file (PNG, ICO, JPG/JPEG, etc.). If not set, the emulator window uses the default RGBME icon.
 | emulator_title               | String  | Custom title to display at the top of the emulator window. If not set, RGBME uses default debug text.
-| suppress_font_warnings       | Boolean | Suppress BDF font parsing errors, such as for missing characters.
 | log_level                    | String  | Logging level for the emulator.
 
 Altering the `pixel_size` configuration will change how large the LEDs appear on your screen. This is helpful for emulating large matrices or on small screens.
@@ -307,7 +305,6 @@ See [Samples README](samples/README.md) for more information about running examp
     matrix.SwapOnVsync(canvas) # Force screen refresh
     ```
   </details>
-- Drawing large strings is slow, partly because of the `linelimit` parameter in the BDF font parser this emulator uses to prevent multiline text from being rendered unintentionally.
 - `--led-pixel-mapper` emulation differs from `rpi-rgb-led-matrix`. This is due to the assumption made by RGBME for an upright, rectangular emulated matrix. See [Multi-Panel Emulation](#multi-panel-emulation) for details.
 
 ## Contributing

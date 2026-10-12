@@ -19,7 +19,6 @@ class RGBMatrixEmulatorConfig:
         "allow_adapter_fallback": True,
         "icon_path": None,
         "emulator_title": None,
-        "suppress_font_warnings": False,
         "browser": {
             "_comment": "For use with the browser adapter only.",
             "port": 8888,
@@ -41,7 +40,6 @@ class RGBMatrixEmulatorConfig:
     allow_adapter_fallback: bool
     icon_path: Optional[str]
     emulator_title: Optional[str]
-    suppress_font_warnings: bool
     log_level: str
     browser: "ChildConfig"
 
@@ -56,11 +54,6 @@ class RGBMatrixEmulatorConfig:
 
         self.__validate_pixel_style()
         self.__validate_pixel_glow()
-
-        if self.suppress_font_warnings:
-            import bdfparser
-
-            bdfparser.warnings.simplefilter("ignore")
 
     def __load_config(self):
         if os.path.exists(self.CONFIG_PATH):
