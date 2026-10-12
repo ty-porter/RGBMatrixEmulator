@@ -3,7 +3,7 @@ from inspect import signature
 
 from RGBMatrixEmulator.emulation.canvas import Canvas
 from RGBMatrixEmulator.graphics.color import Color
-from RGBMatrixEmulator.graphics.font import Font
+from RGBMatrixEmulator.graphics.font import Font, REPLACEMENT_CODEPOINT
 
 __all__ = ["Color", "Font", "DrawText", "DrawLine", "DrawCircle"]
 
@@ -105,7 +105,7 @@ def __actual_width(font, letter):
     if width > 0:
         return width
 
-    return font.CharacterWidth(0xFFFD)
+    return font.CharacterWidth(REPLACEMENT_CODEPOINT)
 
 
 def __coerce_int(*values) -> list[int]:
